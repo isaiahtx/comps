@@ -1434,7 +1434,7 @@ In general, subgroups of f.g.\ groups are not f.g.!
   nilpotent, and if $a\geq 2$, it has nilpotence class $\leq a-1$.
 \end{proposition}
 
-\begin{theorem}
+\begin{theorem}\label{finite_nilpotent_groups_theorem}
   Let $G$ be a finite group with $p_1,\ldots,p_s$ the distinct primes dividing
   its order. Then TFAE.
   \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
@@ -1645,6 +1645,51 @@ In general, subgroups of f.g.\ groups are not f.g.!
   $A$ by $a$ and $B$ by $b$ and then taking their product).
 \end{proof}
 
+\begin{lemma}\label{Sylow_subgroups_are_normal_implies_prod_of_Sylows}
+  Let $G$ be a finite group such that $n_p(G)=1$ for each prime $p$ dividing
+  $|G|$. Then $G$ is isomorphic to a product of its Sylow subgroups, i.e., $G$
+  is a product of $p$-groups.
+\end{lemma}
+\begin{proof}
+  Write $|G|=p_1^{n_1}\cdots p_k^{n_k}$ (where the $p_i$'s are distinct primes
+  and the $n_i$'s are positive integers), so that for $i=1,\ldots,k$ $G$ admits
+  a unique subgroup $H_i$ of order $p_i^{n_i}$ (which is normal by Sylow
+  2). Then we wish to show that
+  \begin{equation}\label{eq2}
+    G\cong H_1\times\cdots\times H_k.
+  \end{equation}
+  For $i=1,\ldots,k$, define
+  \[
+    K_i:=H_1H_2\cdots H_{i-1}H_{i+1}\cdots H_k,
+  \]
+  i.e. $K_i$ is the product of all the $H_j$'s for $j\neq i$. Then since each
+  $H_i$ is normal, in order for \autoref{eq2} to hold, by the product
+  recognition theorem it suffices to show that
+  \begin{itemize}
+    \item $H:=H_1H_2\cdots H_k=G$, and 
+    \item $H_i\cap K_i=\{e\}$ for $i=1,\ldots, k$.
+  \end{itemize}
+  To see the former, note that by the second isomorphism theorem $H_i$ is a
+  subgroup of $H$ for each $i$, so that in particular $|H_i|=p_i^{n_i}$ divides
+  $|H|$ for each $i$. Since the $p_i$'s are distinct primes, it follows that
+  $|H|=p_1^{n_1}\cdots p_k^{n_k}=|G|$, so that $H=G$, as desired.
+
+  Now, fix some $i\in\{1,\ldots,k\}$, and note that $H_i\cap K_i$ is a subgroup of both $H_i$ and $K_i$, so by Lagrange's the order of $H_i\cap K_i$ divides both $|H_i|$ and $|K_i|$. Note that
+  \[
+    |K_i|
+    \leq\prod_{\substack{j=1,\ldots,k\\j\neq i}}|H_j|
+    =\prod_{\substack{j=1,\ldots,k\\j\neq i}}p_j^{n_j},
+  \]
+  but also for $i\neq j$, $H_j$ is a subgroup of $K_i$, so that $|H_j|=p_j^{n_j}$ must divide the order of $K_i$. Again since the $p_j$'s are distinct primes, it follows that
+  \[
+    |K_i|\geq\prod_{\substack{j=1,\ldots,k\\j\neq i}}p_j^{n_j},
+  \]
+  so $|K_i|=\prod_{\substack{j=1,\ldots,k\\j\neq i}}p_j^{n_j}$. Thus since
+  $|H_i\cap K_i|$ has to divide both $\prod_{\substack{j=1,\ldots,k\\j\neq
+  i}}p_j^{n_j}$ and $p_i^{n_i}$, which have no common factors, it follows that
+  $|H_i\cap K_i|=1$, so that $H_i\cap K_i=\{e\}$, as desired.
+\end{proof}
+
 \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={\arabic*.}]
   \item (May 2022 Q1) \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
     \item Let $H$ be a subgroup of a group $G$. Then $G$ acts on the set
@@ -1801,7 +1846,7 @@ In general, subgroups of f.g.\ groups are not f.g.!
       where $(\ast)$ denotes where we used the assumption that $|Y^g|=1$ for
       all $g\in G\setminus\{e\}$.
     \end{proof}
-    \item Show that $X$ has (at least) a fixed point under the action of $G$.
+    \item\label{Aug_2021_Q1(c)} Show that $X$ has (at least) a fixed point under the action of $G$.
     \begin{proof}
       By part (ii), we have
       \[
@@ -1965,37 +2010,40 @@ In general, subgroups of f.g.\ groups are not f.g.!
     \end{proof}
     \item For each cool number $n$ that you found in part (a), determine
     whether every group of order $n$ is nilpotent.
-    \begin{proof}
-      First, let $G$ be a Type I cool group, so that
-      $|G|=p_1^{n_1}p_2^{n_2}p_3^{n_3}p_4^{n_4}$ where each $p_i$ is a distinct
-      prime and each $n_i$ is a positive integer. Then since $G$ is cool, for
-      each $i=1,2,3,4$ there exists a unique normal subgroup $H_i\unlhd G$ of
-      order $p_i^{n_i}$. Since each $H_i$ is normal, $K:=H_1H_2H_3H_4$ is a
-      subgroup of $G$, and $|H_i|=p_i^{n_i}$ divides $|K|$ for each
-      $i=1,2,3,4$. Since the $p_i$'s are distinct primes, it follows that
-      $|K|=p_1^{n_1}p_2^{n_2}p_3^{n_3}p_4^{n_4}=|G|$, so that $K=G$. Moreover,
-      if $L_1:=H_1\cap(H_2H_3H_4)$, Then $|L_1|$ must divide $|H_1|=p_1^{n_1}$
-      and $|H_2H_3H_4|$, which has order
-      $|H_2||H_3||H_4|=p_2^{n_2}p_3^{n_3}p_4^{n_4}$ (since
-      $|H_2H_3H_4|\leq|H_2||H_3||H_4|$, and $|H_i|$ must divide $|H_2H_3H_4|$
-      for $i=2,3,4$). Since $|L_1|$ divides both $p_1^{n_1}$ and
-      $p_2^{n_2}p_3^{n_3}p_4^{n_4}$ and the $p_i$'s are distinct primes, it
-      follows that $|L_1|=1$, so $L_1=\{e\}$. The exact same arugment yields
-      that $L_2:=H_2\cap H_1H_3H_4$, $L_3:=H_3\cap H_1H_2H_4$, and
-      $L_4:=H_4\cap H_1H_2H_3$ are trivial as well. Thus by the product
-      recognition theorem, it follows that $G\cong H_1\times H_2\times
-      H_3\times H_4$. We know $p$-groups are nilpotent
-      (\autoref{p-group_is_nilpotent}) and a product of nilpotent groups is
-      nilpotent (\autoref{product_of_nilpotent_is_nilpotent}), so $G$ is
-      nilpotent, as desired.
 
-      Now, suppose $G$ is a Type II cool group, so that $|G|=2^n 3^m$, $n_2=3$,
-      and $n_3=1$. Then we
+    \medskip
+
+    Every Type I cool group is nilpotent, and no Type II cool group is
+    nilpotent.
+
+    \begin{proof}
+      Now, let $G$ be a Type I cool group, so that $|G|$ has four distinct
+      prime factors and $G$ has four Sylow subgroups. Then it follows by
+      \autoref{Sylow_subgroups_are_normal_implies_prod_of_Sylows} that $G$ is a
+      product of its Sylow subgroups. Thus $G$ is nilpotent by
+      \autoref{finite_nilpotent_groups_theorem}, as desired.
+
+      Now, we claim that no Type II cool group is nilpotent. Indeed, we showed
+      above that any Type II cool group satisfies $n_2=3$, which means $G$
+      cannot be nilpotent by \autoref{finite_nilpotent_groups_theorem}, as any
+      finite nilpotent group has exactly one $p$-Sylow subgroup for each prime
+      $p$ dividing its order.
     \end{proof}
     \item For each cool number $n$ that you found in part (a), determine
     whether every cool group of order $n$ is solvable.
+
+    Every cool group is solvable.
+
     \begin{proof}
-      
+      Recall every nilpotent group is solvable, so every Type I cool group is
+      solvable. By Burnside's Theorem (proven in Dummit \& Foote Section 19.2),
+      every group of order $p^aq^b$ for $p$ and $q$ distinct primes and $a$ and
+      $b$ positive integers is solvable, so Type II cool groups are
+      solvable.\footnote{
+        I don't know if we'd be allowed to use Burnside's theorem on the comp,
+        since it looks like Rezk didn't state or prove it in his 2020
+        notes. But it is in Dummit \& Foote...so who knows.
+      }
     \end{proof}
   \end{enumerate}
 
@@ -2004,7 +2052,7 @@ In general, subgroups of f.g.\ groups are not f.g.!
   is exactly one $a\in A$, depending on $g$, such that $g(a)=a$). Prove that
   this fixed point is the same for all $g\in G$.
   \begin{proof}
-    
+    This is \hyperref[Aug_2021_Q1(c)]{August 2021, Q1(c)}.
   \end{proof}
 \end{enumerate}
 
