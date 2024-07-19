@@ -1,0 +1,375 @@
+\documentclass[openany, amssymb]{amsart}
+\usepackage{mathrsfs,comment}
+\usepackage[margin=1.3333333333in]{geometry}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[normalem]{ulem}
+\usepackage{url}
+\usepackage[all,arc,2cell]{xy}
+\usepackage{enumerate}
+
+%%%% ADDED
+
+\usepackage{thmtools}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{todonotes}
+\usepackage{tikz-3dplot}
+\usepackage{quiver}
+\usepackage{eucal}[mathcal]
+\usepackage{enumitem}
+\usepackage{subfiles}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{refs.bib}
+%\usepackage{parskip}
+
+%%%
+
+%%% hyperref stuff is taken from AGT style file
+\usepackage{hyperref}  
+\hypersetup{%
+	colorlinks,%
+	linkcolor={red!60!black},%
+	citecolor={red!60!black},%
+	urlcolor={red!60!black}%
+}
+  
+%\let\fullref\autoref
+%%
+%%  \autoref is very crude.  It uses counters to distinguish environments
+%%  so that if say {lemma} uses the {theorem} counter, then autrorefs
+%%  which should come out Lemma X.Y in fact come out Theorem X.Y.  To
+%%  correct this give each its own counter eg:
+%%                 \newtheorem{theorem}{Theorem}[section]
+%%                 \newtheorem{lemma}{Lemma}[section]
+%%  and then equate the counters by commands like:
+%%                 \makeatletter
+%%                   \let\c@lemma\c@theorem
+%%                  \makeatother
+%%
+%%  To work correctly the environment name must have a corrresponding 
+%%  \XXXautorefname defined.  The following command does the job:
+%%
+%\def\makeautorefname#1#2{\expandafter\def\csname#1autorefname\endcsname{#2}}
+%%
+%%  Some standard autorefnames.  If the environment name for an autoref 
+%%  you need is not listed below, add a similar line to your TeX file:
+%%  
+%%\makeautorefname{equation}{Equation}%
+%\def\equationautorefname~#1\null{(#1)\null}
+%\makeautorefname{footnote}{footnote}%
+%\makeautorefname{item}{item}%
+%\makeautorefname{figure}{Figure}%
+%\makeautorefname{table}{Table}%
+%\makeautorefname{part}{Part}%
+%\makeautorefname{appendix}{Appendix}%
+%\makeautorefname{chapter}{Chapter}%
+%\makeautorefname{section}{Section}%
+%\makeautorefname{subsection}{Section}%
+%\makeautorefname{subsubsection}{Section}%
+%\makeautorefname{theorem}{Theorem}%
+%\makeautorefname{thm}{Theorem}%
+%\makeautorefname{cor}{Corollary}%
+%\makeautorefname{lem}{Lemma}%
+%\makeautorefname{prop}{Proposition}%
+%\makeautorefname{pro}{Property}
+%\makeautorefname{conj}{Conjecture}%
+%\makeautorefname{defn}{Definition}%
+%\makeautorefname{notn}{Notation}
+%\makeautorefname{notns}{Notations}
+%\makeautorefname{rem}{Remark}%
+%\makeautorefname{quest}{Question}%
+%\makeautorefname{exmp}{Example}%
+%\makeautorefname{ax}{Axiom}%
+%\makeautorefname{claim}{Claim}%
+%\makeautorefname{ass}{Assumption}%
+%\makeautorefname{asss}{Assumptions}%
+%\makeautorefname{con}{Construction}%
+%\makeautorefname{prob}{Problem}%
+%\makeautorefname{warn}{Warning}%
+%\makeautorefname{obs}{Observation}%
+%\makeautorefname{conv}{Convention}%
+%
+%
+%%
+%%                  *** End of hyperref stuff ***
+%
+%%theoremstyle{plain} --- default
+%\newtheorem{thm}{Theorem}[section]
+%\newtheorem{cor}{Corollary}[section]
+%\newtheorem{prop}{Proposition}[section]
+%\newtheorem{lem}{Lemma}[section]
+%\newtheorem{prob}{Problem}[section]
+%\newtheorem{conj}{Conjecture}[section]
+%%\newtheorem{ass}{Assumption}[section]
+%%\newtheorem{asses}{Assumptions}[section]
+%
+%\theoremstyle{definition}
+%\newtheorem{defn}{Definition}[section]
+%\newtheorem{ass}{Assumption}[section]
+%\newtheorem{asss}{Assumptions}[section]
+%\newtheorem{ax}{Axiom}[section]
+%\newtheorem{con}{Construction}[section]
+%\newtheorem{exmp}{Example}[section]
+%\newtheorem{notn}{Notation}[section]
+%\newtheorem{notns}{Notations}[section]
+%\newtheorem{pro}{Property}[section]
+%\newtheorem{quest}{Question}[section]
+%\newtheorem{rem}{Remark}[section]
+%\newtheorem{warn}{Warning}[section]
+%\newtheorem{sch}{Scholium}[section]
+%\newtheorem{obs}{Observation}[section]
+%\newtheorem{conv}{Convention}[section]
+%
+%%%%% hack to get fullref working correctly
+%\makeatletter
+%\let\c@obs=\c@thm
+%\let\c@cor=\c@thm
+%\let\c@prop=\c@thm
+%\let\c@lem=\c@thm
+%\let\c@prob=\c@thm
+%\let\c@con=\c@thm
+%\let\c@conj=\c@thm
+%\let\c@defn=\c@thm
+%\let\c@notn=\c@thm
+%\let\c@notns=\c@thm
+%\let\c@exmp=\c@thm
+%\let\c@ax=\c@thm
+%\let\c@pro=\c@thm
+%\let\c@ass=\c@thm
+%\let\c@warn=\c@thm
+%\let\c@rem=\c@thm
+%\let\c@sch=\c@thm
+%\let\c@equation\c@thm
+%\numberwithin{equation}{section}
+%\makeatother
+
+%% theorems in usual style --- italicised text, bold header
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{thm*}{Theorem}
+\newcommand{\n}{\mbf{n}}
+\newcommand{\m}{\mbf{m}}
+
+%% theorems in `definition' style --- regular text, bold header
+\theoremstyle{definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{discussion}[theorem]{Discussion}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+
+\usepackage[nameinlink]{cleveref}
+
+\tikzcdset{scale cd/.style={every label/.append style={scale=#1},
+    cells={nodes={scale=#1}}}}
+\newcommand{\ol}{\overline}
+\newcommand{\bDelta}{\mathbf{\Delta}}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\wh}{\widehat}
+
+%% scale a tikz diagram with [sep=small]
+
+\DeclareMathOperator*{\Rlim}{Rlim}
+
+%% indent subsections in table of contents
+\makeatletter 
+%%\def\l@subsection{\@tocline{2}{0pt}{1pc}{5pc}{}} 
+\def\l@subsection{\@tocline{2}{0pt}{2pc}{6pc}{}} \makeatother
+\DeclareMathOperator{\Ch}{Ch}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\imm}{im}
+\DeclareMathOperator{\coker}{coker}
+\newcommand{\Mod}{\mbf{Mod}}
+\newcommand{\Cell}{\mbf{Cell}}
+\newcommand{\CoMod}{\mbf{CoMod}}
+\newcommand{\Mon}{\mbf{Mon}}
+\newcommand{\CMon}{\mbf{CMon}}
+\newcommand{\Gr}{\mbf{Gr}}
+\newcommand{\GrMod}{\mbf{GrMod}}
+\newcommand{\cSH}{\mathcal{SH}}
+\newcommand{\Top}{\mbf{Top}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\aast}{{\ast\ast}}
+\newcommand{\acast}{{\ast,\ast}}
+\newcommand{\Ext}{\mathrm{Ext}}
+\newcommand{\pt}{\mathrm{pt}}
+\newcommand{\Ab}{\mbf{Ab}}
+\newcommand{\bgCRing}{\mbf{bgCRing}}
+\newcommand{\CRing}{\mbf{CRing}}
+\newcommand{\AGrCRing}{A\mbf{GrCRing}}
+\newcommand{\GrCAlg}{\mbf{GrCAlg}}
+\newcommand{\GCA}{\mbf{GCA}}
+\newcommand{\AGrCAlg}{A\mbf{GrCAlg}}
+\newcommand{\GrCRing}{\mbf{GrCRing}}
+\newcommand{\CStabRing}[1]{\mbf{CStabRing}_{#1}}
+\newcommand{\GrAb}{\mbf{GrAb}}
+\newcommand{\hoTop}{\mbf{hoTop}}
+\newcommand{\hoCW}{\mbf{hoCW}}
+\newcommand{\CW}{\mbf{CW}}
+\newcommand{\SSet}{\mbf{SSet}}
+\newcommand{\xr}{\xrightarrow}
+\newcommand{\Sp}{\mbf{Sp}}
+\newcommand{\hoSp}{\mbf{hoSp}}
+\newcommand{\ho}{\mbf{ho}}
+\newcommand{\SH}[1]{\mbf{SH}_{#1}}
+\newcommand{\Ha}[1]{\mbf{H}_\ast\boldsymbol{(}{#1}\boldsymbol{)}}
+\newcommand{\Sms}[1]{{\mbf{Sm}\boldsymbol{/}{#1}}}
+\newcommand{\Spt}[1]{\mbf{Spt}_T\boldsymbol{(}{#1}\boldsymbol{)}}
+\newcommand{\SptSig}[1]{\mbf{Spt}^\Sigma_T\boldsymbol{(}{#1}\boldsymbol{)}}
+\newcommand{\Spc}[1]{{\mbf{Spc}\boldsymbol{(}{#1}\boldsymbol{)}}}
+\newcommand{\Spca}[1]{\mbf{Spc}_\ast\boldsymbol{(}{#1}\boldsymbol{)}}
+\newcommand{\Set}{\mbf{Set}}
+\newcommand{\Map}{\mathrm{Map}}
+\newcommand{\Sing}{\mathrm{Sing}}
+\newcommand{\Grp}{\mbf{Grp}}
+\newcommand{\Ord}{\mbf{Ord}}
+\newcommand{\RMod}{R-\mbf{Mod}}
+\newcommand{\op}{\mathrm{op}}
+
+\makeatletter
+\newcommand\xleftrightarrow[2][]{%
+  \ext@arrow 9999{\longleftrightarrowfill@}{#1}{#2}}
+\newcommand\longleftrightarrowfill@{%
+  \arrowfill@\leftarrow\relbar\rightarrow}
+\makeatother
+
+\makeatletter
+\newcommand{\xRightarrow}[2][]{\ext@arrow 0359\Rightarrowfill@{#1}{#2}}
+\makeatother
+
+\newcommand{\from}{\colon}
+\newcommand{\sseq}{\subseteq}
+\newcommand{\wt}{\widetilde}
+\newcommand{\spseq}{\supseteq}
+\newcommand{\brn}{\mathbb R^n}
+\newcommand{\bRn}{\mathbb R^n}
+\newcommand{\bP}{\mathbb P}
+\newcommand{\bS}{\mathbb S}
+\newcommand{\bA}{\mathbb A}
+\newcommand{\bG}{\mathbb G}
+\newcommand{\0}{\mathbf{0}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\sk}{\mathrm{sk}}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\p}{{_\perp}}
+\newcommand{\cJ}{\mathcal J}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\cN}{\mathcal N}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cQ}{\mathcal Q}
+\newcommand{\into}{\hookrightarrow}
+\newcommand{\onto}{\twoheadrightarrow}
+\newcommand{\mono}{\rightarrowtail}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\cU}{\mathcal U}
+\newcommand{\cV}{\mathcal V}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\cX}{\mathcal X}
+\newcommand{\cY}{\mathcal Y}
+\newcommand{\cZ}{\mathcal Z}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\renewcommand{\ol}{\overline}
+\newcommand{\ul}{\underline}
+\newcommand{\bZ}{\mathbb{Z}}
+\newcommand{\dx}{\,\mathrm dx}
+\newcommand{\dt}{\,\mathrm dt}
+\newcommand{\bC}{\mathbb{C}}
+\newcommand{\scS}{\mathscr{S}}
+\newcommand{\scX}{\mathscr{X}}
+\newcommand{\scU}{\mathscr{U}}
+\newcommand{\bF}{\mathbb{F}}
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bQ}{\mathbb{Q}}
+\newcommand{\vare}{\varepsilon}
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\newcommand\defeq{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
+\newcommand{\phantomreplace}[2]{\makebox[0pt][l]{#1}\hphantom{#2}}
+\newcommand{\phantommathreplace}[2]{\makebox[0pt][l]{$\displaystyle #1$}\hphantom{#2}}
+\makeatletter
+\newcommand{\skipitems}[1]{%
+  \addtocounter{\@enumctr}{#1}%
+}
+\makeatother
+\newcommand{\Cof}{\mathcal C\mathrm{of}}
+\newcommand{\Fib}{\mathcal F\mathrm{ib}}
+\newcommand{\W}{\mathcal W}
+\newcommand{\inj}{\text-\mathrm{inj}}
+\newcommand{\proj}{\text-\mathrm{proj}}
+\newcommand{\fib}{\text-\mathrm{fib}}
+\newcommand{\cell}{\text-\mathrm{cell}}
+\renewcommand{\1}{\mbf{1}}
+\newcommand{\cof}{\text-\mathrm{cof}}
+\DeclareMathOperator*{\colim}{colim}
+\DeclareMathOperator*{\hocolim}{hocolim}
+\DeclareMathOperator*{\holim}{holim}
+\DeclareMathOperator{\Mor}{Mor}
+
+%\bibliographystyle{plain}
+
+%--------Meta Data: Fill in your info------
+\title{PCMI}
+
+\author{Isaiah Dailey}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{May 2022}
+
+\begin{enumerate}[listparindent=\parindent,parsep=5pt,label={\textbf{\arabic*.}}]
+  \item Suppose $f$ is a continuous function of bounded variation on $[0,1]$
+  which is absolutely continuous on $[c,1]$ for any $c\in(0,1)$. Is $f$
+  necessarily absolutely continuous on $[0,1]$?
+  \begin{proof}
+    
+  \end{proof}
+
+  \item Suppose $f\in L^2(0,\infty)$.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\roman*)}]
+    \item Prove that, for every $x>0$,
+    $\left|\int_{0}^{x}f(t)\,\mathrm{d}t\right|\leq\sqrt{x}\|f\|_2$.
+    \begin{proof}
+      
+    \end{proof}
+    \item Prove that
+    $\lim_{x\to\infty}x^{-1/2}\int_{0}^{x}f(t)\,\mathrm{d}t=0$.
+    \begin{proof}
+      
+    \end{proof}
+  \end{enumerate}
+  Hint: For (ii), approximate $f$ by a function with compact support.
+\end{enumerate}
+
+\end{document}
+

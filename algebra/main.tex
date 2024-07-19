@@ -1,0 +1,2013 @@
+\documentclass[openany, amssymb]{amsart} \usepackage{mathrsfs,comment}
+\usepackage[margin=1.3333333333in]{geometry}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[normalem]{ulem}
+\usepackage{url}
+\usepackage[all,arc,2cell]{xy}
+\usepackage{enumerate}
+
+%%%% ADDED
+
+\usepackage{thmtools}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{todonotes}
+\usepackage{tikz-3dplot}
+\usepackage{quiver}
+\usepackage{eucal}[mathcal]
+\usepackage{enumitem}
+\usepackage{subfiles}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{refs.bib}
+%\usepackage{parskip}
+
+%%%
+
+%%% hyperref stuff is taken from AGT style file
+\usepackage{hyperref}  
+\hypersetup{%
+	colorlinks,%
+	linkcolor={red!60!black},%
+	citecolor={red!60!black},%
+	urlcolor={red!60!black}%
+}
+  
+%\let\fullref\autoref
+%%
+%%  \autoref is very crude.  It uses counters to distinguish environments
+%%  so that if say {lemma} uses the {theorem} counter, then autrorefs
+%%  which should come out Lemma X.Y in fact come out Theorem X.Y.  To
+%%  correct this give each its own counter eg:
+%%                 \newtheorem{theorem}{Theorem}[section]
+%%                 \newtheorem{lemma}{Lemma}[section]
+%%  and then equate the counters by commands like:
+%%                 \makeatletter
+%%                   \let\c@lemma\c@theorem
+%%                  \makeatother
+%%
+%%  To work correctly the environment name must have a corrresponding 
+%%  \XXXautorefname defined.  The following command does the job:
+%%
+%\def\makeautorefname#1#2{\expandafter\def\csname#1autorefname\endcsname{#2}}
+%%
+%%  Some standard autorefnames.  If the environment name for an autoref 
+%%  you need is not listed below, add a similar line to your TeX file:
+%%  
+%%\makeautorefname{equation}{Equation}%
+%\def\equationautorefname~#1\null{(#1)\null}
+%\makeautorefname{footnote}{footnote}%
+%\makeautorefname{item}{item}%
+%\makeautorefname{figure}{Figure}%
+%\makeautorefname{table}{Table}%
+%\makeautorefname{part}{Part}%
+%\makeautorefname{appendix}{Appendix}%
+%\makeautorefname{chapter}{Chapter}%
+%\makeautorefname{section}{Section}%
+%\makeautorefname{subsection}{Section}%
+%\makeautorefname{subsubsection}{Section}%
+%\makeautorefname{theorem}{Theorem}%
+%\makeautorefname{thm}{Theorem}%
+%\makeautorefname{cor}{Corollary}%
+%\makeautorefname{lem}{Lemma}%
+%\makeautorefname{prop}{Proposition}%
+%\makeautorefname{pro}{Property}
+%\makeautorefname{conj}{Conjecture}%
+%\makeautorefname{defn}{Definition}%
+%\makeautorefname{notn}{Notation}
+%\makeautorefname{notns}{Notations}
+%\makeautorefname{rem}{Remark}%
+%\makeautorefname{quest}{Question}%
+%\makeautorefname{exmp}{Example}%
+%\makeautorefname{ax}{Axiom}%
+%\makeautorefname{claim}{Claim}%
+%\makeautorefname{ass}{Assumption}%
+%\makeautorefname{asss}{Assumptions}%
+%\makeautorefname{con}{Construction}%
+%\makeautorefname{prob}{Problem}%
+%\makeautorefname{warn}{Warning}%
+%\makeautorefname{obs}{Observation}%
+%\makeautorefname{conv}{Convention}%
+%
+%
+%%
+%%                  *** End of hyperref stuff ***
+%
+%%theoremstyle{plain} --- default
+%\newtheorem{thm}{Theorem}[section]
+%\newtheorem{cor}{Corollary}[section]
+%\newtheorem{prop}{Proposition}[section]
+%\newtheorem{lem}{Lemma}[section]
+%\newtheorem{prob}{Problem}[section]
+%\newtheorem{conj}{Conjecture}[section]
+%%\newtheorem{ass}{Assumption}[section]
+%%\newtheorem{asses}{Assumptions}[section]
+%
+%\theoremstyle{definition}
+%\newtheorem{defn}{Definition}[section]
+%\newtheorem{ass}{Assumption}[section]
+%\newtheorem{asss}{Assumptions}[section]
+%\newtheorem{ax}{Axiom}[section]
+%\newtheorem{con}{Construction}[section]
+%\newtheorem{exmp}{Example}[section]
+%\newtheorem{notn}{Notation}[section]
+%\newtheorem{notns}{Notations}[section]
+%\newtheorem{pro}{Property}[section]
+%\newtheorem{quest}{Question}[section]
+%\newtheorem{rem}{Remark}[section]
+%\newtheorem{warn}{Warning}[section]
+%\newtheorem{sch}{Scholium}[section]
+%\newtheorem{obs}{Observation}[section]
+%\newtheorem{conv}{Convention}[section]
+%
+%%%%% hack to get fullref working correctly
+%\makeatletter
+%\let\c@obs=\c@thm
+%\let\c@cor=\c@thm
+%\let\c@prop=\c@thm
+%\let\c@lem=\c@thm
+%\let\c@prob=\c@thm
+%\let\c@con=\c@thm
+%\let\c@conj=\c@thm
+%\let\c@defn=\c@thm
+%\let\c@notn=\c@thm
+%\let\c@notns=\c@thm
+%\let\c@exmp=\c@thm
+%\let\c@ax=\c@thm
+%\let\c@pro=\c@thm
+%\let\c@ass=\c@thm
+%\let\c@warn=\c@thm
+%\let\c@rem=\c@thm
+%\let\c@sch=\c@thm
+%\let\c@equation\c@thm
+%\numberwithin{equation}{section}
+%\makeatother
+
+%% theorems in usual style --- italicised text, bold header
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{thm*}{Theorem}
+\newcommand{\n}{\mbf{n}}
+\newcommand{\m}{\mbf{m}}
+
+%% theorems in `definition' style --- regular text, bold header
+\theoremstyle{definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{discussion}[theorem]{Discussion}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{convention}[theorem]{Convention}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+
+\usepackage[nameinlink]{cleveref}
+
+\tikzcdset{scale cd/.style={every label/.append style={scale=#1},
+    cells={nodes={scale=#1}}}}
+\newcommand{\ol}{\overline}
+\newcommand{\bDelta}{\mathbf{\Delta}}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\wh}{\widehat}
+
+%% scale a tikz diagram with [sep=small]
+
+\DeclareMathOperator*{\Rlim}{Rlim}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\conj}{conj}
+\DeclareMathOperator{\Stab}{Stab}
+\DeclareMathOperator{\Orb}{Orb}
+\DeclareMathOperator{\Cl}{Cl}
+
+%% indent subsections in table of contents
+\makeatletter 
+%%\def\l@subsection{\@tocline{2}{0pt}{1pc}{5pc}{}} 
+\def\l@subsection{\@tocline{2}{0pt}{2pc}{6pc}{}} \makeatother
+\DeclareMathOperator{\Ch}{Ch}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\imm}{im}
+\DeclareMathOperator{\coker}{coker}
+\newcommand{\Mod}{\mbf{Mod}}
+\newcommand{\acts}{\curvearrowright}
+\newcommand{\Cell}{\mbf{Cell}}
+\newcommand{\CoMod}{\mbf{CoMod}}
+\newcommand{\Mon}{\mbf{Mon}}
+\newcommand{\CMon}{\mbf{CMon}}
+\newcommand{\Gr}{\mbf{Gr}}
+\newcommand{\GrMod}{\mbf{GrMod}}
+\newcommand{\cSH}{\mathcal{SH}}
+\newcommand{\Top}{\mbf{Top}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\aast}{{\ast\ast}}
+\newcommand{\acast}{{\ast,\ast}}
+\newcommand{\Ext}{\mathrm{Ext}}
+\newcommand{\pt}{\mathrm{pt}}
+\newcommand{\Ab}{\mbf{Ab}}
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\SL}{\mathrm{SL}}
+\newcommand{\bgCRing}{\mbf{bgCRing}}
+\newcommand{\CRing}{\mbf{CRing}}
+\newcommand{\AGrCRing}{A\mbf{GrCRing}}
+\newcommand{\GrCAlg}{\mbf{GrCAlg}}
+\newcommand{\GCA}{\mbf{GCA}}
+\newcommand{\AGrCAlg}{A\mbf{GrCAlg}}
+\newcommand{\GrCRing}{\mbf{GrCRing}}
+\newcommand{\CStabRing}[1]{\mbf{CStabRing}_{#1}}
+\newcommand{\GrAb}{\mbf{GrAb}}
+\newcommand{\hoTop}{\mbf{hoTop}}
+\newcommand{\hoCW}{\mbf{hoCW}}
+\newcommand{\CW}{\mbf{CW}}
+\newcommand{\SSet}{\mbf{SSet}}
+\newcommand{\xr}{\xrightarrow}
+\newcommand{\Sp}{\mbf{Sp}}
+\newcommand{\hoSp}{\mbf{hoSp}}
+\newcommand{\ho}{\mbf{ho}}
+\newcommand{\SH}[1]{\mbf{SH}_{#1}}
+\newcommand{\Ha}[1]{\mbf{H}_\ast\boldsymbol{(}{#1}\boldsymbol{)}}
+\newcommand{\Sms}[1]{{\mbf{Sm}\boldsymbol{/}{#1}}}
+\newcommand{\Spt}[1]{\mbf{Spt}_T\boldsymbol{(}{#1}\boldsymbol{)}}
+\newcommand{\SptSig}[1]{\mbf{Spt}^\Sigma_T\boldsymbol{(}{#1}\boldsymbol{)}}
+\newcommand{\Spc}[1]{{\mbf{Spc}\boldsymbol{(}{#1}\boldsymbol{)}}}
+\newcommand{\Spca}[1]{\mbf{Spc}_\ast\boldsymbol{(}{#1}\boldsymbol{)}}
+\newcommand{\Set}{\mbf{Set}}
+\newcommand{\Map}{\mathrm{Map}}
+\newcommand{\Sing}{\mathrm{Sing}}
+\newcommand{\Grp}{\mbf{Grp}}
+\newcommand{\Ord}{\mbf{Ord}}
+\newcommand{\RMod}{R-\mbf{Mod}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\tors}{\mathrm{tors}}
+
+\makeatletter
+\newcommand\xleftrightarrow[2][]{%
+  \ext@arrow 9999{\longleftrightarrowfill@}{#1}{#2}}
+\newcommand\longleftrightarrowfill@{%
+  \arrowfill@\leftarrow\relbar\rightarrow}
+\makeatother
+
+\makeatletter
+\newcommand{\xRightarrow}[2][]{\ext@arrow 0359\Rightarrowfill@{#1}{#2}}
+\makeatother
+
+\newcommand{\from}{\colon}
+\newcommand{\sseq}{\subseteq}
+\newcommand{\wt}{\widetilde}
+\newcommand{\spseq}{\supseteq}
+\newcommand{\brn}{\mathbb R^n}
+\newcommand{\bRn}{\mathbb R^n}
+\newcommand{\bP}{\mathbb P}
+\newcommand{\bS}{\mathbb S}
+\newcommand{\bA}{\mathbb A}
+\newcommand{\bG}{\mathbb G}
+\newcommand{\0}{\mathbf{0}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\sk}{\mathrm{sk}}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\p}{{_\perp}}
+\newcommand{\cJ}{\mathcal J}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\cN}{\mathcal N}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cQ}{\mathcal Q}
+\newcommand{\into}{\hookrightarrow}
+\newcommand{\onto}{\twoheadrightarrow}
+\newcommand{\mono}{\rightarrowtail}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\cU}{\mathcal U}
+\newcommand{\cV}{\mathcal V}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\cX}{\mathcal X}
+\newcommand{\cY}{\mathcal Y}
+\newcommand{\cZ}{\mathcal Z}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\renewcommand{\ol}{\overline}
+\newcommand{\ul}{\underline}
+\newcommand{\bZ}{\mathbb{Z}}
+\newcommand{\dx}{\,\mathrm dx}
+\newcommand{\dt}{\,\mathrm dt}
+\newcommand{\bC}{\mathbb{C}}
+\newcommand{\scS}{\mathscr{S}}
+\newcommand{\scX}{\mathscr{X}}
+\newcommand{\scU}{\mathscr{U}}
+\newcommand{\bF}{\mathbb{F}}
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bQ}{\mathbb{Q}}
+\newcommand{\vare}{\varepsilon}
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\newcommand\defeq{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
+\newcommand{\phantomreplace}[2]{\makebox[0pt][l]{#1}\hphantom{#2}}
+\newcommand{\phantommathreplace}[2]{\makebox[0pt][l]{$\displaystyle #1$}\hphantom{#2}}
+\makeatletter
+\newcommand{\skipitems}[1]{%
+  \addtocounter{\@enumctr}{#1}%
+}
+\makeatother
+\newcommand{\Cof}{\mathcal C\mathrm{of}}
+\newcommand{\Fib}{\mathcal F\mathrm{ib}}
+\newcommand{\W}{\mathcal W}
+\newcommand{\inj}{\text-\mathrm{inj}}
+\newcommand{\proj}{\text-\mathrm{proj}}
+\newcommand{\fib}{\text-\mathrm{fib}}
+\newcommand{\cell}{\text-\mathrm{cell}}
+\renewcommand{\1}{\mbf{1}}
+\newcommand{\cof}{\text-\mathrm{cof}}
+\DeclareMathOperator*{\colim}{colim}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Syl}{Syl}
+\DeclareMathOperator{\Inn}{Inn}
+\DeclareMathOperator{\Out}{Out}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator*{\hocolim}{hocolim}
+\DeclareMathOperator*{\holim}{holim}
+\DeclareMathOperator{\Mor}{Mor}
+
+%\bibliographystyle{plain}
+
+%--------Meta Data: Fill in your info------
+\title{PCMI}
+
+\author{Isaiah Dailey}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Groups}
+
+\begin{definition}
+  A \emph{semigroup} is a set with an associative operation. A \emph{monoid} is
+  a semigroup with an identity element. A \emph{group} is a monoid with
+  inverses. An \emph{abelian} group is a commutative group.
+\end{definition}
+
+\begin{definition}
+  For $n\geq 3$, write $D_{2n}$ for the dihedral group of order $2n$ with
+  presentation $\left\langle r,s\mid r^n,s^2,rsrs^{-1}\right\rangle$. The
+  elements of $D_{2n}$ are $e,r,\ldots,r^{n-1},s,sr,\ldots,sr^{n-1}$.
+\end{definition}
+
+\begin{definition}
+  The quarternion group $Q_8$ has elements $\pm 1,\pm i,\pm j,\pm k$ with group structure given by
+  \[
+    -1\cdot x=-x\ \forall x\in Q_8,
+    \quad
+    (-1)^2=1,
+    \quad
+    ij=k,
+    \quad
+    jk=i,
+    \quad
+    ki=j.
+  \]
+\end{definition}
+
+\begin{definition}
+  A subset $H$ of a group $G$ is a \emph{subgroup} if $H$ is nonemtpy and
+  $xy^{-1}\in H$ whenever $x,y\in H$.
+\end{definition}
+
+\begin{definition}
+  The \emph{special linear group} of a field $F$ is the subgroup
+  $\SL_n(F)\subseteq\GL_n(F)$ of matrices $A$ with $\det A=1$.
+\end{definition}
+
+\begin{definition}
+  The \emph{alternating group} in $n$ elements is the subgroup $A_n\leq S_n$
+  consisting of even permutations.\footnote{
+    A permutation $\sigma\in S_n$ is said to be \emph{even} if $\sigma$ can be
+    written as a composition of an even number of two-element swaps.
+  }
+  $A_n$ has order $n!/2$.
+\end{definition}
+
+\begin{definition}
+  Let $H\leq G$ be a subgroup, then we write $G/H$ (resp.\ $H\backslash G$) for
+  the set of left (resp.\ right) cosets of $H$ in $G$.
+\end{definition}
+
+\begin{proposition}
+  Let $H\leq G$.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item For any $x,y\in G$, there is a bijection $xH\to yH$ given by
+    $xh\mapsto yh$.
+    \item For any $x\in G$, there is a bijection $xH\to Hx^{-1}$ defined by
+    $xh\mapsto h^{-1}x^{-1}$.
+    \item There is a bijection $G/H\to H\backslash G$ given by $xH\mapsto
+    Hx^{-1}$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{definition}
+  Given a subgroup $H$ of a group $G$, we define the index of $H$ in $G$ to be
+  the quantity $|G:H|:=|G/H|=|H\backslash G|$.
+\end{definition}
+
+\begin{proposition}
+  Given a subgroup $H\leq G$, we have $|G|=|G:H|\cdot|H|$. More generally, if
+  $K\leq H\leq G$, we have $|G:K|=|G:H|\cdot|H:K|$.
+\end{proposition}
+
+\begin{theorem}[Lagrange's Theorem]
+  If $G$ is a finite group and $H\leq G$, then $|H|$ and $|G:H|$ divide
+  $|G|$. In particular, $|g|:=|\langle g\rangle|$ divides $|G|$ for all $g\in
+  G$.
+\end{theorem}
+
+As a consequence of Lagrange's theorem, if $|G|$ is prime then $G$ is cyclic.
+
+\begin{example}
+  $S_3$ and $D_6$ are isomorphic, given by $\phi:D_6\to S_3$ given by
+  $\phi(r)=(1\,2\,3)$ and $\phi(s)=(1\,2)$.
+\end{example}
+
+\begin{definition}
+  A subgroup $H\leq G$ is said to be \emph{normal} if $xHx^{-1}=H$ for all
+  $x\in G$, equivalently, if $xH=Hx$ for all $x\in G$. We write $H\unlhd G$ to
+  mean $H$ is a normal subgroup of $G$.
+\end{definition}
+
+\begin{warning}
+  The relation $\unlhd$ is NOT a transitive relation on subgroups!
+\end{warning}
+
+\begin{definition}
+  If $H\unlhd G$, then $G/H$ be comes a group by the operation $xH\cdot
+  yH=xyH$.
+\end{definition}
+
+\begin{proposition}
+  A subgroup $H\leq G$ is normal iff it is the kernel of some homomorphism.
+\end{proposition}
+
+\begin{proposition}
+  Let $G$ be a group with subgroups $A,B\leq G$, then their intersection $A\cap
+  B$ is also a subgroup.
+\end{proposition}
+
+\begin{definition}
+  Let $G$ be a group with subgroups $A,B\leq G$, then define
+  \[
+    AB:=\left\{ab\in G\mid a\in A,\,b\in B\right\}.
+  \]
+  The set $AB$ is \emph{not} generally a subgroup.
+\end{definition}
+
+\begin{example}
+  Consider $G=D_6$ generated by $\{r,s\}$ with $r^3=s^2=(sr)^2=1$. Let
+  $A=\langle s\rangle$ and $B=\langle sr\rangle$, both subgroups of order
+  $2$. Then $AB=\{e,s,sr,r\}$, which is not a subgroup since $r^2\notin AB$.
+\end{example}
+
+\begin{exercise}
+  Show that $AB$ is a subgroup of $G$ iff $AB=BA$.
+\end{exercise}
+
+\begin{definition}
+  Given a subset $S\subseteq G$, we write $N_G(S)$ for the \emph{normalizer} of $S$ in $G$, that is,
+  \[
+    N_G(S):=\{g\in G\mid gSg^{-1}=S\}.
+  \]
+\end{definition}
+
+\begin{proposition}
+  Let $S\subseteq G$, then
+  \begin{itemize}
+    \item $N_G(S)$ is a subgroup of $G$.
+    \item If $H\leq G$ is a subgroup, then $H\unlhd N_G(H)$.
+    \item $N_G(H)$ is the ``largest'' subgroup of $G$ that $H$ is normal inside of.
+    \item $N_G(H)=G$ iff $H\unlhd G$.
+  \end{itemize}
+\end{proposition}
+
+\begin{theorem}[The Second (``Diamond'') Isomorphism Theorem]
+  Suppose $A,B\leq G$ and $A\leq N_G(B)$. Then
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $AB$ is a subgroup of $G$ (equivalently, $AB=BA$).
+    \item $B\unlhd AB$,
+    \item $A\cap B\unlhd A$,
+    \item $A/(A\cap B)\cong AB/B$.
+  \end{enumerate}
+  % https://q.uiver.app/#q=WzAsOCxbMCwzLCJBL0FcXGNhcCBCIl0sWzAsMSwiQUIvQiJdLFsyLDQsIkFcXGNhcCBCIl0sWzEsMywiQSJdLFsyLDIsIkFCIl0sWzIsMSwiTl9HKEIpIl0sWzMsMywiQiJdLFsyLDAsIkciXSxbMCwxLCJcXGNvbmciXSxbMiwzLCJcXHVubGhkIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbMyw0LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFs0LDUsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzIsNiwiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbNiw0LCJcXHVubGhkIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbNiw1LCJcXHVubGhkIiwyLHsiY3VydmUiOjIsInN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzMsNSwiIiwxLHsiY3VydmUiOi0yLCJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFs1LDcsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV1d
+  \[\begin{tikzcd}
+    && G \\
+    {AB/B} && {N_G(B)} \\
+    && AB \\
+    {A/A\cap B} & A && B \\
+    && {A\cap B}
+    \arrow[hook, from=2-3, to=1-3]
+    \arrow[hook, from=3-3, to=2-3]
+    \arrow["\cong", from=4-1, to=2-1]
+    \arrow[curve={height=-12pt}, hook, from=4-2, to=2-3]
+    \arrow[hook, from=4-2, to=3-3]
+    \arrow["\unlhd"', curve={height=12pt}, hook, from=4-4, to=2-3]
+    \arrow["\unlhd"', hook, from=4-4, to=3-3]
+    \arrow["\unlhd"', hook, from=5-3, to=4-2]
+    \arrow[hook, from=5-3, to=4-4]
+  \end{tikzcd}\]
+\end{theorem}
+
+\begin{corollary}
+  If $A\leq G$ and $B\unlhd G$, then $AB$ is a subgroup of $G$.
+\end{corollary}
+
+\begin{theorem}[The Third Isomorphism Theorem]
+  Let $H,K\unlhd G$ with $H\leq K$. Then
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $K/H\unlhd G/H$, and
+    \item $G/K\cong(G/H)/(K/H)$ via the assignment $xK\mapsto(xH)\overline{K}$
+    (where $\overline{K}=K/H\subseteq G/H$).
+  \end{enumerate}
+  % https://q.uiver.app/#q=WzAsNyxbMCwyLCJIIl0sWzEsMiwiSyJdLFsyLDIsIksvSCJdLFsyLDEsIkcvSCJdLFsyLDAsIihHL0gpLyhHL0spIl0sWzEsMSwiRyJdLFsxLDAsIkcvSyJdLFswLDEsIlxcdW5saGQiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFsxLDIsIiIsMCx7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFsyLDMsIlxcdW5saGQiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFszLDQsIiIsMCx7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFswLDUsIlxcdW5saGQiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFs1LDMsIiIsMCx7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFs1LDYsIiIsMix7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFs2LDQsIlxcY29uZyJdLFsxLDUsIlxcdW5saGQiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dXQ==
+  \[\begin{tikzcd}
+    & {G/K} & {(G/H)/(G/K)} \\
+    & G & {G/H} \\
+    H & K & {K/H}
+    \arrow["\cong", from=1-2, to=1-3]
+    \arrow[two heads, from=2-2, to=1-2]
+    \arrow[two heads, from=2-2, to=2-3]
+    \arrow[two heads, from=2-3, to=1-3]
+    \arrow["\unlhd", hook, from=3-1, to=2-2]
+    \arrow["\unlhd", hook, from=3-1, to=3-2]
+    \arrow["\unlhd"', hook, from=3-2, to=2-2]
+    \arrow[two heads, from=3-2, to=3-3]
+    \arrow["\unlhd"', hook, from=3-3, to=2-3]
+  \end{tikzcd}\]
+\end{theorem}
+
+Intuitively, the following theorem says the following: Let $N\unlhd G$ be a
+normal subgroup, then the quotient map $\pi:G\twoheadrightarrow G/N$ induces a
+lattice isomorphism (an inclusion-preserving bijection) between the set of
+subgroups of $G$ containing $N$, and the set of subgroups of $G/N$. Moreover,
+this isomorphism restricts to an isomorphism on the normal subgroups, and given
+subgroups $A,B\leq G$ with $N\leq A\cap B$, we have $(A\cap
+B)/N=(A/N)\cap(B/N)$.
+
+\begin{theorem}[The Fourth (``Lattice'') Isomorphism Theorem]
+  Let $N\unlhd G$ be a normal subgroup. Then we have inverse bijections
+  % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXHtBXFxsZXEgR1xcbWlkIE5cXGxlcSBBXFx9Il0sWzIsMCwiXFx7XFxvdmVybGluZXtBfVxcbGVxIEcvTlxcfSJdLFswLDEsIkEiXSxbMiwxLCJBL04iXSxbMCwyLCJcXHBpXnstMX1cXG92ZXJsaW5lIEEiXSxbMiwyLCJcXG92ZXJsaW5lIEEiXSxbMCwxLCJcXHNpbSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9fX1dLFsyLDMsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNSw0LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV1d
+  \[\begin{tikzcd}
+    {\{A\leq G\mid N\leq A\}} && {\{\overline{A}\leq G/N\}} \\
+    A && {A/N} \\
+    {\pi^{-1}\overline A} && {\overline A}
+    \arrow["\sim", tail reversed, from=1-1, to=1-3]
+    \arrow[maps to, from=2-1, to=2-3]
+    \arrow[maps to, from=3-3, to=3-1]
+  \end{tikzcd}\]
+  where $\pi^{-1}\overline{A}=\{g\in G\mid\pi(g)\in\overline{A}\}$. Furthermore, for $A,B\leq G$ with $N\leq A\cap B$, we have
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $A\leq B$ iff $A/N\leq B/N$.
+    \item If $A\leq B$ then $|B:A|=|B/N:A/N|$.
+    \item $(A\cap B)/N=(A/N)\cap(B/N)$.
+    \item $A\unlhd G$ iff $A/N\unlhd G/N$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{definition}
+  A \textbf{group presentation} is a pair $(S,R)$ consisting of a set $S$ and a subset $R\subseteq F(S)$ (where $F(S)$ denotes the free group on $S$). The group \emph{presented} by this data is defined to be
+  \[
+    \langle S\mid R\rangle:=F(S)/N,
+  \]
+  where $N$ is the \emph{normal closure} of $R$ in $F(S)$, that is, the
+  smallest normal subgroup of $F(S)$ containing $R$. 
+
+  Given a group $G$, we say that $(S,R)$ is a \emph{presentation} of $G$ if
+  there exists an isomorphism $G\cong\langle S\mid R\rangle$ of groups. We say that $G$ is \emph{finitely presentable} if it has a presentation $(S,R)$, where $S$ and $R$ are both finite.
+\end{definition}
+
+\begin{example}
+  The dihredral group $D_{2n}$ of order $2n$ has presentation $\langle r,s\mid
+  r^n,s^2,srsr\rangle$.
+\end{example}
+
+\begin{proposition}
+  For $n\geq 1$, we have
+  \[
+    S_n\cong\langle s_1,\ldots,s_{n-1}\mid R\rangle,
+  \]
+  where $R$ consists of the relations
+  \[
+    \begin{split}
+      s_i^2&=1, \\
+      (s_is_j)^2&=1, \\
+      (s_is_{i+1})^3&=1,
+    \end{split}\qquad\qquad\begin{split}
+      \text{for }i=1,\ldots,n-1, \\
+      \text{when }|i-j|\geq 2, \\
+      \text{for }i=1,\ldots,n-1.
+    \end{split}
+  \]
+\end{proposition}
+
+\begin{definition}
+  Given an object $X$ in a category $\mathcal{C}$ and a group $G$, a \emph{left
+  group action} of $G$ on $X$ is a group homomorphism $\phi:G\to\Aut(X)$,
+  denoted by $G\acts X$. A right group action is a group homomorphism
+  $\phi:G^\op\to\Aut(X)$.
+\end{definition}
+
+\begin{definition}
+  A set equipped with a $G$-action is called a \emph{$G$-set}.
+\end{definition}
+
+\begin{example}
+  For any object $X$ and group $G$, the trivial map $G\to\Aut(X)$ yields the
+  \emph{trivial action} of $G$ on $X$, in which $G$ simply acts via identities
+  on $X$.
+\end{example}
+
+\begin{example}
+  Given $H\leq G$, the set $G/H$ of left cosets of $H$ admits a natural $G$ action by
+  \[
+    g\cdot xH:=gxH.
+  \]
+  Similarly, the set $H\backslash G$ of right cosets of $H$ admits a natural
+  $G$ action by the rule
+  \[
+    g\cdot Hx:=Hxg^{-1}.
+  \]
+\end{example}
+
+\begin{example}
+  Every group acts on itself by conjugation via the map $\conj:G\to\Aut(G)$
+  defined by
+  \[
+    \conj_g(x):=gxg^{-1}.
+  \]
+\end{example}
+
+\begin{definition}
+  Let $\phi:G\to\Aut(X)$ be a left $G$-action on an object $X$.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item The \emph{kernel} of the action is the kernel of the homomorphism
+    $\phi$, i.e., it is the set $\{g\in G\mid \phi_g=\id_X\}$.
+    \item The action is \emph{faithful} if the kernel is trivial.
+  \end{enumerate}
+  If $X$ is a set, then we have the following further definitions.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item Given $x\in X$, the \emph{stabilizer} of $x$ (denoted by $\Stab(x)$
+    or just $G_x$) is the set $\{g\in G\mid g\cdot x=x\}$.
+    \item The action is \emph{free} if all the stabilizers $G_x$ are trivial.
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}
+  Suppose $X$ is a $G$-set, and $x,y\in X$ satisfying $y=g\cdot x$ for some $g\in G$. Then 
+  \[
+    G_y=gG_xg^{-1}.
+  \]
+\end{proposition}
+
+\begin{example}
+  Consider the tautological action of $G=S_n$ on $X=\{1,\ldots,n\}$, so the
+  corresponding homomorphism $G\to\Sym(X)$ is the identity. We have that:
+  \begin{itemize}
+    \item The kernel of the action is trivial, so it is a faithful action.
+    \item The action is free iff $n\geq 3$.
+    \item If $n>1$, each $G_x$ is isomorphic to $S_{n-1}$, but each is a
+    \emph{distinct} subgroup of $S_n$.
+    \item The $G_x$ are conjugate to each other: if $\sigma\in S_n$ such that
+    $\sigma(x)=y$, then $G_y=\sigma G_x\sigma^{-1}$.
+  \end{itemize}
+\end{example}
+
+\begin{theorem}[Cayley's Theorem]
+  Every group is isomorphic to a subgroup of some permutation group $\Sym(X)$.
+\end{theorem}
+\begin{proof}
+  Given $G$, it suffices to provide a faithful action on some set $X$, so that
+  the induced homomorphism $\phi:G\to\Sym(X)$ is injective, and therefore
+  identifies $G$ with a subgroup of $\Sym(X)$. This is easy: equip $X=G$ with
+  the natural left $G$ action given by $g\cdot x:=gx$. Then this action is
+  faithful, since $gx=x$ for all $x\in X$ certainly implies $g=e$.
+\end{proof}
+
+\begin{proposition}\label{index_subgroup_normal_prime}
+  If $G$ is a finite group and $p$ is the smallest prime dividing $|G|$, then
+  any subgroup of index $p$ is normal. In particular, index $2$ subgroups of
+  finite groups are always normal.
+\end{proposition}
+\begin{proof}
+  Let $H\leq G$ be a subgroup of index $p$, and consider the left action of $G$
+  on $X=G/H$, which gives a homomorphism $\phi:G\to\Sym(G/H)\cong S_p$. Let
+  $K=\ker\phi$ of this action. We know $K$ is normal, since it is a kernel, so
+  it suffices to show that $K=H$. Note that clearly $K\leq H$, so it further
+  suffices to show that $|H:K|=1$. By the first isomorphism theorem, $G/K$ is
+  isomorphic to a subgroup of $S_p$, so that $|G:K|$ divides $|S_p|=p!$, by
+  Lagrange's theorem. We have that $|G:K|=|G:H||H:K|=p|H:K|$, so $|H:K|$
+  divides $p!/p=(p-1)(p-2)\cdots 2\cdot 1$. However, since $|H:K|$ divides
+  $|G|$, we  know that no prime smaller than $p$ divides $|H:K|$. Thus
+  $|H:K|=1$, as desired.
+\end{proof}
+
+\begin{definition}
+  Consider a group action $G\acts X$, where $X$ is a set. Define a relation $\sim$ on $X$ by
+  \[
+    x\sim y\iff\exists g\in G,\ g\cdot x=y.
+  \]
+  This is an equivalence relation on $X$, and the equivalence classes of this
+  relations are called \emph{orbits}. We write $\Orb(x)$, $Gx$, or $G\cdot x$
+  for the orbit which contains $x$, so that $\Orb(x)=\{g\cdot x\mid g\in G\}$.
+
+  An action is \emph{transitive} if it has exactly one orbit.
+\end{definition}
+
+\begin{example}
+  $G$ acts transitively on $G/H$.
+\end{example}
+
+\begin{theorem}[The Orbit/Stabilizer Theorem]
+  Suppose $X$ is a $G$-set, and $x\in X$. Then there is a bijection
+  \[
+    G/\Stab(x)\xrightarrow{\sim}\Orb(x),
+    \qquad
+    g\Stab(x)\mapsto g\cdot x.
+  \]
+  Thus for an orbit $\mathcal{O}$, we have $|\mathcal{O}|=|G:\Stab(x)|$ for any
+  $x\in\mathcal{O}$.
+\end{theorem}
+
+\begin{corollary}
+  Let $G$ act on a finite set $X$. Then we have
+  \[
+    |X|=\sum_{k=1}^{r}|G:\Stab(x_k)|,
+  \]
+  where $x_1,\ldots,x_r\in X$ are representatives of the orbits of the action (that is, $\Orb(x_i)\cap\Orb(x_j)=\emptyset$ when $i\neq j$, and $\bigcup_{k=1}^r\Orb(x_k)=X$),
+\end{corollary}
+
+\begin{theorem}[Cauchy's Theorem]
+  Let $G$ be a finite group. If a prime $p$ divides $|G|$, then $G$ has an
+  element of order $p$.
+\end{theorem}
+
+\begin{definition}
+  A group $G$ is \emph{simple} if its only normal subgroups are $\{e\}$ and
+  $G$. By convention the trivial group is \emph{not} simple.
+\end{definition}
+
+\begin{example}
+  Let $p$ be a prime. Then the cyclic group $G=C_p$ of order $p$ is simple.
+\end{example}
+
+\begin{proposition}
+  The alternating group $A_n$ on $n$ elements is simple for $n\geq 5$.
+\end{proposition}
+\begin{proof}[Proof sketch]
+  Elements of $A_n$ are the even permutations, and it is straightforward to
+  check that $A_n$ is also generated by its subset of $3$-cycles. Then one
+  checks that any normal subgroup $N$ of $A_n$ which contains some $3$-cycle
+  contains every $3$-cycle, and therefore satisfies $N=A_n$.
+
+  Thus, in order to prove $A_n$ is simple, it suffices to show that if $N\unlhd
+  A_n$ is a non-trivial normal subgroup, it must contain at least one
+  $3$-cycle. This is where the assumption that $n\geq 5$ is needed.
+\end{proof}
+
+\begin{example}
+  The group $A_4$ is not simple: the subgroup
+  $N=\{e,(1\,2)(3\,4),(1\,3)(2\,4),(1\,4)(2\,3)\}$ generated by the products of
+  disjoint $2$-cycles is normal.
+\end{example}
+
+\begin{definition}
+  Consider the conjugation action of $G$ on itself: $\cong_g(x)=gxg^{-1}$.
+  \begin{itemize}
+    \item The \emph{orbits} for the conjugation action are the conjugacy
+    classes; we denote the conjugacy class of an element $x\in G$ by
+    $\Cl(x):=\{gxg^{-1}:g\in G\}$.
+    \item The \emph{stabilizer} of $x\in G$ under the conjugation action is the
+    \emph{centralizer subgroup} of $x$:
+    \[
+      C_G(x)
+      :=\{g\in G\mid gxg^{-1}=x\}
+      =\{g\in G\mid gx=xg\}.
+    \]
+    \item The kernel of the conugation action is precisely the \emph{center}
+    \[
+      Z_G:=\{g\in G\mid gx=xg\ \forall x\in G\}.
+    \]
+    \item Note that $\Cl(e)=\{e\}$ and $C_G(e)=G$, so that the conjugation
+    action is neither free nor transitive (unless $G=\{e\}$).
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}[The Class Equation]
+  For a finite group $G$, we have
+  \[
+    |G|=|Z_G|+\sum_{k=1}^{r}|G:C_G(g_k)|,
+  \]
+  where $g_1,\ldots,g_r$ are representatives of the distinct conjugacy classes of $G$ not contained in the center $Z_G$.
+
+  Moreover, each term on the right divides $|G|$.
+\end{theorem}
+
+\begin{definition}
+  Let $p$ be a prime. A \emph{$p$-group} is a non-trivial finite group whose
+  order is a power of $p$.
+\end{definition}
+
+\begin{proposition}
+  Every $p$-group has a non-trivial center.
+\end{proposition}
+\begin{proof}
+  The class equation for $G$ gives
+  \[
+    p^d=|Z_G|+\sum_{k=1}^{r}|G:C_G(g_k)|.
+  \]
+  Since $C_G(g_k)\neq G$, we have that $p$ divides each
+  $|G:C_G(g_k)|$. Therefore $p$ divides $|Z_G|$. Since $|Z_G|\geq 1$ we may
+  conclude that $p$ divides $|Z_G|$.
+\end{proof}
+
+\begin{corollary}\label{p^2_order_group_is_abelian}
+  If $|G|=p^2$ for some prime $p$ then $G$ is abelian.
+\end{corollary}
+\begin{proof}
+  First we note a general fact: If $G/Z_G$ is cyclic, then $G$ is abelian. To
+  see this, pick $g\in G$ which projects to a generator of $G/Z_G$. Then every
+  element in $G$ can be written as $g^kx$ for some $k\in\mathbb{Z}$ and $x\in
+  Z_G$. Then every element in $G$ can be written as $g^kx$ for some
+  $k\in\mathbb{Z}$ and $x\in Z_G$. Since $(g^ix)(g^jy)=g^{i+j}xy$ whenever
+  $x,y\in Z_G$, we see that $G$ is abelian.
+
+  If $|G|=p^2$, then by the previous result $|Z_G|\in\{p,p^2\}$, whence
+  $|G/Z_G|\in\{1,p\}$ and thus is cyclic.
+\end{proof}
+
+\begin{definition}
+  Given a group $G$, the image of the homomorphism $\conj:G\to\Aut(G)$ is the
+  group
+  \[
+    \Inn(G):=\{\conj_g\mid g\in G\}\leq\Aut(G),
+  \]
+  and its elements are called \emph{inner automorphisms} of $G$. The first isomorphism theorem then gives an isomorphism
+  \[
+    G/Z_G\cong\Inn(G).
+  \]
+\end{definition}
+
+\begin{proposition}
+  $\Inn(G)$ is a normal subgroup of $\Aut(G)$.
+\end{proposition}
+
+\begin{definition}
+  The group of \emph{outer automorphisms} of $G$ is given by the quotient
+  \[
+    \Out(G):=\Aut(G)/\Inn(G).
+  \]
+\end{definition}
+
+\begin{definition}
+  Given a subgroup $H\leq G$, its \emph{centralizer} is the subgroup
+  $C_G(H):=\{g\in G\mid gh=hg\ \forall h\in H\}$.
+\end{definition}
+
+\begin{proposition}
+  Let $N\unlhd G$ be a normal subgroup, then the conjugation action of $G$ on
+  $N$ yields a group homomorphism $\kappa:G\to\Aut(N)$. Then
+  \[
+    \kappa^{-1}(\Inn(N))=C_G(N)N,
+  \]
+  which is a normal subgroup of $G$.
+\end{proposition}
+
+\begin{remark}
+  In the language of the above proposition, we know that $\kappa$ induces an injective homomorphism
+  \[
+    \overline{\kappa}:G/C_G(N)N\hookrightarrow\Out(N),
+  \]
+  so any elements of $G\setminus C_G(N)N$ give rise to non-inner automorphisms
+  of $N$.
+\end{remark}
+
+\begin{proposition}
+  $|\Aut(C_n)|=\phi(n)$, where $\phi$ is the \emph{Euler $\phi$ function} for
+  which $\phi(n)$ is the number of integers in $\{1,\ldots,n\}$ which are
+  relatively prime to $n$.
+\end{proposition}
+
+\begin{definition}
+  A \emph{$p$-Sylow subgroup} of a finite group $G$ is a subgroup $P\leq G$
+  which is a $p$-group, and is such that $|G:P|$ is prime to $p$. Equivalently,
+  if $G=p^am$ with $(p,m)=1$ and $a\geq 1$, then a $p$-Sylow subgroup is a
+  subgroup of order $p^a$.
+
+  \textbf{Note:} With this convention, the trivial subgroup is not $p$-Sylow
+  for any prime $p$.
+
+  Write $\Syl_p(G)$ for the set of $p$-Sylow subgroups of $G$, and write
+  $n_p(G):=|\Syl_p(G)|$. Note that $G$ acts on $\Syl_p(G)$ by conjugation: if
+  $P\leq G$ is a $p$-Sylow subgroup, so is $gPg^{-1}$ for any $g\in G$.
+\end{definition}
+
+In the following three theorems, $p$ will be a chosen prime, and $G$ will be a
+finite group of order $p^am$, where $a\geq 1$ and $p\nmid m$.
+
+\begin{theorem}[Sylow 1]
+  The group $G$ has a $p$-Sylow subgroup, i.e., $\Syl_p(G)\neq\emptyset$.
+\end{theorem}
+
+\begin{theorem}[Sylow 2]
+  Any two $p$-Sylow subgroups of $G$ are conjugate, i.e., $G$ acts transitively
+  on $\Syl_p(G)$ by conjugation.
+\end{theorem}
+
+\begin{theorem}[Sylow 3]
+  If $P$ is any $p$-Sylow subgroup of $G$, then $n_p=|G:N_G(P)|$. Furthermore,
+  $n_p|m$ and $n_p\equiv 1\bmod p$.
+\end{theorem}
+
+\begin{lemma}\label{product_subgroups_normal_prime_products_cyclic}
+  Let $P,Q$ be subgroups of a group $G$ with $|P|=p$ and $|Q|=q$ prime and
+  distinct. Further suppose that $PQ$ is a subgroup of $G$ (for example, if
+  $P\subseteq N_G(Q)$ or $Q\subseteq N_G(P)$) and $ab=ba$ for all $a\in P$ and
+  $b\in Q$. Then $PQ$ is isomorphic to the cyclic group $C_{pq}$ of order $pq$.
+\end{lemma}
+\begin{proof}
+  Since $P$ and $Q$ have prime order, we can write $P=\langle x\rangle$ and
+  $Q=\langle y\rangle$ where $|x|=p$ and $|y|=q$. Set $z=xy$. If $z^k=e$, then
+  $x^k=y^{-k}$ because $x$ and $y$ commute, so that $x^k\in P\cap Q$, which is
+  trivial, since $|P\cap Q|$ has to divide both $p$ and $q$, which are distinct
+  primes. Hence we must have $x^k=e=y^k$, meaning $|z|=pq$, and we see that
+  $PQ$ is cyclic.
+\end{proof}
+
+\begin{proposition}\label{product_of_primes_order_cyclic}
+  If $p<q$ are primes and $q\not\equiv 1\bmod p$, then every group of order
+  $pq$ is cyclic.
+\end{proposition}
+\begin{proof}
+  By Sylow 3, $n_q|p$ and $n_q\equiv 1\bmod q$. If $n_q>q$, then $n_q>p$, a
+  contradiction of the fact that $n_q|p$. Hence we must have $n_q=1$. Let
+  $Q\leq G$ be the unique $q$-Sylow subgroup of $G$. Note that since $n_q=1$
+  and any conjugate of $Q$ is also a $q$-Sylow subgroup, we have that $Q$ is a
+  normal subgroup of $G$. Since $|Q|=q$ is prime, we can write $Q=\langle
+  y\rangle$, where $y$ has order $q$. Pick any subgroup $P\leq G$ of order $p$,
+  and write $P=\langle x\rangle$. $P$ acts on $Q$ via conjugation, yielding a
+  map $\kappa:P\to\Aut(Q)$; the order of $\kappa(P)$ must divide both $|P|=p$
+  and $|\Aut(Q)|=q-1$ by Lagrange's, and clearly $|\kappa(P)|\leq|P|=p$, so
+  that $|\kappa(P)|\in\{1,p\}$. Since $q\not\equiv 1\bmod p$, $p$ does not
+  divide $q-1$, so that we must have $|\kappa(P)|=1$, meaning
+  $\kappa(P)=\{e\}$. Therefore $ab=ba$ for all $a\in P$ and $b\in Q$. It then
+  follows by \autoref{index_subgroup_normal_prime} and
+  \autoref{product_subgroups_normal_prime_products_cyclic} that $PQ$ is a
+  subgroup of $G$ which is isomorphic to $C_{pq}$. Since $|G|=pq$, it follows
+  that $G=PQ\cong C_{pq}$, as desired.
+\end{proof}
+
+\begin{proposition}
+  If $|G|=30$, $G$ has unique $3$- and $5$-Sylow subgroups and contains a
+  normal subgroup isomorphic to $C_{15}$.
+\end{proposition}
+\begin{proof}
+  By the Sylow theorems, $n_3|10$, $n_3\equiv 1\bmod 3$, $n_5|6$, and
+  $n_5\equiv 1\bmod 5$. Thus $n_3\in\{1,10\}$ and $n_5\in\{1,6\}$. If $n_3=10$
+  and $n_5=6$, then since each subgroup in $\Syl_3$ and $\Syl_5$ are cyclic of
+  prime order, there would be at least $2\cdot 10=20$ distinct order $3$
+  elements in $G$, and $4\cdot 6=24$ distinct order $5$ elements in $G$, an
+  impossibility since $|G|=30<44$. Thus, one of $n_3$ and $n_5$ is $1$. Let
+  $P\in\Syl_3$ and $Q\in\Syl_5$, so that since $n_3=1$ or $n_5=1$, at least one
+  of $P$ or $Q$ is normal in $G$, so that by the second isomorphism theorem we
+  know that $PQ$ is a subgroup of $G$. Moreover, $|PQ|\leq 15$ and $3$ and $5$
+  divide $|PQ|$, so we must have $|PQ|=15$. Thus $PQ$ is an index $2$ subgroup
+  of $G$, so $PQ$ is normal in $G$. By
+  \autoref{product_of_primes_order_cyclic}, since $|PQ|=15=3\cdot 5$ and
+  $5\not\equiv 1\bmod 3$, we have that $PQ$ is cyclic, as desired. Sylow 3
+  directly gives that $n_3(PQ)=n_5(PQ)=1$, so that $P$ and $Q$ are the unique
+  $5$- and $3$-Sylow subgroups in $PQ$. We claim this implies
+  $n_3(G)=n_5(G)=1$. If we had $n_3(G)=10$, then $G$ would have at least
+  $2\cdot 10=20$ distinct order $3$ elements, so that in particular $PQ$ would
+  have to contain at least $5$ elements of order $3$, meaning $PQ$ would have
+  to contain at least $\lceil 5/2\rceil=3$ subgroups of order $3$, a
+  contradiction of the fact that $n_3(PQ)=1$. A similar argument yields that
+  $n_5(G)=1$, as desired.
+\end{proof}
+
+\begin{proposition}
+  Let $G$ be a group of order $12$. If $G$ does not have a normal $3$-Sylow
+  subgroup, then $G\cong A_4$.
+\end{proposition}
+\begin{proof}
+  We have that $n_3|4$ and $n_3\equiv 1\bmod 3$ by the third Sylow theorem, so
+  either $n_3=1$ or $n_3=4$. Since $G$ does not have a normal $3$-Sylow
+  subgroup, we must have that $n_3=4$. The group $G$ acts on $\Syl_3(G)$ by
+  conjugation, yielding a homomorphism
+  \[
+    \phi:G\to\Sym(\Syl_3(G))\cong S_4.
+  \]
+  First we aim to show this map is injective, so that $G$ is isomorphic to a
+  subgroup of order $12$ of $S_4$.
+
+  If $P\in\Syl_3(G)$, then $|G:N_G(P)|=n_3=4$, meaning $|N_G(P)|=3$, so that
+  $P=N_G(P)$. The kernel of $\phi$ consists of the elements of $g$ which
+  normalize all $3$-Sylow subgroups of $G$, and so are in the intersection of
+  all $3$-Sylow subgroups. This implies $\ker\phi$ is trivial, so $\phi$ is
+  injective, as desired.
+
+  It remains to show that $\phi(G)=A_4$, which can be done in a number of
+  ways. For instance, $G$ must contain exactly $8$ elements of order $3$, while
+  there are exactly $8$ elements of order $3$ in $S_4$, and they generate
+  $A_4$.
+\end{proof}
+
+\begin{proposition}
+  Suppose $|G|=60$ and $n_5(G)>1$. Then $G$ is simple.
+\end{proposition}
+\begin{proof}
+  By the third Sylow theorem, we have $n_5\in\{1,6\}$, so $n_5=6$ by
+  assumption. Now, let $H$ be a non-trivial proper normal subgroup of $G$. We
+  split into cases.
+
+  \textbf{Case 1.} If $5$ divides $|H|$, then $H$ contains a $5$-Sylow
+  subgroup; being normal, it must contain every $5$-Sylow subgroup of $G$. Thus
+  $|H|\geq 1+4\cdot 6=25$, so $|H|=30$. But we have shown above that every group of order $30$ has a unique $5$-Sylow subgroup, so this is not possible.
+
+  \textbf{Case 2.} If $5$ does not divide $|H|$, then $|H|$ divides $12$. Now
+  we claim that $G$ must contain a normal subgroup of order $3$ or $4$. If $H$
+  itself is not of one of these orders, then $|H|=6$ or $|H|=12$. If $|H|=6$
+  (resp.\ $|H|=12$), then Sylow 3 yields $n_3(H)=1$ (resp.\ $n_4(H)=1$), so $H$
+  admits a normal $3$-Sylow subgroup (resp.\ a normal $4$-Sylow
+  subgroup). Since $H$ is normal, it follows that $n_3(G)=1$ (resp.\
+  $n_4(G)=1$) as well, so indeed $G$ contains a normal subgroup of order $3$ or
+  $4$, call it $K$.
+
+  Now $G/K$ has order $15$ or $20$, and in each case Sylow 3 yields
+  $n_5(G/K)=1$, so $G/K$ has a normal $5$-Sylow subgroup. By the fourth
+  (lattice) isomorphism theorem, the preimage of such a $5$-Sylow subgroup with
+  be a normal subgroup of $G$ with order divisible by $5$, contradicting the
+  above.
+\end{proof}
+
+In general, subgroups of f.g.\ groups are not f.g.!
+
+\begin{example}
+  Let $G=F(a,b)$ be the free group on two generators. Write $x_n:=a^nba^{-n}\in
+  G$, and let $H=\langle x_n,n\in\mathbb{Z}\rangle$. Then $H$ is not finitely
+  generated.
+\end{example} 
+
+\begin{definition}
+  A poset $(P,\leq)$ has the \emph{ascending chain condition (acc)} if, for
+  every countable sequence ${(x_k)}_{k\in\mathbb{N}}$ with $x_k\leq x_{k+1}$,
+  there exists $m$ such that $x_k=x_m$ for all $k\geq m$.
+
+  A group $G$ has \emph{the ascending chain condition for subgroups} if the set
+  of subgroups ordered by inclusion has the acc.
+\end{definition}
+
+\begin{proposition}
+  TFAE
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $G$ has the acc for subgroups
+    \item All subgroups of $G$ are f.g.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+  Let $N\unlhd G$. TFAE
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $G$ has the acc for subgroups
+    \item Both $N$ and $G/N$ have the acc for subgroups.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+  Every f.g.\ abelian group has the acc for subgroups. In particular, every
+  subgroup of a f.g.\ abelian group is also f.g.
+\end{proposition}
+
+\begin{definition}
+  Let $G$ be a group. We say that an element $a\in G$ is \emph{torsion} if it
+  has finite order, and write $G_\tors\subseteq G$ for the subset of torsion
+  elements. A group $G$ is \emph{torsion free} if $G_\tors=\{e\}$. A group $G$
+  is \emph{torsion} if $G_.\tors=G$
+\end{definition}
+
+\begin{proposition}
+  If $G$ is an abelian group then $G_\tors$ is a subgroup of $G$.
+\end{proposition}
+
+\begin{proposition}
+  If $G$ is abelian, then $G/G_\tors$ is torsion free.
+\end{proposition}
+
+\begin{proposition}
+  Every f.g.\ torsion abelian group is finite.
+\end{proposition}
+
+\begin{proposition}[Product Recognition]\label{product_recognition}
+  Let $G$ be a group, and suppose $G_1,\ldots,G_n\unlhd G$ are \emph{normal} subgroups such that
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $G_1\cdots G_n=G$, and
+    \item $G_k\cap(G_1\cdots G_{k-1}G_{k+1}\cdots G_n)=\{e\}$ for
+    $k=1,\ldots,n$.
+  \end{enumerate}
+  Then the function
+  \[
+    \phi:G_1\times\cdots\times G_n\to G
+    \qquad
+    (g_1,\ldots,g_n)\mapsto g_1\cdots g_n
+  \]
+  is an isomorphism of groups.
+\end{proposition}
+
+\begin{proposition}
+  If $G=G_1\times\cdots\times G_n$ and $N_k\unlhd G_k$ for $k=1,\ldots,n$, then $N=N_1\times\cdots\times N_n$ is a normal subgroup of $G$, and there is an isomorphism
+  \[
+    G/N\cong(G_1/N_1)\times\cdots\times(G_n/N_n).
+  \]
+\end{proposition}
+
+\begin{theorem}
+  Every f.g.\ abelian group $G$ is isomorphic to one of the form
+  \[
+    G\cong F\times \mathbb{Z}^r,
+    \qquad
+    |F|<\infty,
+    \qquad
+    \mathbb{Z}^r=\underbrace{\mathbb{Z}\times\cdots\times\mathbb{Z}}_{\text{$r$ copies}},
+    \qquad
+    r\geq 0.
+  \]
+  The factors are unique, in the sense that if $G$ admits two such isomorphisms
+  $G\cong F\times\mathbb{Z}^r\cong F'\times\mathbb{Z}^{r'}$, then $F\cong F'$
+  and $r=r'$.
+\end{theorem}
+
+\begin{theorem}
+  Every finite abelian group $G$ is isomorphic to one of the form
+  \[
+    G\cong\mathbb{Z}/n_1\times\cdots\mathbb{Z}/n_s,
+  \]
+  where 
+  \begin{itemize}
+    \item $s\geq 0$,
+    each $n_i\geq 2$,
+    $n_{i+1}\mid n_i$ for all $i=1,\ldots,s-1$.
+  \end{itemize}
+  Furthermore, the decomposition is unique up to isomorhpism of the factors.
+\end{theorem}
+
+\begin{definition}
+  A complete set of invariants for a f.g.\ abelian group
+  \[
+    G\cong\mathbb{Z}/n_1\times\cdots\times\mathbb{Z}/n_s\times\mathbb{Z}^r
+  \]
+  are the free rank $r$ and the list $n_1,\ldots,n_s$ of invariant factors. $G$
+  is finite iff $r=0$.
+\end{definition}
+
+\begin{theorem}[Elementary divisor decomposition]
+  For every finite abelian group $G$ of order $n=p_1^{a_1}\cdots p_k^{a_k}$, where the $p_1<\cdots<p_k$ are distinct primes, there is
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item an isomorphism $G\cong A_1\times\cdots\times A_k$, with $|A_i|=p_i^{a_i}$ and $a_i\geq 1$, such that
+    \item for each $A_i$, there is an isomorphism
+    \[
+      A_i\cong\mathbb{Z}/p_i^{b_{i1}}\times\cdots\times\mathbb{Z}/p_i^{b_{is_i}},
+    \]
+    with $b_{i 1}\geq\cdots\geq b_{is_i}$ and $b_{i 1}+\cdots+b_{is_i}=a_i$.
+  \end{enumerate}
+  Furthermore, this decomposition is unique, in the sense that if $G$ admits
+  isomorphisms $G\cong B_1\times\cdots\times B_\ell$ with $|B_i|=a_i^{a_i}$
+  with $q_i$ prime and $a_j\geq 1$, then $k=\ell$, $p_i=q_i$, and $A_i\cong
+  B_i$.
+\end{theorem}
+
+\begin{definition}
+  The decomposition described in (1) above is called the \emph{primary
+  decomposition} of $G$. Part (2) is just giving the invariant factor
+  decomposition of each $A_i$.
+
+  The list of numbers $p_1^{b_{11}},\ldots p^{b_{ks_k}}$ are the
+  \emph{elementary divisors} of the group $G$. The list of elementary divisors
+  is a complete isomorphism invariant of a finite abelian group $G$.
+\end{definition}
+
+\begin{definition}
+  Let $H,K,G$ be groups. We say that $G$ is an \emph{extension} of $K$ by $H$
+  if there exists a normal subgroup $H'\unlhd G$ and isomorphisms $H\cong H'$
+  and $K\cong G/H'$, equivalently, an exact sequence of groups
+  \[
+    0\to H\to G\to K\to 0.
+  \]
+  The extension is \emph{split} if there is aditionally a subgroup $K'\leq G$
+  such that the map $K'\to G/H'$ sending $x\mapsto xH'$, equivalently, if there
+  is a homomorphism $s:K\to G$ such that $p\circ s=\id_K$ (in which case
+  $K'=s(K)$).
+\end{definition}
+
+\begin{example}
+  Given groups $K$ and $H$, you can always extend $K$ by $H$ via the
+  \emph{trivial extension}, defined by
+  \[
+    G:=H\times K,
+    \qquad
+    H':=H\times\{e\}..
+  \]
+  The trivial extension is always split, by $K'=\{e\}\times K$.
+\end{example}
+
+\begin{example}
+  Let $H=K=C_2$. Then both $G_1=C_2\times C_2$ and $G_2=C_4$ are extensions of $K$ by $H$
+  \[
+    H':=\{e,a\}\unlhd G_1=C_2\times C_2=\langle a\mid a^2\rangle\times\langle b\mid b^2\rangle=\{e,a,b,ab\},
+    \qquad
+    G_1/H'=\{\overline{e},\overline{b}\},
+  \]
+  and
+  \[
+    H'=\{e,c^2\}\unlhd G_2=C_4=\langle c\mid c^4\rangle=\{e,c,c^2,c^3\},
+    \qquad
+    G-2/H'=\{\overline{e},\overline{c}\}.
+  \]
+  The first extension is split, using $K'=\{e,b\}\leq G_1$, but the second
+  extension is not split.
+\end{example}
+
+\begin{definition}
+  The \emph{extension problem} for groups is to classify, for given $H$ and
+  $K$, all possible extensions of $K$ by $H$, up to isomorphism.
+\end{definition}
+
+\begin{theorem}
+  Let $H,K$ be groups, and $\alpha:K\to\Aut(H)$ a homomorphism. Let $G$ be the set $H\times K$, and define a product on $G$ by the rule
+  \[
+    (h_1,k_1)(h_2,k_2):=(h_1\alpha(k_1)(h_1),k_1k_2).
+  \]
+  Then we have the following
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $G$ is a group, with identity element $(e,e)$ and inverses
+    $(h,k)^{-1}:=(\alpha(k^{-1})(h^{-1}),k^{-1})$.
+    \item The subsets $H'=H\times\{e\}$ and $K'=\{e\}\times K$ are subgroups,
+    and there are isomorphisms $H\xrightarrow{\sim}H'$ and
+    $K\xrightarrow{\sim}K'$ defined by $h\mapsto(h,e)$ and $k\mapsto(e,k)$
+    respectively.
+  \end{enumerate}
+  We now identify $H$ with $H'$ and $K$ with $K'$ via these isomorphisms in the following.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={\arabic*.}]
+    \skipitems{2}
+    \item $H\unlhd G$.
+    \item $H\cap K=\{e\}$ and $G=HK$.
+    \item We have $khk^{-1}=\alpha(k)(h)$ for all $h\in H$ and $k\in K$.
+  \end{enumerate}
+  We denote this group $G$ by $H\rtimes G$, or by $H\rtimes_\alpha K$ if we
+  want to make the action of $K$ on $H$ explicit.
+\end{theorem}
+
+\begin{example}
+  Let $H=F(a)$ and $K=\langle b\mid b^2\rangle$. Let $\phi:K\to\Aut(H)$ be the
+  homomorphism defined by $\phi(b)(a)=a^{-1}$. We obtain a semi-direct product
+  $G=H\rtimes K$. If we identify $H$ and $K$ with the obvious subgroups of $G$,
+  this means that
+  \[
+    G=\{a^n\mid n\in\mathbb{Z}\}\coprod \{a^nb\mid n\in\mathbb{Z}\},
+    \qquad
+    bab^{-1}=a^{-1}.
+  \]
+  In fact, $G$ is the infinite dihedral group.
+\end{example}
+
+\begin{example}
+  Let $G\subseteq\Sym(\mathbb{R}^n)$ be the set of all functions $\phi:\mathbb{R}^n\to\mathbb{R}^n$ of the form
+  \[
+    \phi(x)=Ax+b,
+    \qquad\quad
+    A\in\GL_n(\mathbb{R}),
+    \qquad
+    b\in\mathbb{R}^n.
+  \]
+  This can be shown to be a subgroup. It is a semi-direct product of its subgroups
+  \[
+    H=\{\phi\mid\phi(x)=x+b,\ b\in\mathbb{R}^n\},
+    \qquad
+    K=\{\phi\mid\phi(x)=Ax,\ A\in\GL_n(\mathbb{R})\}.
+  \]
+\end{example}
+
+\begin{definition}
+  A \emph{composition series} for a group $G$ is a finite chain of subgroups
+  \[
+    \{e\}=M_0\leq M_1\leq\cdots\leq M_{r-1}\leq M_r=G,
+    \qquad
+    r\geq 0,
+  \]
+  such that
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $M_{k-1}$ is a normal subgroup of $M_k$, for each $k=1,\ldots,r$, and
+    \item the quotient $M_k/M_{k-1}$ is a simple group.
+  \end{enumerate}
+  The groups $M_1/M_0,M_2/M_1,\ldots,M_r/M_{r-1}$ are called the
+  \emph{composition factors} of the composition series.
+\end{definition}
+
+\begin{proposition}
+  Every finite group has a composition series.
+\end{proposition}
+
+\begin{theorem}[Jordan-H\"older]
+  Suppose $G$ is a group with a composition series. Then the composition factors of a composition series are unique up to change of permutation. That is, if
+  \[
+    \{e\}=M_0\leq\cdots\leq M_r=G,
+    \qquad
+    \{e\}=N_0\leq\cdots\leq N_s=G
+  \]
+  are two composition series, then $r=s$ and there exists $\sigma\in S_r$ such
+  that $M_k/M_{k-1}\cong N_{\sigma(k)}/M_{\sigma(k)-1}$ for all $k=1,\ldots,n$.
+\end{theorem}
+
+\begin{definition}
+  A group $G$ is \emph{solvable} if it admits a finite chain of subgroups
+  \[
+    1=G_0\unlhd G_1\unlhd\cdots\unlhd G_s=G,
+  \]
+  with each $G_k\unlhd G_{k+1}$, such that each quotient $G_k/G_{k-1}$ is
+  abelian. In particular, a finite group $G$ is solvable if its composition
+  factors are abelian, i.e., all cyclic of prime order.
+\end{definition}
+
+\begin{definition}
+  Given elements $x,y\in G$, we write
+  \[
+    [x,y]:=xyx^{-1}y^{-1}\in G
+  \]
+  for the \emph{commutator} of $x$ and $y$. For subsets $S,T\subseteq G$, we
+  write
+  \[
+    [S,T]:=\langle[x,y],\, x\in S,\,y\in T\rangle
+  \]
+  for the subgroup generated by such commutators. In particular, the
+  \emph{commutator subgroup} of $G$ is the subgroup $[G,G]$ generated by all
+  commutators.
+\end{definition}
+
+\begin{remark}
+  $[G,G]$ is a normal subgroup of $G$. The quotient group $G/[G,G]$ is abelian,
+  and is called the \emph{abelianization} of $G$.
+\end{remark}
+
+\begin{proposition}
+  If $H\unlhd G$, then $G/H$ is abelian iff $[G,G]\leq H$.
+\end{proposition}
+
+\begin{definition}
+  The \emph{derived series} of a gorup $G$ is the sequence of subgroups $G^{(k)}$ defined by
+  \begin{itemize}
+    \item $G^{(0)}=G$,
+    \item $G^{(1)}=[G,G]$,
+    \item $G^{(k)}=[G^{(k-1)},G^{(k-1)}]$, $k\geq 2$.
+  \end{itemize}
+  We obtain a descending chain of subgroups, each of which is normal in the previous:
+  \[
+    G=G^{(0)}\geq G^{(1)}\geq G^{(2)}\geq\cdots.
+  \]
+\end{definition}
+
+\begin{proposition}
+  $G$ is solvable iff $G^{(s)}=\{e\}$ for some $s$.
+\end{proposition}
+
+\begin{corollary}
+  If $G$ is solvable, then so is any subgroup or quotient group of $G$.
+\end{corollary}
+
+\begin{definition}
+  Given a group $G$, its \emph{upper central series} is defined by
+  \begin{itemize}
+    \item $Z_0(G)=\{e\}$,
+    \item $Z_1(G)=Z(G)$,
+    \item $Z_{k+1}(G)$ is the preimage under the quotient map $\pi:G\to
+    G/Z_k(G)$ of $Z(G/Z_k(G))$, for all $k\geq 1$.
+  \end{itemize}
+  We ovtain a possibly infinite sequence of subgroups
+  \[
+    \{e\}=Z_0(G)\leq Z_1(G)\leq Z_2(G)\leq\cdots\leq G,
+  \]
+  each of  which is normal in $G$.
+\end{definition}
+
+\begin{definition}
+  A group $G$ is \emph{nilpotent} if there exists a $c$ such that
+  $Z_c(G)=G$. The smallest such $c$ is called the \emph{nilpotence class} of
+  $G$.
+\end{definition}
+
+\begin{proposition}
+  If $G$ is nilpotent, so is any quotient group $G/N$, and the nilpotence class
+  of $G$ is $\geq$ the nilpotence class of $G/N$.
+\end{proposition}
+
+\begin{proposition}\label{product_of_nilpotent_is_nilpotent}
+  $Z_k(G_1\times\cdots\times G_s)=Z_k(G_1)\times\cdots\times Z_k(G_s)$. In
+  particular, if $G_1,\ldots,G_s$ are nilpotent, then so is
+  $G=G_1\times\cdots\times G_s$.
+\end{proposition}
+
+\begin{proposition}\label{p-group_is_nilpotent}
+  Let $p$ be a prime and $G$ a $p$-group of order $p^a$, $a\geq 1$. Then $G$ is
+  nilpotent, and if $a\geq 2$, it has nilpotence class $\leq a-1$.
+\end{proposition}
+
+\begin{theorem}
+  Let $G$ be a finite group with $p_1,\ldots,p_s$ the distinct primes dividing
+  its order. Then TFAE.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $G$ is nilpotent.
+    \item If $H<G$, then $H<N_G(H)$ (i.e., every proper subgroup of $G$ is
+    proper in its normalizer, or equivalently, $G$ is the only subgroup which
+    is its own normalizer).
+    \item $|\Syl_{p_i}(G)|=1$ for all $i=1,\ldots,s$ (or equivalently, $G$ has
+    a normal $p_i$-Sylow subgroup for all $i=1,\ldots,s$).
+    \item $G\cong P_1\times\cdots P_s$, where $P_i\in\Syl_{p_i}(G)$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{corollary}
+  Any finite abelian group is a product of its Sylow subgroups.
+\end{corollary}
+
+\section{Exercises}
+
+\begin{lemma}\label{p-group_has_nontrivial_center}
+  Let $G$ be a $p$-group for some prime $p$. Then $p$ divides $|Z(G)|$, and in
+  particular $Z(G)$ is nontrivial.
+\end{lemma}
+\begin{proof}
+  Since $G$ is a $p$-group, we may write $|G|=p^a$ for some $a\in\mathbb{N}$,
+  i.e., $a\geq 1$. Then by the class equation, we have that
+  \[
+    |G|=|Z(G)|+\sum_{j=1}^{r}[G:C_G(g_j)],
+  \]
+  where $g_1,\ldots,g_r$ are representatives of the conjugacy classes of $G$,
+  and each $[G:C_G(g_j)]$ is $>1$ and divides $|G|$, say
+  $[G:C_G(g_j)]=p^{m_j}$, where $1<m_j$. Thus, we have
+  \[
+    p^a=|Z(G)|+\sum_{j=1}^{r}p^{m_j}
+    \implies |Z(G)|=p^a-\sum_{j=1}^{r}p^{m_j},
+  \]
+  and the RHS is clearly divisible by $p$, so that $p$ divides $|Z(G)|$ as
+  well, yielding the desired result.
+\end{proof}
+
+\begin{lemma}\label{product_of_distinct_primes_is_cyclic}
+  Let $p_1,\ldots,p_r$ be distinct primes, and $m_1,\ldots,m_r$ be positive
+  integers. Set $m:=p_1^{m_1}\cdots p_r^{m_r}$. Then
+  \[
+    \mathbb{Z}/m\cong\bigoplus_{j=1}^r\mathbb{Z}/p_j^{m_j}.
+  \]
+\end{lemma}
+\begin{proof}
+  Let
+  \[
+    G:=\bigoplus_{j=1}^r\mathbb{Z}/p_j^{m_j},
+  \]
+  and for $j=1,\ldots,r$, let $a_j\in G$ be a generator of the $j^\text{th}$
+  summand, so that $|a_j|=p_j^{m_j}$. Let $x:=a_1\cdots a_r$, so that
+  \[
+    |x|
+    =\lcm(a_1,\ldots,a_r)
+    =\lcm(p_1^{m_1},\ldots,p_r^{m_r}).
+  \]
+  Since each of the $p_j$'s are distinct primes, it follows that
+  $|x|=p_1^{m_1}\cdots p_r^{m_r}=m$. Thus $G$ has an element of order $m=|G|$,
+  so $G$ is cyclic of order $m$, as desired.
+\end{proof}
+
+\begin{lemma}\label{orb_same_size_iff_stab_same_size}
+  Let $G$ be a finite group acting on a finite set $X$, and suppose $x,y\in
+  X$. Then $\Orb(x)=\Orb(y)\iff |\Stab(x)|=|\Stab(y)|$.
+\end{lemma}
+\begin{proof}
+  If $|\Orb(x)|=|\Orb(y)|$, then by the Orbit/Stabilizer Theorem we have
+  \[
+    |\Stab(x)|
+    =|G|[G:\Stab(x)]
+    =|G||\Orb(x)|
+    =|G||\Orb(y)|
+    =|G|[G:\Stab(y)]
+    =|\Stab(y)|.
+  \]
+  On the other hand, if $|\Stab(x)|=|\Stab(y)|$, we have
+  \[
+    |\Orb(x)|
+    =[G:\Stab(x)]
+    =|G|/|\Stab(x)|
+    =|G|/|\Stab(y)|
+    =[G:\Stab(y)]
+    =|\Orb(y)|.\qedhere
+  \]
+\end{proof}
+
+\begin{lemma}[Burnside's Lemma]\label{burnside}
+  Let $G$ be a finite group acting on a finite set $X$. Then 
+  \[
+    |X/G|=\frac{1}{|G|}\sum_{g\in G}|X^g|,
+  \]
+  where $X/G$ denotes the collection of $G$-orbits in $X$, and given $g\in G$,
+  $X^g:=\{x\in X\mid g\cdot x=x\}$. 
+\end{lemma}
+\begin{proof}
+  First of all, note that
+  \[
+    \sum_{g\in G}|X^g|
+    =\left|\left\{(g,x)\in G\times X\mid g\cdot x=x\right\}\right|
+    =\sum_{x\in X}|\Stab(x)|,
+  \]
+  By the Orbit/Stabilizer theorem, we have $|\Stab(x)|=|G|/|\Orb(x)|$, so that
+  \[
+    \frac{1}{|G|}\sum_{g\in G}|X^g|
+    =\frac{1}{|G|}\sum_{x\in X}\frac{|G|}{|\Orb(x)|}
+    =\sum_{x\in X}\frac{1}{|\Orb(x)|}.
+  \]
+  Finally, writing $X$ as the disjoint union of its orbits in $X/G$, we have
+  \[
+    \frac{1}{|G|}\sum_{g\in G}|X^g|
+    =\sum_{A\in X/G}\sum_{x\in A}\frac{1}{|A|}
+    =\sum_{A\in X/G}1
+    =|X/G|.\qedhere
+  \]
+\end{proof}
+
+\begin{lemma}\label{aut_of_prod_of_coprimes}
+  let $P$ and $Q$ be finite groups of coprime order. Then $\Aut(P\times
+  Q)\cong\Aut(P)\times\Aut(Q)$.
+\end{lemma}
+\begin{proof}
+  There is a canonical map
+  \[
+    \Aut(P)\times\Aut(Q)\to\Aut(P\times Q)
+  \]
+  sending a pair $(\sigma,\tau)$ to the automorphism $\sigma\times\tau$ defined
+  by $(\sigma\times)\tau(p,q)=(\sigma(p),\tau(q))$. It is straightforward to
+  verify that $\sigma\times\tau$ is an automorphism of $P\times Q$ and that
+  this assignment is an injective homomorphism. It remains to show the
+  assignment is surjective.
+
+  Now, let $x\in P$, and write $\eta(x,e)=(p,q)$, where $p\in P$ and $q\in Q$. Then since $\eta$ is a homomorphism, we have
+  \[
+    (e,e)
+    =\eta(e,e)
+    =\eta((x,e)^{|x|})
+    =(p^{|x|},q^{|x|}),
+  \]
+  so that $q^{|x|}=e$. Thus $|q|$ divides $|x|$, say $|x|=n|q|$. By Lagrange's,
+  $|x|=n|q|$ divides $|P|$ and $|q|$ divides $|Q|$, so $|q|$ is a common factor
+  of $|P|$ and $|Q|$. Yet $|P|$ and $|Q|$ are coprime, so it follows that
+  $|q|=1$, which means $q=e$. Thus we've shown that
+  $\eta(P\times\{e\})\subseteq P\times\{e\}$. A similar argument yields that
+  $\eta(\{e\}\times Q)\subseteq\{e\}\times Q$. Now let $\sigma$ and $\tau$
+  denote the compositions which fit into the following diagram
+  % https://q.uiver.app/#q=WzAsNixbMSwwLCJQXFx0aW1lcyBRIl0sWzEsMSwiUFxcdGltZXMgUSJdLFswLDEsIlAiXSxbMiwxLCJRIl0sWzAsMCwiUCJdLFsyLDAsIlEiXSxbMCwxLCJcXGV0YSIsMl0sWzEsMiwiIiwwLHsic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoiZXBpIn19fV0sWzEsMywiIiwwLHsic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoiZXBpIn19fV0sWzQsMCwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoiaG9vayIsInNpZGUiOiJ0b3AifX19XSxbNSwwLCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6ImJvdHRvbSJ9fX1dLFs0LDIsIlxcc2lnbWEiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNSwzLCJcXHRhdSIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+  \[\begin{tikzcd}
+    P & {P\times Q} & Q \\
+    P & {P\times Q} & Q
+    \arrow[hook, from=1-1, to=1-2]
+    \arrow["\sigma"', dashed, from=1-1, to=2-1]
+    \arrow["\eta"', from=1-2, to=2-2]
+    \arrow[hook', from=1-3, to=1-2]
+    \arrow["\tau", dashed, from=1-3, to=2-3]
+    \arrow[two heads, from=2-2, to=2-1]
+    \arrow[two heads, from=2-2, to=2-3]
+  \end{tikzcd}\]
+  where the top arrows denote the identifications $P\cong P\times\{e\}$ and
+  $Q\cong\{e\}\times Q$. Then given $p\in P$ and $q\in Q$, it follows that
+  \[
+    \eta(p,q)=\eta(p,e)\eta(e,q)=(\sigma(p),e)(e,\tau(q))=(\sigma(p),\tau(q)),
+  \]
+  where the middle equality is where we used the fact that
+  $\eta(P\times\{e\})\subseteq P\times\{e\}$ and $\eta(\{e\}\times
+  Q)\subseteq\{e\}\times Q$. Thus we've shown that $\eta=\sigma\times\tau$. It
+  is straightforward to see that $\eta$ is not injective (resp.\ surjective)
+  unless $\sigma$ and $\tau$ are, so we have shown the desired result.
+\end{proof}
+
+\begin{lemma}\label{p-Sylow_subgroups_of_product}
+  Suppose $G$ and $H$ are finite groups and $p$ a prime dividing $|G|$ but not
+  $|H|$. Then there is a bijection
+  \[
+    \Syl_p(G)\xrightarrow{\sim}\Syl_p(G\times H)
+    \qquad\text{given by}\qquad
+    K\mapsto K\times\{e\}.
+  \]
+  In particular $n_p(G)=n_p(G\times H)$.
+\end{lemma}
+\begin{proof}
+  Let $K\in\Syl_p(G)$, and identify $K$ with $K\times\{e\}\leq G\times
+  H$. Since $p$ does not divide $|H|$, $K$ is also a $p$-Sylow subgroup of
+  $G\times H$. Thus by Sylow 2, every $p$-Sylow subgroup of $G\times H$ is
+  conjugate to $K$. Clearly any conjugate of $K\times\{e\}$ by an element of
+  $G\times H$ lands in $G\times\{e\}$, so every element of $\Syl_p(G\times H)$
+  is of the form $L\times\{e\}$ for a unique $L\in\Syl_p(G)$, as desired.
+\end{proof}
+
+\begin{lemma}\label{p-Sylow_subgroups_of_GxZpn}
+  Suppose $G$ is a finite group, $p$ is a prime number, and $n$ is a positive integer. Then there is a bijection
+  \[
+    \Syl_p(G)\to\Syl_p(G\times\mathbb{Z}/p^n)
+    \qquad\text{given by}\qquad
+    K\mapsto K\times\mathbb{Z}/p^n.
+  \]
+  In particular $n_p(G)=n_p(G\times\mathbb{Z}/p^n)$.
+\end{lemma}
+\begin{proof}
+  Clearly if $K$ is a $p$-Sylow subgroup of $G$ then $K\times\mathbb{Z}/p^n$ is
+  a $p$-Sylow subgroup of $H:=G\times\mathbb{Z}/p^n$. Thus by Sylow 2 every
+  $p$-Sylow subgroup of $H$ is a conjugate of $K\times\mathbb{Z}/p^n$, and
+  clearly any conjugate of $K\times\mathbb{Z}/p^n$ is of the form
+  $L\times\mathbb{Z}/p^n$ for some subgroup $L\leq G$ satisfying $|L|=|K|$
+  (since conjugating $A\times B$ by $(a,b)$ is the same as first conjugating
+  $A$ by $a$ and $B$ by $b$ and then taking their product).
+\end{proof}
+
+\begin{enumerate}[listparindent=\parindent,parsep=5pt,label={\arabic*.}]
+  \item (May 2022 Q1) \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
+    \item Let $H$ be a subgroup of a group $G$. Then $G$ acts on the set
+    $G/H=\{gH\mid g\in G\}$ by left multiplication. This action naturally
+    determines a homomorphism $\alpha:G\to S(G/H)$, where $S(X)$ is the group
+    of permutations on a set $X$. Prove that the kernel of $\alpha$ is
+    contained in $H$.
+    \begin{proof}
+      If $H=G$ we are done, so suppose $H$ is a proper subgroup of $G$. Then it
+      suffices to show that if $x\in G\setminus H$, then
+      $x\notin\ker\alpha$. This is clear, as if $x\notin H$, then $xH\neq H$,
+      so that in particular $\alpha(x)(eH)=xH\neq eH$, meaning $\alpha(x)$ is
+      not trivial, so $x\notin\ker\alpha$.
+    \end{proof}
+    \item Let $L$ be a subgroup of a finite group $K$ such that $[K:L]=p$,
+    where $p$ is the smallest prime that divides the order $|K|$ of $K$. Prove
+    that $L$ is normal in $K$. Hint: Use part (a).
+    \begin{proof}
+      This is \autoref{index_subgroup_normal_prime}.
+    \end{proof}
+    \item Describe all finite groups of order $p^2$, where $p$ is a prime, up
+    to isomorphism. Prove your answer.
+
+    \medskip
+
+    We claim that there are two finite groups of order $p^2$: $\mathbb{Z}/p^2$
+    and $\mathbb{Z}/p\oplus\mathbb{Z}/p$.
+    \begin{proof}
+      Since $|G|=p^2$, $|G|$ is abelian
+      (\autoref{p^2_order_group_is_abelian}). Now, by the classification
+      theorem for f.g.\ abelian groups, we can write
+      \[
+        G\cong\bigoplus_{i=1}^r\mathbb{Z}/p_i^{m_i}
+      \]
+      for some unique collection of primes $p_1,\ldots,p_r$ (not necessarily
+      distinct) and positive integers $m_1,\ldots,m_r$. Given any such
+      decomposition, we must have $p_1^{m_1}\cdots p_r^{m_r}=|G|=p^2$. Then the
+      desired result follows.
+    \end{proof}
+    \item\label{May_2022_1(d)} Describe all finite groups of order $425=25\cdot 17$ up to
+    isomorphism. Prove your answer.
+
+    \medskip
+
+    There are two:
+    \[
+      \mathbb{Z}/17\oplus\mathbb{Z}/5\oplus\mathbb{Z}/5
+      \qquad\text{and}\qquad
+      \mathbb{Z}/17\oplus\mathbb{Z}/25.
+    \]
+    \begin{proof}
+      Let $G$ be a group of order $425$. By the third Sylow theorem,
+      $n_{17}\mid 25$ and $n_{17}\equiv 1\bmod 17$, so
+      $n_{17}\in\{1,5,25\}\cap\{1,18,35,\ldots\}=\{1\}$. Similarly, $n_5\mid
+      17$ and $n_5\equiv 1\bmod 5$, so that
+      $n_5\in\{1,17\}\cap\{1,6,11,16,21,\ldots\}=\{1\}$. Thus $G$ contains
+      precisely one subgroup $P$ of order $17$ and one subgroup $Q$ of order
+      $25$, and they are both normal by the second Sylow theorem. Moreover,
+      $P\cap Q$ is a subgroup of both $P$ and $Q$, and $|P\cap Q|$ must divide
+      both $17$ and $25$, which are coprime, so we must have $|P\cap Q|=1$,
+      meaning $P\cap Q=\{e\}$. Finally, we have that $PQ$ is a subgroup of $G$
+      (since $Q$ is normal) by the second isomorphism theorem, and $P$ and $Q$
+      are both subgroups of $PQ$, so that $17$ and $25$ must both divide the
+      order of $PQ$. Moreover, since $PQ\subseteq G$, we have
+      $|PQ|\leq|G|=25\cdot 17$. It follows that $PQ=G$. Thus since $P,Q$ are
+      normal, $P\cap Q=\{e\}$, and $PQ=G$, we have that $G=P\times Q$, by the
+      product recognition theorem (\autoref{product_recognition}).
+
+      Now, since $|P|=17$ is prime, $P$ is cyclic of order $17$. Moreover,
+      since $|Q|=25=5^2$, we showed above that either
+      $Q=\mathbb{Z}/5\oplus\mathbb{Z}/5$ or $Q=\mathbb{Z}/25$. Thus we are
+      done.
+    \end{proof}
+  \end{enumerate}
+
+  \item (May 2022 Q4) \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
+    \item Let $G$ be a finite subgroup of the multiplicative group $K^*$ of a
+    field $K$. Prove that $G$ is cyclic.
+    \begin{proof}
+      First of all, we claim that each Sylow subgroup of $G$ is cyclic. To that
+      end, let $P$ be a $p$-Sylow subgroup of $G$ (where $p$ is some prime
+      dividing the order of $G$), and let $a\in P$ have maximal order, say
+      $|a|=m$, so $m=p^n$ for some positive integer $n$. Then
+      $\{1,a,a^2,\ldots,a^{m-1}\}$ are $m$ distinct roots of the polynomial
+      $f:=x^m-1\in K[x]$, which is of degree $m$, so they are the only roots of
+      $f$. Now, let $b\in P$. Then since $P$ is a $p$-group, $b$ has order
+      $p^k$ for some $k\in\mathbb{Z}_{\geq 0}$. Moreover, by assumption $k\leq
+      n$, so that $b^m=b^{p^n}=(b^{p^k})^{p^{n-k}}=1$. Thus $b$ is a root of
+      $f$, meaning $b\in\{1,a,a^2,\ldots,a^{m-1}\}$. Our choice of $b\in P$ was
+      arbitrary, and we showed $b\in\langle a\rangle$, so $P=\langle a\rangle$,
+      as desired.
+
+      Now, since $G$ is a finite abelian group, it can be written as a product
+      of its Sylow subgroups, each of which we've shown is cyclic. Thus, $G$ can be written as
+      \[
+        G=\bigoplus_{i=1}^r\mathbb{Z}/p_i^{m_i},
+      \]
+      where each of the $p_i$'s are distinct primes (since $G$ is abelian,
+      given a fixed prime $p$ dividing $G$, each $p$-Sylow subgroup of $G$ is
+      normal, so by the second Sylow theorem $n_p=1$), so by
+      \autoref{product_of_distinct_primes_is_cyclic}, $G$ is cyclic, as
+      desired.
+    \end{proof}
+    \item Let $k=\mathbb{Z}/p\mathbb{Z}$ be the finite field of order $p$, $p$
+    a prime. Let $K/k$ be a finite field extension of degree $m$. Prove that
+    the elements of $K$ are the roots of the polynomial $X^{p^m}-X$ over $k$.
+    \begin{proof}
+      \color{red}TODO.
+    \end{proof}
+    \item Prove that every irreducible polynomial $f(x)\in k[x]$ is separable.
+    \begin{proof}
+      \color{red}TODO.
+    \end{proof}
+  \end{enumerate}
+
+  \item (August 2021 Q1) Let $G$ be a non-trivial finite group acting on a
+  finite set $X$. We assume that for all $g\in G\setminus\{e\}$ there exists a
+  unique $x\in X$ such that $g\cdot x=x$.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
+    \item Let $Y=\{x\in X\mid G_x\neq\{e\}\}$, where $G_x$ denotes the
+    stabilizer of $x$. Show that $Y$ is stable under the action of $G$.
+    \begin{proof}
+      Let $y\in Y$ and $g\in G$. Then by
+      \autoref{orb_same_size_iff_stab_same_size}, since $\Orb(g\cdot
+      y)=\Orb(y)$ (by definition), it follows that $|\Stab(g\cdot
+      y)|=|\Stab(y)|\geq 2$, so that $g\cdot y$ has a nontrivial stabilizer, as
+      desired.
+    \end{proof}
+    \item Let $y_1,y_2,\ldots,y_n$ be a set of orbit representatives of $Y/G$ (with $|Y/G|=n$), and let $m_i=|G_{y_i}|$. Show that
+    \[
+      1-\frac{1}{|G|}=\sum_{i=1}^{n}\left(1-\frac{1}{m_i}\right).
+    \]
+    \begin{proof}
+      Note that $|G|/m_i=|\Orb(y_i)|$ by the Orbit/Stabilizer theorem. Thus
+      \[
+        |G|\sum_{i=1}^{n}\left(1-\frac{1}{m_i}\right)
+        =n|G|-\sum_{i=1}^{n}\frac{|G|}{m_i}
+        =n|G|-\sum_{i=1}^{n}|\Orb(y_i)|
+        =n|G|-|Y|.
+      \]
+      Thus, it suffices to show that
+      \[
+        |G|-1=n|G|-|Y|.
+      \]
+      This follows by Burnside's Lemma (\autoref{burnside}), as
+      \begin{align*}
+        n|G|-|Y|
+        &=|Y/G||G|-|Y| \\
+        &=\sum_{g\in G}|Y^g|-|Y|  & (Y^g:=\{y\in Y\mid g\cdot y=y\}) \\
+        &=|Y^e|+\sum_{g\in G\setminus\{e\}}|Y^g|-|Y| \\
+        &\overset{(\ast)}=|Y|+|G\setminus\{e\}|-|Y| \\
+        &=|G|-1,
+      \end{align*}
+      where $(\ast)$ denotes where we used the assumption that $|Y^g|=1$ for
+      all $g\in G\setminus\{e\}$.
+    \end{proof}
+    \item Show that $X$ has (at least) a fixed point under the action of $G$.
+    \begin{proof}
+      By part (ii), we have
+      \[
+        |G|-1=n|G|-|Y|
+      \]
+      which yields
+      \begin{equation}\label{eq1}
+        |Y|=(n-1)|G|+1.
+      \end{equation}
+      We claim that $Y$ has at least $n-1$ orbits of size $|G|$. Assuming this
+      were true, since $Y$ has $n$ orbits and $|Y|=(n-1)|G|+1$, it would follow
+      that the remaining orbit of $Y$ must have order $1$, so that the action
+      of $G$ fixes a point of $Y$, and therefore a point of $X$, as desired.
+
+      Now, to see the claim, note that the order of each orbit of $Y$ divides
+      $|G|$, so if there were two orbits of size $<|G|$, the sum of their
+      orders would be at most $|G|$, which would yield
+      \[
+        |Y|\leq|G|+(n-2)|G|=(n-1)|G|<(n-1)|G|+1,
+      \]
+      a contradiction of \autoref{eq1}, as desired.
+    \end{proof}
+  \end{enumerate}
+
+  \item (January 2021 Q1) Let $G$ be a group of order $2057$.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
+    \item Snow that $G\simeq P\times Q$, where $P$ is a group of order $17$ and
+    $Q$ is a group of order $121$. Determine all groups of order $2057$ up to
+    isomorphism.
+
+    \medskip
+
+    There are two.
+    \[
+      \mathbb{Z}/17\oplus\mathbb{Z}/121
+      \qquad\text{and}\qquad
+      \mathbb{Z}/17\oplus\mathbb{Z}/11\oplus\mathbb{Z}/11.
+    \]
+    \begin{proof}
+      Observe that $2057=17\cdot 121=17\cdot 11^2$, and use the exact same
+      argument given in \hyperref[May_2022_1(d)]{May 2022, Q1(d)}.
+    \end{proof}
+    \item Show that $\Aut(G)\simeq\Aut(P)\times\Aut(Q)$.
+    \begin{proof}
+      This is \autoref{aut_of_prod_of_coprimes}.
+    \end{proof}
+    \item Show that if $Q$ is cyclic, then so is $\Aut(Q)$. What is the order
+    of $\Aut(Q)$ in this case?
+    \begin{proof}
+      This is proven in class --- if $G\cong\langle a\mid a^n\rangle$, then
+      there is an isomorphism of monoids
+      \[
+        \mathbb{Z}/n\mathbb{Z}\xrightarrow{\sim}\End(G)
+        \qquad\text{given by}\qquad
+        [k]\mapsto(a^m\mapsto a^{mk})
+      \]
+      (this is easily proven via the universal property of free groups). Thus
+      there is an isomorphism of groups
+      \[
+        (\mathbb{Z}/n\mathbb{Z})^\times\cong\Aut(G).
+      \]
+      We know that $|(\mathbb{Z}/n\mathbb{Z})^\times|=\phi(n)$, where $\phi(n)$
+      is the number of positive integers less than or equal to $n$ that are
+      coprime to $n$.
+
+      It is straightforward to see that $\phi(p^k)=p^k-p^{k-1}=p^{k-1}(p-1)$ if
+      $p$ is prime: given $1\leq m<p^k$, the only way to have $\gcd(p^k,m)>1$
+      is if $m$ is a multiple of $p$, that is,
+      $m\in\{p,2p,3p,\ldots,p^{k-1}p=p^k\}$, and there are $p^{k-1}$ such
+      multiples not greater than $p^k$. Therefore, the other $p^k-p^{k-1}$
+      numbers are all relatively prime to $p^k$. Thus if
+      $Q\cong\mathbb{Z}/121=\mathbb{Z}/11^2$, we have that
+      $|\Aut(Q)|=|(\mathbb{Z}/11^2)^\times|=11^2-11=110$.
+    \end{proof}
+    \item If $Q$ is not cyclic, find an isomorphic description of $\Aut(Q)$ and
+    compute its order.
+    \begin{proof}
+      If $Q$ is not cyclic, then
+      $Q\cong\mathbb{Z}/11\oplus\mathbb{Z}/11=\mathbb{F}_{11}^2$, so that
+      $\Aut(Q)=\GL_2(\mathbb{F}_{11})$. The group $\GL_n(\mathbb{F}_p)$ has
+      order $(p^n-1)(p^n-p)(p^n-p^2)\cdots(p^n-p^{n-1})$. (The first row $u_1$
+      of the matrix can be anything but the $0$-vector, so there are $p^n-1$
+      possibilites for the first row. The second row can be anything but a
+      multiple of the first row, giving $p^n-p$ possibilites. For any choice
+      $u_1,u_2$ of the first rows, the third row can be anything but a linear
+      combination of $u_1$ and $u_2$. The number of linear combinations
+      $a_1u_1+a_2u_2$ is just the number of choices for the pair $(a_1,a_2)$,
+      and there are $p^2$ of these. It follows that there are $p^n-p^2$ for the
+      third row. And so on.) Thus $\Aut(Q)$ has order
+      $(11^2-1)(11^2-11)=120\cdot 110=13200$.
+    \end{proof}
+  \end{enumerate}
+
+  \item (August 2020 Q1) \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
+    \item A finite group $G$ is called \emph{cool} if $G$ has precisely four
+    Sylow subgroups (over all primes $p$). The order $|G|$ of a cool group is
+    called a \emph{cool} number. For example, $S_3$ is a cool group and $6$ is
+    a cool number. Describe the set of all cool numbers. Hint: Use prime
+    factorization in your description.
+
+    \medskip
+
+    We claim there are two types of cool numbers:
+    \begin{itemize}
+      \item \textbf{Type I.} Numbers of the form $p^nq^mr^ks^\ell$, where
+      $p,q,r,s$ are distinct prime numbers, and $n,m,k,\ell$ are positive
+      integers. I.e., numbers with exactly four distinct prime factors.
+      \item \textbf{Type II.} Numbers of the form $2^n 3^m$, where $n$ and $m$ are any positive integers.
+    \end{itemize}
+    \begin{proof}
+      To start, we will show any Type I or II number is cool. First, let
+      $p,q,r,s$ be distinct prime numbers, and $n,m,k,\ell$ be positive
+      integers, and consider the group
+      \[
+        G=\mathbb{Z}/p^n\oplus\mathbb{Z}/q^m\oplus\mathbb{Z}/r^k\oplus\mathbb{Z}/s^\ell.
+      \]
+      Because $G$ is abelian, every subgroup of $G$ is normal. Thus we have
+      $n_p=n_q=n_r=n_s=1$ by the second Sylow theorem, so that $G$ has 4 Sylow
+      subgroups as desired.
+
+      Now, let $n$ and $m$ be positive integers and consider the group
+      \[
+        G=S_3\times \mathbb{Z}/2^{n-1}\times\mathbb{Z}/3^{m-1}.
+      \]
+      Clearly $|G|=6\cdot 2^{n-1}\cdot 3^{m-1}=2^n3^m$. Now we claim that
+      $n_2(G)=3$ and $n_3(G)=1$. To see this, note first that $n_3(S_3)=1$ and
+      $n_2(S_3)=3$. Then $n_3(S_3\times\mathbb{Z}/2^{n-1})=1$ by
+      \autoref{p-Sylow_subgroups_of_product}, since $3$ does not divide
+      $|\mathbb{Z}/2^{n-1}|$, and
+      $n_2(S_3\times\mathbb{Z}/2^{n-1})=n_2(S_3)=3$, by
+      \autoref{p-Sylow_subgroups_of_GxZpn}. A simular argument yields that
+      $n_3(G)=1$ and $n_2(G)=3$, as desired.
+
+      Now, let $G$ be a group. Then we claim that in order for $G$ to be cool,
+      its order must be Type I or II as defined above. If $|G|$ has more than
+      four distinct prime factors, then $G$ has more than four Sylow subgroups
+      by Sylow 1, so $G$ isn't cool. We showed above that any number with
+      precisely four distinct prime factors is cool. Clearly the trivial group
+      is not cool. Thus, it suffices to consider the cases that $|G|$ has one,
+      two, or three prime factors. In what follows, let $p$, $q$, and $r$ be
+      distinct primes, and let $n$, $m$, and $k$ be positive integers.
+
+      \textbf{Case 1.} $|G|=p^n$. By the third Sylow theorem, we have $n_p\mid
+      1$, which implies $n_p=1\neq 4$, so no $p$-group is cool.
+
+      \textbf{Case 2.} $|G|=p^nq^m$. In order for $G$ to be cool, we must have
+      $n_p+n_q=4$, so suppose this holds. Then we claim $\{p,q\}=\{2,3\}$. If
+      $n_p=n_q=2$, then by Sylow $3$ we'd have $n_p=2\equiv 1\bmod p$, i.e.,
+      $1\equiv 0\bmod p$, but $1$ is not a multiple of any prime, so we can't
+      have $n_p=n_q=2$.
+
+      Now, suppose $\{n_p,n_q\}=\{1,3\}$, say WLOG $n_p=3$ and $n_q=1$. Then by
+      Sylow 3, we have $n_p=3\equiv 1\bmod p$, i.e., $2\equiv 0\bmod p$, which
+      is only possible if $p=2$. We'd also have $n_p=3\mid q^m$, which is only
+      possible if $q=3$. Hence $|G|=2^n3^m$, so $|G|$ is Type II, as desired.
+
+      \textbf{Case 3.} $|G|=p^nq^mr^\ell$. Again, if $G$ is cool, then we can
+      assume WLOG that $n_p=2$ and $n_q=n_r=1$. Then by Sylow 3, $n_p=2\equiv
+      1\bmod p$, i.e., $1\equiv 0\bmod p$, an impossibility since $p\neq
+      1$. Thus if $G$ has $3$ prime factors then it is lame.
+    \end{proof}
+    \item For each cool number $n$ that you found in part (a), determine
+    whether every group of order $n$ is nilpotent.
+    \begin{proof}
+      First, let $G$ be a Type I cool group, so that
+      $|G|=p_1^{n_1}p_2^{n_2}p_3^{n_3}p_4^{n_4}$ where each $p_i$ is a distinct
+      prime and each $n_i$ is a positive integer. Then since $G$ is cool, for
+      each $i=1,2,3,4$ there exists a unique normal subgroup $H_i\unlhd G$ of
+      order $p_i^{n_i}$. Since each $H_i$ is normal, $K:=H_1H_2H_3H_4$ is a
+      subgroup of $G$, and $|H_i|=p_i^{n_i}$ divides $|K|$ for each
+      $i=1,2,3,4$. Since the $p_i$'s are distinct primes, it follows that
+      $|K|=p_1^{n_1}p_2^{n_2}p_3^{n_3}p_4^{n_4}=|G|$, so that $K=G$. Moreover,
+      if $L_1:=H_1\cap(H_2H_3H_4)$, Then $|L_1|$ must divide $|H_1|=p_1^{n_1}$
+      and $|H_2H_3H_4|$, which has order
+      $|H_2||H_3||H_4|=p_2^{n_2}p_3^{n_3}p_4^{n_4}$ (since
+      $|H_2H_3H_4|\leq|H_2||H_3||H_4|$, and $|H_i|$ must divide $|H_2H_3H_4|$
+      for $i=2,3,4$). Since $|L_1|$ divides both $p_1^{n_1}$ and
+      $p_2^{n_2}p_3^{n_3}p_4^{n_4}$ and the $p_i$'s are distinct primes, it
+      follows that $|L_1|=1$, so $L_1=\{e\}$. The exact same arugment yields
+      that $L_2:=H_2\cap H_1H_3H_4$, $L_3:=H_3\cap H_1H_2H_4$, and
+      $L_4:=H_4\cap H_1H_2H_3$ are trivial as well. Thus by the product
+      recognition theorem, it follows that $G\cong H_1\times H_2\times
+      H_3\times H_4$. We know $p$-groups are nilpotent
+      (\autoref{p-group_is_nilpotent}) and a product of nilpotent groups is
+      nilpotent (\autoref{product_of_nilpotent_is_nilpotent}), so $G$ is
+      nilpotent, as desired.
+
+      Now, suppose $G$ is a Type II cool group, so that $|G|=2^n 3^m$, $n_2=3$,
+      and $n_3=1$. Then we
+    \end{proof}
+    \item For each cool number $n$ that you found in part (a), determine
+    whether every cool group of order $n$ is solvable.
+    \begin{proof}
+      
+    \end{proof}
+  \end{enumerate}
+
+  \item (August 2020 Q2) Suppose a finite group $G$ acts on a set $A$ so that
+  for every nontrivial $g\in G$ there exists a unique fixed point (i.e., there
+  is exactly one $a\in A$, depending on $g$, such that $g(a)=a$). Prove that
+  this fixed point is the same for all $g\in G$.
+  \begin{proof}
+    
+  \end{proof}
+\end{enumerate}
+
+\end{document}
+% hi Isaiah ! - Aden
+% wassup. you're gettin vodka rn (it's 5:51 on Thursday July 18). ok. i dont have much else to say. wish I did tho. hmmmmmm
