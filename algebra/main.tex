@@ -33,6 +33,10 @@
 	urlcolor={red!60!black}%
 }
   
+
+\newenvironment{solution}
+{\renewcommand\qedsymbol{}\begin{proof}[Solution]}
+{\end{proof}}
 %\let\fullref\autoref
 %%
 %%  \autoref is very crude.  It uses counters to distinguish environments
@@ -179,6 +183,8 @@
 %% scale a tikz diagram with [sep=small]
 
 \DeclareMathOperator*{\Rlim}{Rlim}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Ann}{Ann}
 \DeclareMathOperator{\lcm}{lcm}
 \DeclareMathOperator{\conj}{conj}
 \DeclareMathOperator{\Stab}{Stab}
@@ -336,6 +342,9 @@
 \newcommand{\cof}{\text-\mathrm{cof}}
 \DeclareMathOperator*{\colim}{colim}
 \DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Irred}{Irred}
+\DeclareMathOperator{\Prim}{Prim}
+\DeclareMathOperator{\Frac}{Frac}
 \DeclareMathOperator{\End}{End}
 \DeclareMathOperator{\Syl}{Syl}
 \DeclareMathOperator{\Inn}{Inn}
@@ -348,7 +357,7 @@
 %\bibliographystyle{plain}
 
 %--------Meta Data: Fill in your info------
-\title{PCMI}
+\title{Algebra}
 
 \author{Isaiah Dailey}
 
@@ -1452,6 +1461,1057 @@ In general, subgroups of f.g.\ groups are not f.g.!
   Any finite abelian group is a product of its Sylow subgroups.
 \end{corollary}
 
+\section{Rings \& Modules}
+
+\begin{definition}
+  A \emph{ring} is a set $R$ with binary operations $+$ and $\cdot$ satisfying
+  \begin{itemize}
+    \item $(R,+)$ is an abelian group with unit $0$.
+    \item $(R,\cdot)$ is a semigroup.
+    \item The product $\cdot$ distributes over $+$: $x\cdot(y+z)=x\cdot
+    y+x\cdot z$ and $(y+z)\cdot x=y\cdot x+z\cdot x$.
+  \end{itemize}
+  If $\cdot$ has a unit element, then $R$ is called a \emph{ring with
+  identity}, and the multiplicative unit will be denoted by $1$.
+\end{definition}
+
+We will only care about rings with identity, so we will simply write ``ring''
+to mean ``ring with identity''. The \emph{trivial ring} is the unique ring with
+$1=0$.
+
+\begin{definition}
+  Let $R$ be a ring.
+  \begin{itemize}
+    \item $a\in R$ is a \emph{unit} if there exists $b\in R$ such that $ab=1=ba$. If such a $b$ exists it is obviously unique.
+
+    We write $R^\times$ for the set of units in $R$, which is a group under $\cdot$.
+    \item $a\in R$ is an \emph{zero divisor} if $a\neq 0$ and there exists
+    $b\in R\setminus\{0\}$ such that either $ab=0$ or $ba=0$.
+    \item $a\in R$ is a \emph{non-zero divisor}, or \emph{cancellable}, if
+    $a\neq 0$ and it is not a zero-divisor.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}
+  \begin{itemize}
+    \item A \emph{division ring} ( or \emph{skew-field}) is a ring with $1\neq
+    0$ such that every nonzero element is a unit.
+    \item A field is a commutative division ring.
+    \item An \emph{integral domain} (or just \emph{domain}) is a commutative
+    ring with $1\neq 0$ and no zero divisors.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  Every finite domain is a field.
+\end{proposition}
+\begin{proof}
+  Since every $a\in R\setminus\{0\}$ is cancellable, the map $x\mapsto ax$ from
+  $R\to R$ is injective. Since $|R|<\infty$ it is bijective by the pigeonhole
+  principle, so there exists some $b\in R$ such that $ab=1$.
+\end{proof}
+
+\begin{definition}
+  A \emph{subring} of a ring $R$ is a subset $S\subseteq R$ which is a subgroup
+  w.r.t.\ $+$ and is closed under $\cdot$. It's called a \emph{subring with
+  identity} if in addition $1\in S$. (Warning: a subring $S\subseteq R$ can
+  have an identity element which is not equal to $1$).
+\end{definition}
+
+\begin{example}
+  The ring $\mathbb{H}$ of \emph{quarternions} is the set $\mathbb{R}^4$ of $4$-tuples of real numbers, where we write ``$a+bi+cj+dk$'' instead of ``$(a,b,c,d)$''. Addition is componentwise, and multiplication is defined using the distributive law and the identities
+  \[
+    i^2=j^2=k^2=-1
+    \qquad
+    ij=k=-ji
+    \qquad
+    jk=i=-kj
+    \qquad
+    ki=j=-ik.
+  \]
+  The quarternions form a division ring.
+\end{example}
+
+\begin{definition}
+  A ring homomorphism is a function preserving addition and multiplication. If
+  the rings have identity, then a homomorphism might not preserve the identity,
+  although usually we will want them to.
+\end{definition}
+
+\begin{definition}
+  Let $R$ be a ring and $I\subseteq R$ a subset. We say that $I$ is
+  \begin{itemize}
+    \item a \emph{left ideal} if $I$ is a subgroup of $(R,+)$ and if
+    $rI\subseteq I$ for all $r\in R$.
+    \item a \emph{right ideal} if $I$ is a subgroup of $(R,+)$ and if
+    $Ir\subseteq I$ for all $r\in R$.
+    \item a \emph{two-sided ideal} if $I$ is both a left and a right ideal.
+  \end{itemize}
+  We will sometimes call two-sided ideals simply \emph{ideals}.
+
+  Note if $R$ is commutative then all three of these notions are the same.
+
+  If $R$ has an identity, then the \emph{unit ideal} of $R$ is the unique ideal
+  $I$ containing the identity, in which case $I=R$.
+\end{definition}
+
+\begin{theorem}[Second isomorphism theorem for rings]
+  Let $A\subseteq R$ be a subring, and $I\subseteq R$ be an ideal. Then
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $A+I$ is a subring of $R$.
+    \item $I$ is an ideal of $A+I$.
+    \item $A\cap I$ is an ideal of $A$.
+    \item $A/(A\cap I)\cong (A+I)/I$ via $x+(A\cap I)\mapsto x+I$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Third isomorphism theorem for rings]
+  Let $I,J\leq R$ be ideals with $I\subseteq J$. Then
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $J/I$ is an ideal in $R/I$, and
+    \item $R/J\cong (R/I)/(R/J)$ via $x+J\mapsto(x+I)+(J/I)$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{definition}
+  Let $R$ be a commutative ring with identity, and suppose $A,B\leq R$ are
+  ideals. Then we say $A$ and $B$ are \emph{comaximal} if $A+B=R$,
+  equivalently, if $1=a+b$ for some $a\in A$ and $b\in B$.
+\end{definition}
+
+\begin{theorem}[The Chinese Remainder Theorem]
+  If $A_1,\ldots,A_n$ are pairwise comaximal ideals in a commutative ring $R$
+  with identity, then $A_1\cdots A_n=A_1\cap\cdots\cap A_n$, and
+  \[
+    R/A_1\cdots A_n\to(R/A_1)\times\cdots\times(R/A_n)
+  \]
+  sending
+  \[
+    r+A_1\cdots A_n\mapsto(r+A_1,r+A_2,\ldots,r+A_n)
+  \]
+  is a well-defined isomorphism.
+\end{theorem}
+
+\begin{example}
+  Let $a_1,\ldots,a_n$ be pairwise coprime integers, and $a=a_1\cdots
+  a_n$. Then
+  $\mathbb{Z}/(a)\cong\mathbb{Z}/(a_1)\times\cdots\times\mathbb{Z}/(a_n)$.
+\end{example}
+
+\begin{definition}
+  A \emph{Euclidean domain} is an integral domain $R$ such that there exists a function $N:R\setminus\{0\}\to\mathbb{Z}_{\geq 0}$ such that
+  \begin{itemize}
+    \item for any $a,b\in R$ with $b\neq 0$, there exists $q,r\in R$ such that
+    \[
+      a=qn+r\quad\text{with either }r=0\text{ or }N(r)<N(b).
+    \]
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  The Gaussian integrs $\mathbb{Z}[i]\subseteq\mathbb{C}$ form a Euclidean
+  domain.
+
+  Define
+  \[
+    N(a+bi):=|a+bi|^2=(a+bi)(a-bi)=a^2+b^2.
+  \]
+  Note that $N(\alpha\beta)=N(\alpha)N(\beta)$. Now let $\alpha=a+bi$ and $\beta=c+di$ in $\mathbb{Z}[i]$, then in $\mathbb{C}$ we have
+  \[
+    \frac{\alpha}{\beta}
+    =r+si
+    =\frac{ac-bd}{c^2+d^2}+\frac{ad+bc}{c^2+d^2}i,
+    \qquad\text{so}\qquad
+    r=\frac{ac-bd}{c^2+d^2}\text{ and }s=\frac{ad+bc}{c^2+d^2}\text{ in }\mathbb{Q}.
+  \]
+  The number $\alpha/\beta$ is distance at most $\sqrt{2}/2=1/\sqrt{2}$ from
+  some element of $\mathbb{Z}[i]$, which are exactly the points in the integer
+  lattice inside $\mathbb{C}$, so we may choose $p,q\in\mathbb{Z}$ such that
+  $|r-p|,|s-q|\leq 1/2$. Then
+  \[
+    \left|\frac{\alpha}{\beta}-(p+qi)\right|^2
+    \leq|r-p|^2+|s-q|^2
+    \leq\frac{1}{2}
+  \]
+  and thus
+  \[
+    |\alpha-(p+qi)\beta|^2\leq\frac{|\beta|^2}{2}.
+  \]
+  Therefore setting $\gamma=\alpha-(p+qi)\beta\in\mathbb{Z}[i]$, we have
+  \[
+    \alpha=(p+qi)\beta+\gamma,
+    \qquad
+    |\gamma|^2<|\beta|^2.
+  \]
+  Thus $\mathbb{Z}[i]$ is a Euclidean domain.
+\end{example}
+
+\begin{definition}
+  In a domain $R$, a \emph{greatest common divisor (gcd)} of $a,b\in R$ with
+  $b\neq 0$ is any element $d\in R$ such that (i) $a,b\in(d)$, and
+  $a,b\in(e)\implies d\in(e)$.
+\end{definition}
+
+\begin{definition}
+  Let $R$ be a domain. We can clasify elements of $R$ into exactly one of the following types.
+  \begin{itemize}
+    \item \emph{Zero}. Just $0$.
+    \item \emph{Units}. Elements which have a multiplicative inverse.
+    \item \emph{Reducible elements}. $r\in R$ which is not $0$ or a unit, such
+    that $r=ab$ for some $a,b$ which are not $0$ or units.
+    \item \emph{irreducible elements.} $r\in R$ which are not $0$ or a unit or reducible.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}
+  We say $a,b\in R$ are \emph{associate} (or \emph{same up to units}) if there
+  exists a unit $u\in R^\times$ such that $b=ua$. Being associate is an
+  equivalence relation on $R$.
+
+  We say that $a\mid b$ iff $(a)\subseteq(b)$. Equivalently if there is $c\in
+  R$ such that $b=ac$.
+\end{definition}
+
+\begin{proposition}
+  Let $a,b\in R$ a domain. TFAE.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $a$ and $b$ are assocaite.
+    \item $a\mid b$ and $b\mid a$.
+    \item $(a)=(b)$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{lemma}
+  Let $p\in R$ which is not zero and not a unit. Then $p\in R$ is irreducible
+  iff for all $a\in R$, $(p)\subsetneq(a)$ implies $(a)=R$. That is, $p$ is
+  irreducible iff $(p)$ is maximal amongst proper \emph{principal} ideals.
+
+  In particular if $R$ is a PID, then $p\in R$ is irreducible iff $p\neq 0$ and
+  $(p)$ is maximal.
+\end{lemma}
+
+\begin{corollary}
+  If $p,q$ are irreducible elements in a domain, then $p\mid q$ iff $p$ and $q$
+  are the same up to units.
+\end{corollary}
+
+\begin{definition}
+  In a domain $R$, an element $p\in R$ is \emph{prime} iff $p\neq 0$ and $(p)$
+  is not a prime ideal. THat is, iff $p$ is nonzero and not a unit, and if
+  $p\mid ab$ implies either $p\mid a$ or $p\mid b$.
+\end{definition}
+
+\begin{proposition}
+  In a domain, prime elements are irreducible.
+\end{proposition}
+
+\begin{proposition}
+  In a PID, an element is prime iff it is irreducible.
+\end{proposition}
+
+\begin{definition}
+  A \emph{unique factorization domain} (UFD) is a domain such that every
+  non-zero non-unit $r\in R$ satisfies
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $r=p_1\cdots p_n$ for some irreducibles $p_1,\ldots,p_n\in R$, $n\geq 1$, and
+    \item this decomposition is unique up to associates, i.e., if $r=p_1\cdots
+    p_n=q_1\cdots q_m$ for irreducibles $p_i$, $q_j$, then $m=n$ and there is a
+    a permutation $\sigma\in S_n$ such that $q_k=u_kp_{\sigma(k)}$ for some
+    unit $u_k$, for $k=1,\ldots,n$.
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}
+  In a UFD, prime and irreducible are equivalent.
+\end{proposition}
+
+\begin{theorem}
+  Every PID is a UFD.
+\end{theorem}
+
+\begin{definition}
+  Let $R$ be an integral domain. Say that $R$ has the \emph{ascending chain condition (acc) for principal ideals} if for any collection $(I_k)_{k\in\mathbb{Z}_{\geq 0}}$ of principal ideals in $R$ such that
+  \[
+    I_1\subseteq I_2\subseteq I_3\subseteq\cdots,
+  \]
+  there exists some $n$ such that $I_k=I_n$ for all $k\geq n$.
+\end{definition}
+
+\begin{lemma}
+  Every PID has the acc for principal ideals.
+\end{lemma}
+
+\begin{proposition}
+  Let $R$ be a domain. If $R$ has the acc for principal ideals, then every
+  nonzero nonunit in $R$ is a finite product of irreducible elements.
+\end{proposition}
+
+\begin{proposition}
+  Let $R$ be an integral domain. If all irreducible elements in $R$ are prime
+  elements, then factorization in irreducibles (when it exists) is unique up to
+  units and reordering.
+\end{proposition}
+
+\begin{lemma}
+  Let $\alpha\in\mathbb{Z}[i]$. If $N(\alpha)\in\mathbb{Z}$ is a prime number,
+  then $\alpha$ is irreducible in $\mathbb{Z}[i]$.
+\end{lemma}
+
+\begin{proposition}
+  If $R$ is commutative with unit, $S\subseteq R$ is a subring (with $1$), and
+  $P\leq R$ is a prime ideal, then $S\cap P$ is a prime ideal of $S$.
+\end{proposition}
+
+\begin{proposition}
+  Let $p\in\mathbb{Z}$ be a prime number, and let $\alpha\in\mathbb{Z}[i]$ be
+  an irreducible element. TFAE
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $\alpha$ is an irreducible divisor of $p$ in $\mathbb{Z}[i]$.
+    \item $p\mathbb{Z}=(\alpha)\cap\mathbb{Z}$.
+  \end{enumerate}
+\end{proposition}
+
+Suppose $\alpha\in\mathbb{Z}[i]$ is irreducible with
+$(\alpha)\cap\mathbb{Z}=p\mathbb{Z}$ with $p$ a prime integer. We have
+$p=\alpha\beta$ for some $\beta\in\mathbb{Z}[i]$. Taking norms gives
+\[
+  p^2=N(\alpha)N(\beta).
+\]
+Since $\alpha$ is not a unit, there are two cases
+\begin{itemize}
+  \item $N(\alpha)=p^2$, $N(\beta)=1$, so that $\beta$ is a unit and thus $p$
+  and $\alpha$ are associate, so $\alpha\in\{\pm p,\pm pi\}$.
+  \item $N(\alpha)=p$, $N(\beta)=p$, so that both $\alpha$ and $\beta$ are
+  irreducible, and $p=\alpha\beta$ is an irreducible factorization of $p$. Thus
+  these are the only two irreducible divisors up to associates, by uniqueness
+  of irreducible factorizations.
+\end{itemize}
+As a conclusion, if $p$ is a prime number, then an element $\alpha=a+bi\in\mathbb{Z}[i]$ is an irreducible divisor of $p$ iff one of the following mutually exclusive cases occurs:
+\begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+  \item $\alpha=\pm p$ or $\alpha=\pm pi$, or
+  \item $a^2+b^2=p$.
+\end{enumerate}
+Thus $p$ is prime in $\mathbb{Z}[i]$ iff the equation $a^2+b^2=p$ has an
+integer solution $(a,b)\in\mathbb{Z}^2$.
+
+\begin{lemma}[Lagrange]
+  Let $p$ be a prime number of the form $p=4m+1$, with $m\in\mathbb{Z}$. Then
+  there exists some $n\in\mathbb{Z}$ such that $p\mid (n^2+1)$.
+\end{lemma}
+
+\begin{theorem}[Fermat]
+  A rational prime $p$ is a sum of two squares iff $p=2$ or $p\equiv 1\bmod 4$.
+\end{theorem}
+
+\begin{corollary}
+  A prime number $p$ is prime/irreducible in $\mathbb{Z}[i]$ iff $p=2$ or
+  $p\equiv 1\bmod 4$.
+\end{corollary}
+
+\begin{corollary}
+  A positive integer $n$ has the form $n=a^2+b^2$ for some $a,b\in\mathbb{Z}$
+  iff its prime factorization (in $\mathbb{Z}$) $n=p_1^{k_1}\cdots p_r^{k_r}$
+  (primes $p_i$ pairwise distinct) is such that: if $p_i\equiv -1\bmod p$, then
+  $k_i$ is even.
+\end{corollary}
+
+\begin{definition}
+  Let $\{a_1,\ldots,a_n\}$ be a finite subset of a domain $R$. Then $d\in R$ is a GCD of the set iff
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $(a_1,\ldots,a_n)\subseteq(d)$, and
+    \item if $(a_1,\ldots,a_n)\subseteq(e)$ for some $e\in R$, then
+    $(d)\subseteq (e)$.
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}
+  If $R$ is a UFD, then every finite subset of $R$ has a GCD.
+\end{proposition}
+
+\begin{proposition}
+  Let $R$ be a UFD, $\{a_1,\ldots,a_n\}$ a finite set of elements in $R$, and
+  $d,c\in R$ with $c\neq 0$. Then $d$ is a GCD of $\{a_1,\ldots,a_n\}$, if and
+  only if $dc$ is a GCD of $\{a_1c,\ldots,a_nc\}$.
+\end{proposition}
+
+\begin{definition}
+  We say a subset $\{a_1,\ldots,a_n\}$ of a domain $R$ is \emph{relatively
+  prime} if $1$ is a GCD for the set. If $d$ is a GCD of a subset
+  $\{a_1,\ldots,a_n\}$ of a UFD, then $\{a_1/d,\ldots,a_n/d\}$ is a relatively
+  prime subset.
+\end{definition}
+
+\begin{proposition}
+  If $R$ is a UFD, $F=\Frac R$ is the fraction field of $R$, and $c\in
+  F^\times=F\setminus\{0\}$, then we can write $c=a/b$ for $a,b\in R$ with
+  $\{a,b\}$ relatively prime. Furthermore, any two such exrepssions
+  $c=a/b=a'/b'$ differ by a unit: i.e., there exists $u'\in R^\times$  such
+  that $a'=ua$ and $b'=ub$.
+\end{proposition}
+
+\begin{definition}
+  For a domain $S$, we write $\Irred(S)\subseteq S$ for the subset of
+  irreducible elements.
+\end{definition}
+
+\begin{proposition}
+  If $f,g,h\in R[x]$ are such that $f=gh$, then $f\in R\setminus\{0\}$ iff
+  $g,h\in R\setminus\{0\}$.
+\end{proposition}
+
+\begin{definition}
+  Let $f=\sum_{k=0}^{n}c_kx^k\in R[x]$. We say that $f$ is \emph{primitive} if
+  the set $\{c_0,\ldots,c_n\}$ of its coefficients is relatively prime. For
+  example, every monic polynomial is primitive.
+\end{definition}
+
+\begin{proposition}
+  Let $R$ be a UFD and let $f\in R[x]$ with $f\neq 0$. Then there exist $a\in
+  R$ and $g\in\Prim(R[x])$ such that
+  \[
+    f=ag.
+  \]
+  Furthermore, this factorization is unique up-to-units in $R$. That is, if
+  \[
+    f=ag=a'g',\qquad a,a'\in R,\qquad g,g'\in\Prim(R[x]),
+  \]
+  then there exists $u\in R^\times$ such that $a'=ua$, $g'=u^{-1}g$.
+\end{proposition}
+
+\begin{proposition}
+  Let $R$ be a UFD, let $F:=\Frac R$, and let $f\in F[x]$ with $f\neq 0$. Then
+  there exists $c\in F^\times$ and $g\in\Prim(R[x])$ such that $f=cg$, and
+  furthermore this factorization is unique up-to-units in $R$. That is, if
+  \[
+    f=cg=c'g'\in F[x],\qquad c,c'\in F,\qquad g,g'\in\Prim(R[x]),
+  \]
+  then there exists $u\in R^\times$ such that $c'=uc$ and $g'=u^{-1}g$.
+\end{proposition}
+
+\begin{proposition}[Gauss' Lemma]
+  Let $f,g$ be two primitive polynomials over a UFD. Then $fg$ is
+  primitive. I.e., if $R$ is a UFD, then $\Prim(R[x])$ is multiplicatively
+  closed.
+\end{proposition}
+
+\begin{proposition}
+  Let $R$ be a UFD and suppose $f=gh\in R[x]$. Then $f\in\Prim(R[x])$ if
+  $g,h\in\Prim(R[x])$.
+\end{proposition}
+
+\begin{proposition}
+  If $R$ is a UFD, $F:=\Frac R$, and
+  \[
+    f=gh\in\Prim(R[x]),\qquad g,h\in F[x],
+  \]
+  there exist
+  \[
+    c\in F^\times,\qquad, g',h'\in\Prim(R[x])\qquad\text{ such that }\quad g=c^{-1}g',\qquad h=ch',\qquad f=g'h'.
+  \]
+\end{proposition}
+
+\begin{corollary}
+  If $R$ is a UFD and $F:=\Frac(R[x])$, then $f\in\Prim(R[x])$ is irreducible
+  iff it is irreducible in $F[x]$.
+\end{corollary}
+
+\begin{corollary}
+  If $R$ is a UFD, a nonunit $f\in\Prim(R[x])$ admits a factorization
+  $f=p_1\cdots p_r$ into primitive irreducibles $p_1,\ldots,p_r$, and this
+  factorization is unique up to reordering and units.
+\end{corollary}
+
+\begin{theorem}
+  Let $R$ be a UFD. Then $R[x]$ is also a UFD. Furthermore, every irreducible $f\in R[x]$ is one of exactly two types.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $f\in R$ and $f$ is irreducible in $R$.
+    \item $f\in\Prim(R[x])$ and $f$ is irreducible in $F[x]$, where $F:=\Frac
+    R$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proposition}
+  Let $F$ be a field. If $f\in F[x]$ and $a\in F$ is such that $f(a)=0$, then
+  $f=(x-a)g$ for some $g\in F[x]$.
+\end{proposition}
+
+\begin{corollary}
+  Let $F$ be a field. If $f\in F[x]$ with $\deg f\in\{2,3\}$, then $f$ is
+  irreducible iff it has a root in $f$.
+\end{corollary}
+
+\begin{definition}
+  Let $F$ be a field, and $f\in F[x]$. Say that $c\in F$ is a \emph{root of
+  multiplicity $m$} if $m\in\mathbb{Z}_{\geq 0}$ is the largest integer such
+  that $(x-c)^m\mid f$ in $F[x]$.
+\end{definition}
+
+\begin{proposition}
+  If $f\in F[x]$ with $\deg f=n$, then $f$ has at most $n$ roots in $F$, even
+  if ``counted up to multiplicity''.
+\end{proposition}
+
+\begin{proposition}
+  Suppose $F$ is the fraction field of a UFD $R$, and consider a polynomial in $R[x]$ of the form
+  \[
+    f=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0,\qquad a_k\in R,\qquad \deg f=n.
+  \]
+  If $c\in F$ is a root of $f$, and if $c=r/s$ with $r,s\in R$ is a fraction in lowest terms, then
+  \[
+    r\mid a_0
+    \qquad\text{and}\qquad
+    s\mid a_n.
+  \]
+  In particular, if $f$ is monic, then any roots of $f$ in $F$ are elements
+  $c\in R$ which divide $a_0$.
+
+  {\color{red}The numerator divides the constant term, the denominator divides
+  the leading term.}
+\end{proposition}
+
+\begin{example}
+  The polynomial $f=x^3-3x-1\in\mathbb{Z}[x]$ is irreducible in
+  $\mathbb{Q}[x]$, since by the above the only possible roots are $\pm 1$, but
+  $f(\pm 1)\neq 0$. Because $f$ is monic and thus primitive, it is also
+  irreducible in $\mathbb{Z}[x]$.
+\end{example}
+
+\begin{proposition}
+  Let $R$ be an integral domain, and $I<R$ a proper ideal. Let $f\in R[x]$ be a
+  monic polynomial of positive degree. If its image $\overline{f}\in(R/I)[x]$
+  is irreducible in $(R/I)[x]$, then $f$ is irreducible in $R[x]$.
+\end{proposition}
+
+\begin{example}
+  Let $R=\mathbb{Q}[x]$ and $I=(x)$. Consider $f=x^3+y^2+3x^2y+17xy+1\in
+  R[y]=\mathbb{Q}[x,y]$. As a polynomial with coefficients in $\mathbb{Q}[x]$,
+  this is monic. Note that $(R/I)[y]\cong\mathbb{Q}[y]$, and reducing mod $I$
+  amounts to setting $x=0$, and gives $\overline{f}=y^2+1$, which is
+  irreducible in $\mathbb{Q}[y]$, so $f$ is irreducible.
+\end{example}
+
+\begin{proposition}[Eisenstein's criterion]
+  Let $R$ be a domain with prime ideal $P\subseteq R$, and let
+  $f=x^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0\in R[x]$ be a monic polynomial over
+  $R$. If $a_0,\ldots,a_{n-1}\in P$ and $a_0\notin P^2$, then $f$ is
+  irreducible in $R[x]$.
+\end{proposition}
+
+\begin{example}[The cyclotomic polynomial $\Phi_p$]
+  Let $R=\mathbb{Z}$ and $P=(p)$ for some prime $p$. Then if
+  $f=a_nx^n+\cdots+a_0$ is a monic polynomial in $\mathbb{Z}[x]$ such that
+  $p\mid a_k$ for $k=0,\ldots,n-1$, and $p\not\mid a_0$, then $f$ is
+  irreducible.
+
+  For instance, consider $\Phi_p(x)=\sum_{k=0}^{p-1}x^k\in\mathbb{Z}[x]$. This is a factor of
+  \[
+    x^p-1=(x-1)\Phi_p(x),
+  \]
+  so roots of $\Phi_p$ in $\mathbb{C}$ are $\lambda\in\mathbb{C}$ such that
+  $\lambda^p=1$ but $\lambda\neq 1$.
+
+  Let
+  \[
+    f(x)
+    =\Phi_p(x+1)
+    =\sum_{k=0}^{p-1}{p\choose k+1}x^k
+    =x^p+px^{p-1}+\cdots+\frac{p(p-1)}{2}x+p
+  \]
+  (where the second equality follows by the hockey-stick identity). This has
+  the Eisenstein property for $p$, so $f$ is irreducible in $\mathbb{Z}[x]$,
+  and thus in $\mathbb{Q}[x]$. (Note: this argument uses the fact that the
+  function $\mathbb{Q}[x]\to\mathbb{Q}[x]$ defined by $f(x)\mapsto f(x+1)$ is
+  an isomorphism of rings, and thus takes irreducible elements to irreducible
+  elements.)
+\end{example}
+
+\begin{proposition}
+  Let $F$ be a field and $G\leq F^\times$ a finite subgroup of its abelian
+  group of units. Then $G$ is a cyclic group.
+\end{proposition}
+
+\begin{definition}
+  Let $R$ be commutative with unit. We say that $R$ is \emph{Noetherian} if it
+  has the ascending chain condition for ideals. That is, if
+  $(I_k)_{k\in\mathbb{N}}$ is an increasing sequence of ideals (so
+  $I_k\subseteq I_{k+1}$ for all $k\in\mathbb{N}$), then there exists some
+  $n>0$ such that $I_k=I_n$ for all $k\geq n$.
+\end{definition}
+
+\begin{theorem}
+  Let $R$ be commutative with unit. Then $R$ is noetherian iff every ideal in
+  $R$ is f.g.
+\end{theorem}
+
+\begin{theorem}[Hilbert basis theorem]
+  Let $R$ be a Noetherian ring, then $R[x_1,\ldots,x_n]$ is Noetherian.
+\end{theorem}
+
+\begin{proposition}
+  Let $M$ be a cyclic $R$-module (meaning $M$ has a generating set of size
+  $1$). Then there is an isomorphism of $R$-modules $M\cong R/I$ for some left
+  ideal $I\leq R$.
+\end{proposition}
+
+\begin{proposition}
+  Let $N_1,\ldots,N_k\subseteq M$ be submodules, and set $N:=N_1+\cdots+N_k$. Then TFAE.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item The map $\phi:N_1\oplus\cdots\oplus N_k\to N$ defined by
+    $\phi(x_1,\ldots,x_k):=x_1+\cdots+x_k$ is an isomomorphism of modules.
+    \item $N_j\cap(N_1+\cdots+N_{j-1}+N_{j+1}+\cdots+N_k)=0$ for all $j=1,\ldots,k$.
+    \item Every $x\in N$ can be written \emph{uniquely} in the form
+    $x=x_1+\cdots+x_k$ with $x_j\in N_j$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{definition}
+  Let $R$ be a ring with $1$ (but possibly non-commutative). Suppose $M$ is a
+  right $R$-module and $N$ is a left $R$-module. Then an \emph{$R$-balanced
+  bilinear function} $\beta:M\times N\to A$ is a bilinear function of abelian groups which also satisfies
+  \[
+    \beta(mr,n)=\beta(m,rn)\text{ for }m\in M,\ n\in N,\ r\in R.
+  \]
+  Note if $R=\mathbb{Z}$, then any bilinear map is already balanced.
+
+  If $R$ is commutative, then left and right $R$-modules are the same. In this case, if $A$ is also an $R$-module, then a map $\beta:M\times N\to A$ is \emph{$R$-bilinear}, if
+  \[
+    \beta(mr,n)=\beta(m,rn)=r\beta(m,n)\text{ for }m\in M,\ n\in N,\ r\in R.
+  \]
+\end{definition}
+
+\begin{definition}
+  Let $R$ be a ring with $1$. Let $M$ and $N$ be right and left $R$-modules,
+  respectively. Then there exists an abelian group $M\otimes_RN$ equipped with
+  a group homomorphism $s:M\times N\to M\otimes_RN$. Moreover, $s$ is the
+  universal $R$-bilinear map out of $M\times N$, i.e., it yields a bijection
+  between $R$-balanced bilinear map $M\times N\to A$ and group homomorphisms
+  $M\otimes_RN\to A$. The abelian group $M\otimes_RM$ is called the
+  \emph{tensor product} of $M$ and $N$ over $R$.
+
+  We write $m\otimes n$ for the image of $(m,n)$ under $s$. Elements of this
+  form are called \emph{simple tensors}.
+\end{definition}
+
+\begin{proposition}
+  Let $R$ be commutative with $1$. If $M$ and $N$ are free $R$-modules on bases
+  $\{u_1,\ldots,u_n\}$ and $\{v_1,\ldots,v_m\}$ respectively, then
+  $M\otimes_RN$ is a free $R$-module on the basis $\{u_i\otimes
+  v_j\}_{i=1,\ldots,n,\,j=1,\ldots,m}$.
+\end{proposition}
+
+\begin{proposition}
+  Let $R$ be commutative with $1$. If $M$ and $N$ are $R$-modules, generated by subsets $S$ and $T$ respectively, and $M'\subseteq M$ and $N'\subseteq N$ are submodules generated by subsets $U\subseteq M'$ and $V\subseteq N'$, then
+  \[
+    M/M'\otimes_RN/N'\cong(M\otimes_RN)/R\{s\otimes v,\ u\otimes t\mid s\in S,\,t\in T,\,u\in U,\,v\in V\}.
+  \]
+\end{proposition}
+
+\begin{definition}
+  Let $R$ be a domain. An element $x$ in an $R$-module $M$ is \emph{torsion} if
+  there exists a nonzero $r\in R$ such that $rx=0$. We say a module $M$ is
+  \emph{torsion} if $M_\tors=M$ and is \emph{torsionfree} if $M_\tors=\{0\}$.
+\end{definition}
+
+\begin{lemma}
+  Let $R$ be an integral domain. The collection $M_\tors\subseteq M$ of torsion
+  elements is a submodule. The quotient module $M/M_\tors$ is torsionfree.
+\end{lemma}
+
+\begin{proposition}
+  Let $R$ be a domain. Given an $R$-submodule $N\subseteq M$, the quotient
+  module $M/N$ is torsion iff for all $x\in M$ there exists $c\in
+  R\setminus\{0\}$ such that $cx\in N$.
+\end{proposition}
+
+\begin{definition}
+  Let $R$ be a domain and $M$ an $R$-module. Say that an indexed collection
+  $(x_i\in M)_{i\in I}$ is $R$-linearly dependent (or just $R$-dependent) if
+  there exists an indexed collection $(r_i\in R)_{i\in I}$ with $0<|\{i\in
+  I\mid r_i\neq 0\}|<\infty$ and $\sum_{i}r_ix_i=0$. Otherwise the collection
+  is \emph{$R$-linearly independent}, or just $R$-independent.
+\end{definition}
+
+\begin{lemma}
+  Let $R$ be a domain and $M$ an $R$-module. A subset $S\subseteq M$ is
+  $R$-independent iff the submodule $N=RS$ generated by $S$ is free, with $S$ a
+  free basis of $N$.
+\end{lemma}
+
+\begin{definition}
+  Let $R$ be a domain. The collection of $R$-independent subsets $S\subseteq M$
+  is ordered by $\subseteq$. Say that an $R$-independent subset $S\subseteq M$
+  is \emph{maximally $R$-independent} if it is maximal with respect to this
+  ordering, i.e., if whenever $S\subseteq T\subseteq M$ with $T$ an
+  $R$-independent subset, then $S=T$.
+\end{definition}
+
+\begin{lemma}
+  Let $R$ be a domain. An $R$-independent subset $S\subseteq M$ is maximal iff
+  $M/N$ is a torsion module where $N=RS$.
+\end{lemma}
+
+\begin{proposition}
+  Every module over an integral domain admits a maximal $R$-independent subset.
+\end{proposition}
+
+\begin{proposition}\label{Interchange lemma}
+  Let $R$ be a domain and $M$ an $R$-module. Suppose we have sequences of elements $v_1,\ldots,v_m$, $w_1,\ldots,w_n$ in $M$ such that
+  \begin{itemize}
+    \item $v_1,\ldots,v_m$ is $R$-independent, and
+    \item $M/R\{w_1,\ldots,w_n\}$ is a torsion module.
+  \end{itemize}
+  Then
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $m\leq n$, and
+    \item after reording $w_1,\ldots,w_n$, we have that
+    $M/R\{v_1,\ldots,v_m,w_{m+1},\ldots,w_n$ is a torsion module.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+  Let $R$ be a domain and $M$ an $R$-module. Let $S\subseteq M$ be a finite
+  subset of size $n$ such that $M/RS$ is torsion. Then there exists a maximal
+  $R$-independent subset of size $m\leq n$, and every maximal $R$-independent
+  subset of $M$ has size $m$.
+
+  We call this $m$ the \emph{rank} of $M$.
+\end{proposition}
+
+\begin{proposition}
+  Let $R$ be an integral domain, $M$ an $R$-module with $N\subseteq M$ a
+  submodule. If $N$ has finite rank $n$, and $M/N$ has finite rank $m$, then
+  $M$ has finite rank $m+n$.
+
+  In particular, if $A$ and $B$ are modules of finite rank, then $\rank(A\oplus
+  B)=\rank A+\rank B$.
+\end{proposition}
+
+\begin{definition}
+  Let $R$ be a ring with $1$ (not necessarily commutative). Given a left $R$-module $M$, the \emph{annihilator} of $M$ is the subset
+  \[
+    \Ann(M)
+    :=\{x\in R\mid xM=0\}
+    =\{x\in R\mid xm=0\text{ for all }m\in M\}.
+  \]
+\end{definition}
+
+\begin{proposition}
+  $\Ann(M)$ is a right ideal in $R$.
+\end{proposition}
+
+\begin{proposition}
+  If $M\cong N$ are isomorphic left $R$-modules, then $\Ann M=\Ann N$.
+\end{proposition}
+
+\begin{proposition}
+  Let $R$ be a ring and $I,J\subseteq R$ $2$-sided ideals. Then $R/I\cong R/J$
+  as left $R$-modules iff $I=J$.
+\end{proposition}
+
+\begin{proposition}
+  Every f.g.\ module over a PID is isomorphic to a finite direct sum of cyclic
+  modules.
+\end{proposition}
+
+\begin{theorem}[Modules over a PID: Invariant factor form]
+  Let $R$ be a PID and $M$ a f.g.\ $R$-module.
+  \begin{itemize}
+    \item There exists $t\geq 0$ and a chain of proper ideals $R\supsetneq (a_1)\supseteq\cdots\supseteq(a_t)$ such that
+    \[
+      M\cong R/(a_1)\oplus\cdots\oplus R/(a_t).
+    \]
+    \item The number $t$ and the sequence $(a_1),\ldots,(a_t)$ of ideals are
+    unique, in the sense that if also $M\cong R/(a_1')\oplus\cdots\oplus
+    R/(a_{t'}')$ with $R\supsetneq(a_1')\supseteq\cdots\supseteq(a_{t'}')$,
+    then $t=t'$ and $(a_k)=(a_k)'$ for all $k$.
+  \end{itemize}
+\end{theorem}
+
+\begin{remark}
+  Write $t=s+r$ with $0\leq s,r\leq t$ where $(a_1),\ldots,(a_s)\neq(0)$ and $(a_{s+1})=\cdots=(a_{s+r})=(0)$. Then this becomes
+  \[
+    M\cong R/(a_1)\oplus\cdots\oplus R/(a_s)\oplus R^r,
+  \]
+  where each $R/(a_1),\ldots,R/(a_s)$ is a torsion cyclic module, and $\rank
+  M=r$. This is how the invariant factor composition is usually presented.
+
+  The ideals $(a_1),\ldots,(a_s)$ are called the \emph{invariant factors}, and
+  $r=\rank M$.
+\end{remark}
+
+\begin{theorem}[Modules over a PID: Elementary divisor form]
+  Let $R$ be a PID, and $M$ a f.g.\ $R$-module.
+  \begin{itemize}
+    \item There exist $r,u\geq 0$, and a sequence of elements $p_1^{k_1},\ldots,p_u^{k_u}\in R$ (not necessarily distinct) with $p_i$ prime and $k_i\geq 1$, such that
+    \[
+      M\cong R^{r}\oplus R/(p_1^{k_1})\oplus\cdots\oplus R/(p_u^{k_u}).
+    \]
+    \item The numbers $r$ and $u$ are unique, and the sequence
+    $p_1^{k_1},\ldots,p_u^{k_u}$ is unique up to reordering and units, in the
+    sense that if also $M\cong R^{r'}\oplus R/(q_1^{\ell_1})\oplus\cdots\oplus
+    R/(q_{u'}^{\ell_{u'}})$, then $r=r'$, $u=u'$, and the sequence
+    $q_1^{\ell_1},\ldots,q_u^{\ell_u}$ is the same as
+    $p_1^{k_1},\ldots,p_u^{k_u}$ up to reordering and units.
+  \end{itemize}
+\end{theorem}
+
+\begin{remark}
+  In the elementary divisor form, we also have $r=\rank M$. The list
+  $p_1^{k_1},\ldots,p_u^{k_u}$ are called \emph{elementary divisors}.
+\end{remark}
+
+\begin{proposition}
+  Let $R$ be a PID, $M$ a free $R$-module of rank $m$, and $N\subseteq M$ a submodule. Then
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item $N$ is a free $R$-module of some rank $n\leq m$, and
+    \item There exists
+    \begin{itemize}
+      \item a free basis $x_1,\ldots,x_m$ of $M$, and
+      \item elements $a_1,\ldots,a_n\in R$ with $(a_1)\supseteq\cdots\supseteq
+      (a_n)\supsetneq(0)$, such that
+      \item $y_1=a_1x_1,\ldots,y_n=a_nx_n$ is a free basis of $N$.
+    \end{itemize}
+  \end{enumerate}
+\end{proposition}
+
+\begin{lemma}
+  Let $R$ be a commutative ring, and $M$ an $R$-module. Suppose $I\leq R$ is an
+  ideal such that $I\subseteq\Ann M$. That is, $IM=0$, or more concretely,
+  $am=0$ for all $a\in I$ and $m\in M$. Then $M$ admits the structure of an
+  $R/I$-module, defined so that
+  \[
+    (r+I)m:=rm.
+  \]
+  Furthermore, if $M\cong N$ as $R$-modules, and if $IM=0$, then also $IN=0$
+  and the isomorphism is also an isomorphism of $R/I$-modules.
+\end{lemma}
+
+\begin{proposition}
+  Let $R$ be a commutative ring.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item If $\phi:M\to N$ is an isomorphism of $R$-modules, then $\phi$
+    restricts to an isomorphism $IM\to IN$ of submodules. It further induces an
+    isomorphism $M/IM\to N/IN$ on quotient modules, which is an isomorphism of
+    $R/I$-modules.
+    \item If $M=M_1\oplus\cdots\oplus M_n$ is an internal diret sum
+    decomposition of an $R$-module, then $IM=IM_1\oplus\cdots\oplus IM_n$, and
+    thus $M/IM\cong M/IM_1\oplus\cdots\oplus M/IM_n$ as $R/I$-modules.
+    \item If $M$ is a f.g.\ $R$-module, then $M/IM$ is f.g.\ as both an
+    $R$-module and an $R/I$-module.
+    \item If $M$ is a f.g.\ $R$-module, and $I\leq R$ is a f.g.\ ideal, then
+    $IM$ is also a f.g.\ $R$-module.
+  \end{enumerate}
+\end{proposition}
+
+\begin{definition}
+  Let $R$ be a PID and $p\in R$ a prime, and consider a f.g.\ module $M$. Note that $p^{k+1}M=p(p^kM)\subseteq p^kM$. THus we obtain a chain of submodules
+  \[
+    M=p^0M\supseteq p^1M\supseteq p^2M\supseteq\cdots,
+  \]
+  each of which is also f.g. We therefore get quotients
+  \[
+    M/pM,\qquad pM/p^2M,\qquad p^3M/p^2M,\ldots,
+  \]
+  each of which is a f.g.\ $R/p$-module.
+
+  Note that since $p$ is irreducible, $R/p$ is a field. For $k\geq 1$ define
+  \[
+    \alpha_{p^k}(M):=\dim_{R/p}p^{k-1}M/p^kM.
+  \]
+\end{definition}
+
+\begin{proposition}
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item The function $\alpha_{p^k}$ is an isomorphism invariant of f.g.\
+    $R$-modules.
+    \item If $M\cong M_1\oplus\cdots\oplus M_n$, then
+    $\alpha_{p^k}(M)=\alpha_{p^k}(M_1)+\cdots+\alpha_{p^k}(M_n)$.
+    \item If $M\cong R/(a)$ for some $a\in R$, then
+    \[
+      \alpha_{p^k}(M)=\begin{cases}
+        1 & \text{if }p^k\mid a, \\
+        0 & \text{if }p^k\not\mid a.
+      \end{cases}
+    \]
+    In particular, when $a=0$, this says that $\alpha_{p^k}(R)=1$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{remark}
+  As a consequence of the above proposition, if 
+  \[
+    M\cong R^r\oplus R/(a_1)\oplus\cdots\oplus R/(a_m),\qquad a_k\in R\setminus\{0\},
+  \]
+  we have
+  \[
+    \alpha_{p^k}(M)=r+\text{number of $j\in\{1,\ldots,m\}$ such that $p^k\mid a_j$}.
+  \]
+  Now define
+  \[
+    \beta_{p^k}(M)=\alpha_{p^k}(M)-\alpha^{p^{k+1}}(M).
+  \]
+  Then for the above $M$, we have
+  \[
+    \beta_{p^k}(M)=\text{number of $j\in\{1,\ldots,m\}$ such that $p^k\mid a_j$ and $p^{k+1}\not\mid a_j$}.
+  \]
+  By construction, $\alpha_{p^k}$ and thus $\beta_{p^k}$ are isomorphism invariants, and we have shown that, for any elementary divisor decomposition
+  \[
+    M\cong R^r\oplus R/(p_1^{k_1})\oplus\cdots\oplus R/(p_u^{k_u}),
+  \]
+  we have that $\beta_{p^k}(M)=$the number of elementary divisors in
+  $p_1^{k_1},\ldots,p^{k_u}_u$ which are the same as $p^k$ up-to-units.
+\end{remark}
+
+\begin{definition}
+  Recall that given a \emph{linear operator}, i.e., a pair $(V,T:V\to V)$ where
+  $V$ is an $F$-vector space and $T$ is an $F$-linear map, we can give $V$ the
+  structure of an $R=F[x]$-module, so that
+  \[
+    fv:=f(T)v,\qquad f\in F[x],\qquad v\in V.
+  \]
+  We will write $V_T$ for this $F[x]$-module.
+
+  Conversely, every $F[x]$-module $M$ is of the form $V_T$ for some $(V,T)$,
+  where $V$ is the underlying $F$-vector space of the module $M$ (so $V=M$ as
+  an abelian group), and $T$ is defined by $T(v):=xv$. So $F[x]$-modules are
+  really the same as $F$-linear operators.
+
+  There is a further dictionary:
+  \begin{itemize}
+    \item Submodules of $V_T$ correspond to \emph{$T$-invariant subspaces},
+    i.e., vector spaces $W\subseteq V$ such that $T(W)\subseteq W$.
+    \item Homomorphisms $\phi:V_T\to W_U$ of $F[x]$-modules correspond to
+    linear maps which \emph{interwine} $U$ and $V$, i.e., linear maps
+    $\phi:V\to W$ such that $\phi\circ T=U\circ\phi$.
+    \item $V_T$ and $V_U$ are isomorphic as $F[x]$-modules iff the linear
+    operators $T$ and $U is $ are \emph{similar}, i.e., if there exists a linear
+    isomorphism $\phi:V\to V$ such that $U=\phi\circ T\circ\phi^{-1}$.
+    \item Given $(V,T)$, the space $V$ is f.d.\ over $F$ if and only if $V_T$
+    is f.g.\ and torsion as an $F[x]$-module.
+  \end{itemize}
+
+  Given $(V,T)$ f.d., consider the annihilator ideal $\Ann(V_T)=(f)\subseteq
+  F[x]$. By the classification theorem, we can write $V_T\cong\bigoplus_{k=1}^m
+  R/(f_k)$ for some nonzero $f_k$, and therefore $0\neq f_1\cdots
+  f_m\in\Ann(V_T)$, so that $f\neq 0$. We usually assume $f$ is monic, in which
+  case we call $f$ the \emph{minimal polynomial} of $T$.
+\end{definition}
+
+\begin{proposition}
+  Consider $(V,T)$ with $V$ f.d., and $f$ the minimal polynomial of $T$. For any $c\in V$ TFAE.
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item There exists $v\in V$ with $v\neq 0$ such that $Tv=cv$. That is, $c$
+    is an eigenvalue of $T$.
+    \item $f(c)=0$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{remark}
+  Given any $F[x]$-module decomposition
+  \[
+    V_T\cong M_1\oplus\cdots\oplus M_m=F[x]/(f_1)\oplus\cdots\oplus F[x]/(f_m),
+  \]
+  we can give a block matrix representation of $T$ of the form 
+  \[
+    \left(\begin{array}{c|c|c|c}B_1 & & & \\ \hline & B_2 & & \\ \hline & & \ddots & \\ \hline & & & B_m\end{array}\right)
+  \]
+  by choosing an $F$-basis $e_1,\ldots,e_n$ of $V$, so that the first batch of
+  basis elements are in $M_1$, the second batch in $M_2$, and so on. We'll
+  describe some choices for cyclic modules.
+
+  Given $V_T=F[x]/(f)$ with $f=x^k+b_{k-1}x^{k-1}+\cdots+b_1x+b_0$ a monic
+  polynomial over $F$, we can use the basis
+  \[
+    e_1=\overline{1},\quad e_2=\overline{x},\quad\ldots,\quad e_i=\overline{x}^{i-1},\quad\ldots,\quad e_k=\overline{x}^{k-1}.
+  \]
+  Then the matrix describing the operator $T$ in this basis is the $k\times k$ \emph{companion matrix}
+  \[
+    C_f
+    =\left(\begin{array}{cccccc}0 & 0 & \ldots & \ldots & 0 & -b_0 \\ 1 & 0 & \ldots & \ldots & 0 & -b_1 \\ 0 & 1 & \ldots & \ldots & 0 & -b_2 \\ \vdots & \vdots & \ddots & & \vdots & \vdots \\ \vdots & \vdots & & \ddots & \vdots & \vdots \\ 0 & 0 & \ldots & \ldots & 1 & -b_{k-1}\end{array}\right)
+  \]
+  A matrix is in \emph{rational canonical form} if it is a diagonal block
+  matrix whose non-trivial bloxks are companion matrices
+  $C_{f_1},\ldots,C_{f_m}$ for non-constant monic polynomials $f_k$ such that
+  $f_1\mid f_2\mid\cdots\mid f_m$.
+\end{remark}
+
+\begin{theorem}[Rational canonical form]
+  Given an operator $(V,T)$ on a f.d.\ vector space, there exists a basis
+  w.r.t.\ which the matrix $A$ of $T$ is in rational canonical
+  form. Furthermore, the rational canonical form of the matrix is unique.
+
+  In particular, if the blocks of the rational canonical form of $T$ are the
+  companion matrices associated to non-constant monic polynomials $f_1\mid
+  f_2\mid\cdots\mid f_m$, then the $f_j$'s are called the \emph{invariant
+  factors} of $T$, in the sense that
+  \[
+    V_T\cong\bigoplus_{j=1}^m F[x]/(f_j)
+  \]
+  is an invariant factor decomposition of the $F[x]$-module $V_T$.
+\end{theorem}
+
+\begin{remark}
+  Note that the characteristic polynomial of the companion matrix is
+  \[
+    \det(xI-C_f)=f(x),
+  \]
+  and thus if $V_T\cong\bigoplus_{k=1}^mF[x]/(f_k)$ with $f_k$ monic, then the
+  characteristic polynomial of $T$ is
+  \[
+    \det(xI-T)=f_1(x)\cdots f_m(x).
+  \]
+  If $f$ is the minimal polynomial of $T$, then $f_1\cdots f_m\in\Ann(V_T)=(f)$.
+\end{remark}
+
+Putting together the above results, we have the following result
+
+\begin{proposition}
+  Let $V$ be an $n$-dimensional $F$-vector space, and let $T:V\to V$ be a
+  linear transformation. Then
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+    \item The characteristic polynomial of $T$ is the product of all the
+    invariant factors of $T$.
+    \item (Cayley-Hamilton) The minimal polynomial of $T$ divides the
+    characteristic polynomial of $T$.
+    \item The characteristic polynomial of $T$ divides some power of the
+    minimal polynomial of $T$. In particular, these polynomials have the same
+    roots, not counting multiplicities.
+  \end{enumerate}
+\end{proposition}
+
+Given the characteristic and minimal polynomials of a $2\times 2$ or $3\times
+3$ matrix over $F$, the above proposition is completely enough to determine the
+invariant factors of the matrix.
+
+\begin{definition}
+  If $V_T=F[x]/(x-c)^k$, then in terms of the basis
+  \[
+    e_1=(\overline{x}-c)^{k-1},\quad e_2=(\overline{x}-c)^{k-2},\quad\ldots,\quad e_{k-1}=\overline{x}-c,\quad e_k=1,
+  \]
+  the matrix describing $T$ is the $k\times k$ \emph{Jordan matrix}
+  \[
+    J_k(c):=\begin{pmatrix}
+      c & 1 & 0 & \cdots & \cdots & 0 & 0 \\
+      0 & c & 1 & \cdots & \cdots & 0 & 0 \\
+      0 & 0 & c & \cdots & \cdots & 0 & 0 \\
+      \vdots & \vdots & \vdots & \ddots & & \vdots & \vdots \\
+      \vdots & \vdots & \vdots & & \ddots & \vdots & \vdots \\
+      0 & 0 & 0 & \cdots & \cdots & c & 1 \\
+      0 & 0 & 0 & \cdots & \cdots & 0 & c
+    \end{pmatrix}
+  \]
+  with $c$'s along the diagonal, $1$'s along the first superdiagonal, and $0$'s
+  elsewhere.
+
+  Thus for an operator $T$ whose characteristic (or minimal) polynomial is a
+  product of linear factors in $F[x]$ (e.g., if $F$ is algebraically closed),
+  the elementary divisors of $T$ will all have the form $(x-c_i)^{k_i}$ with
+  $c_i\in F$ and $k_i\geq 1$, in which case there exists a basis such that $T$
+  is represented in \emph{Jordan canonical form}, i.e., as a diagonal block
+  matrix whose blocks are Jordan matrices, and which is unique up to reordering
+  the Jordan blocks.
+\end{definition}
+
 \section{Exercises}
 
 \begin{lemma}\label{p-group_has_nontrivial_center}
@@ -1643,6 +2703,19 @@ In general, subgroups of f.g.\ groups are not f.g.!
   $L\times\mathbb{Z}/p^n$ for some subgroup $L\leq G$ satisfying $|L|=|K|$
   (since conjugating $A\times B$ by $(a,b)$ is the same as first conjugating
   $A$ by $a$ and $B$ by $b$ and then taking their product).
+\end{proof}
+
+\begin{lemma}\label{units_of_Z/p^k_are_cyclic}
+  The multiplicative group of units $(\mathbb{Z}/p^k)^\times$ is
+  cyclic. Moreover, if $k\geq 2$, given a generator $n$ of
+  $(\mathbb{Z}/p^{k-1})^\times$, there exists some $m\in\mathbb{Z}^{\geq 0}$
+  such that $n+p^{k-1}m$ is a generator of $(\mathbb{Z}/p^k)^\times$.
+\end{lemma}
+\begin{proof}
+  This result is outside the scope of a standard algebra class, and requires
+  Hensel's lemma. However, if you are asked to prove that
+  $(\mathbb{Z}/p^k)^\times$ is cyclic for some specific prime $p$ and integer
+  $k\geq 2$, it can be useful to know the statement.
 \end{proof}
 
 \begin{lemma}\label{Sylow_subgroups_are_normal_implies_prod_of_Sylows}
@@ -1920,6 +2993,47 @@ In general, subgroups of f.g.\ groups are not f.g.!
       numbers are all relatively prime to $p^k$. Thus if
       $Q\cong\mathbb{Z}/121=\mathbb{Z}/11^2$, we have that
       $|\Aut(Q)|=|(\mathbb{Z}/11^2)^\times|=11^2-11=110$.
+
+      Now, it remains to show that $(\mathbb{Z}/11^2)^\times$ is cyclic. There
+      is an easy way and a hard way to do this. The easy way is to observe that
+      $|(\mathbb{Z}/11^2)^\times|=110=2\cdot 5\cdot 11$, so by the
+      classification theorem for finite abelian groups, we must have
+      \[
+        (\mathbb{Z}/11^2)^\times
+        \cong\mathbb{Z}/2\oplus\mathbb{Z}/5\oplus\mathbb{Z}/11,
+      \]
+      and $2$, $5$, and $11$ are distinct primes, so $(\mathbb{Z}/11^2)^\times$
+      is cyclic.
+
+      The hard way is to find an element of $(\mathbb{Z}/11^2)^\times$ of order
+      $110$. By \autoref{units_of_Z/p^k_are_cyclic} it suffices to first find a
+      generator $n$ of $(\mathbb{Z}/11)^\times$, in which case there is
+      guaranteed to exist some $m\geq 0$ such that $n+11m$ is a generator of
+      $(\mathbb{Z}/11^2)^\times$. This requires one to guess and check via some
+      arduous arithmetic. There are some tricks one can do to make it
+      manageable, however.
+
+      First of all, we'll take $n=2$, since $\gcd(2,11)=1$, so that $2$
+      generates $(\mathbb{Z}/11)^\times$. Now the aforementioned lemma
+      guarantees the existince of some $m\geq 0$ such that $2+11m$ generates
+      $(\mathbb{Z}/11^2)^\times$. We'll start by checking $m=0$. So we need to
+      check that $2$ has multiplicative order $110$ in $\mathbb{Z}/11^2$. Since
+      $110=2\cdot 5\cdot 11$, it suffices to check that $2^k\not\equiv 1\bmod
+      11^2$ for $k=2\cdot 5=10$, $k=2\cdot 11=22$, or $k=5\cdot 11=55$. This
+      requires a string of computations by hand:
+      \begin{itemize}
+        \item $2^{10}=1024\equiv 56\bmod 121$.
+        \item $2^{22}=(2^{10})^2\cdot 2^2\equiv(56)^2\cdot 4\bmod 121$.
+        \item $(56)^2=3136\equiv 111\bmod 121$.
+        \item $2^{22}\equiv 111\cdot 4=444\equiv 81\bmod 121$.
+        \item $2^{55}=(2^{10})^5\cdot 2^5\equiv(56)^5\cdot 32\equiv(111)^2\cdot 56\cdot 32\bmod 121$
+        \item $(111)^2=12321\equiv 100\bmod 121$.
+        \item $56\cdot 32=1792\equiv 98\bmod 121$.
+        \item $2^{55}\equiv 100\cdot 98=9800\equiv 120\bmod 121$.
+      \end{itemize}
+      Thus, we will have shown that $2$, as an element of
+      $(\mathbb{Z}/11^2)^\times$, has order $110$, so that
+      $(\mathbb{Z}/11^2)^\times$ is cyclic, as desired.
     \end{proof}
     \item If $Q$ is not cyclic, find an isomorphic description of $\Aut(Q)$ and
     compute its order.
@@ -2054,6 +3168,444 @@ In general, subgroups of f.g.\ groups are not f.g.!
   \begin{proof}
     This is \hyperref[Aug_2021_Q1(c)]{August 2021, Q1(c)}.
   \end{proof}
+
+  \item (May 2022 Q2) Make $\mathbb{C}^3$ into a $\mathbb{C}[x]$-module by $f(x)v=f(A)v$, where $v\in\mathbb{C}^3$ and 
+  \[
+    A=\begin{pmatrix}
+      5 & 3 & 0 \\
+      0 & 5 & 0 \\
+      0 & 3 & 3
+    \end{pmatrix}.
+  \]
+  Find polynomials $p_i(x)$ and exponents $e_i$ such that
+  $\mathbb{C}^3\cong\bigoplus_i\mathbb{C}[x]/(p_i^{e_i})$ as
+  $\mathbb{C}[x]$-modules. Justify your answer.
+  \begin{proof}
+    We claim that
+    \[
+      \mathbb{C}^3\cong\mathbb{C}[x]/((x-5)^2)\oplus\mathbb{C}[x]/(x-3).
+    \]
+    Recall that with its $\mathbb{C}[x]$-module structure given by $A$,
+    $\mathbb{C}^3$ is isomorphic to $\bigoplus_{j=1}^n\mathbb{C}[x]/(f_j)$, where
+    $f_1,f_2,\ldots,f_k$ are invariant factors of the matrix $A$ satisfying:
+    \begin{itemize}
+      \item $f_1\mid f_2\mid\cdots\mid f_k$,
+      \item $f_1f_2\cdots f_k$ is the characteristic polynomial $c_A$ of $A$, and
+      \item $f_k=m_A$ is the minimal polynomial of $A$.
+    \end{itemize}
+    We have that the characteristic polynomial of $A$ is given by
+    \[
+      \det(xI-A)
+      =\det \begin{pmatrix}
+        x-5 & -3 & 0 \\
+        0 & x-5 & 0 \\
+        0 & -3 & x-3
+      \end{pmatrix}
+      =(x-5)^2(x-3).
+    \]
+    The above conditions give that the minimal polynomial of $A$ is either
+    $(x-5)^2(x-3)$ or $(x-5)(x-3)$ (since the minimal polynomial $m_A$ must
+    divide $c_A=(x-5)(x-3)^2$, and the other invariant factors, which multiply to
+    give $c_A/m_A$, must each divide $m_A$). One can directly check that
+    $m_A(x)\neq(x-5)(x-3)$, as
+    \[
+      (A-5I)(A-3I)=\begin{pmatrix}
+        0 & 3 & 0 \\
+        0 & 0 & 0 \\
+        0 & 3 & -2
+      \end{pmatrix}\begin{pmatrix}
+        2 & 3 & 0 \\
+        0 & 2 & 0 \\
+        0 & 3 & 0
+      \end{pmatrix}
+      =\begin{pmatrix}
+        0 & 6 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & 0
+      \end{pmatrix}
+      \neq 0,
+    \]
+    so the minimal polynomial must be $m_A=(x-5)^2(x-3)$. Thus $m_A=c_A$ is the
+    only invariant factor of $A$, so that with its $\mathbb{C}[x]$-module
+    structure given by $A$, we have
+    \[
+      \mathbb{C}^3\cong\mathbb{C}[x]/((x-5)^2(x-3)).
+    \]
+    Now, note that $x-5$ and $x-3$ are non-associate primes, so that $(x-5)^2$
+    and $(x-3)$ are coprime. Thus by the Chinese remainder theorem, we further
+    have that
+    \[
+      \mathbb{C}^3\cong\mathbb{C}[x]/((x-5)^2)\oplus\mathbb{C}[x]/(x-3),
+    \]
+    as desired.
+  \end{proof}
+
+  \item (May 2022 Q3) Completely factor the following polynomials over the
+  given fields (or prove they are irreducible).
+  \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
+    \item $x^3+x+2\in\mathbb{Z}_3[x]$.
+
+    \[
+      f(x):=x^3+x+2\equiv(x^2+2x+2)(x-2)\bmod 3.
+    \]
+
+    \begin{proof}
+      One can check by hand that $f(x)=x^3+x+2$ has a root, namely $f(2)=0$, so
+      $x-2$ must divide $f$. Then doing polynomial long division yields
+      \[
+        (x^2+2x+2)(x-2)=x^3+x+2\bmod 3.
+      \]
+      Then one can check $x^2+2x+2$ has no roots in $\mathbb{Z}_3$, and it is
+      quadratic, so it is irreducible. Thus the above is the irreducible
+      factorization of $f$.
+    \end{proof}
+    \item $x^4+x^3+x+3\in\mathbb{Z}_5[x]$.
+
+    \medskip
+
+    The polynomial is irreducible.
+
+    \begin{proof}
+      There might be an easier proof, but this is all I can think of.
+
+      Let $f(x)=x^4+x^3+x+3$. One can directly check that $f(j)\not\equiv
+      0\bmod 5$ for $j=0,1,2,3$, so if $f$ factors over $\mathbb{F}_5$, it must
+      do so as a product of quadratics. Suppose it did, so there exists $a,b,c,d\in\mathbb{F}_5$ such that
+      \begin{align*}
+        x^4+x^3+x+3
+        &=(x^2+ax+b)(x^2+cx+d) \\
+        &=x^4+(a+c)x^3+(b+d+ac)x^2+(ad+bc)x+bd,
+      \end{align*}
+      so that
+      \[
+        a+c=1,\qquad b+d+ac=0,\qquad ad+bc=1,\qquad\text{and}\qquad bd=3.
+      \]
+      Substituting $c=1-a$ and $d=3/b$ in the middle two equations yields the
+      system
+      \[
+        0=b+\frac{3}{b}+a(1-a)
+        \qquad\text{and}\qquad
+        1=\frac{3a}{b}+b(1-a).
+      \]
+      Multiplying the equations by $b$ yields
+      \begin{equation}\label{eq3}
+        0=b^2+3+ab-a^2b
+        \qquad\text{and}\qquad
+        0=3a+b^2-ab^2-b.
+      \end{equation}
+      Now, it suffices to show that there does not exist any
+      $a,b\in\mathbb{F}_5$ satisfying both of these equations. To show this, we
+      split into cases:
+
+      \textbf{Case 1.} If $a=0$, then the equations become $0=b^2+3$ and
+      $0=b^2-b$. Assuming $b^2-b=0$, the first equation becomes $b+3=0$, so
+      $b=-3\equiv 2$. But then we'd have $b^2-b=2^2-2=2\not\equiv 0\bmod 5$, a
+      contradiction of the fact that $b^2-b=0$ to begin with.
+
+      \textbf{Case 2.} If $a=1$, then the equations become $0=b^2+3+b-b=b^2+3$
+      and $0=3+b^2-b^2-b=3-b$. The second equation yields $b=3$, but then the
+      first equation is unsatisfied, as $b^2+3=9+3=12\not\equiv 0$. Thus it
+      cannot hold that $a=1$.
+
+      \textbf{Case 3.} If $a=2$, then the equations become $0=b^2+3+2b-4b\equiv
+      b^2+3b+3$ and $0=6+b^2-2b^2-b\equiv -b^2-b+1$. The second equation yields
+      $b^2=1-b$, so the first equation the becomes $0=1-b+3b+3=2b+4$, so that
+      $b=-2\equiv 3$. But then the second equation does not hold, as we'd have
+      $-b^2-b+1=-9-3+1=-11\not\equiv 0$.
+
+      \textbf{Case 4.} If $a=3$, then the equations become $0=b^2+3+3b-9b\equiv
+      b^2-b+3$ and $0=9+b^2-3b^2-b\equiv 3b^2-b-1$. The first equation gives
+      $b^2=b-3$, which causes the second equation to become $0=3(b-3)-b-1\equiv
+      2b$, so that we must have $b=0$.
+
+      \textbf{Case 5.} Finally if $a=4$, then the equations become
+      $0=b^2+3+4b-16b\equiv b^2-2b-2$ and $0=12+b^2-4b^2-b\equiv 2b^2-b+2$. The
+      first equation yields $b^2=2b+2$, so that the second equation becomes
+      $0=2(2b+2)-b+2\equiv 3b+1$, so that $b=1/3\equiv 2$. But then the first
+      equation no longer holds, as we'd have $b^2-2b-2=4-4-2=-2\not\equiv 0$.
+
+      Thus there are no $a,b\in\mathbb{F}_5$ satisfying \autoref{eq3}, so it
+      cannot have been true that $f$ factored in the first place.
+    \end{proof}
+    \item\label{May_2022_Q3c} $x^4+x^3+x^2+6x+1\in\mathbb{Q}[x]$.
+
+    \medskip
+
+    The polynomial is irreducible.
+
+    \begin{proof}
+      Since $\mathbb{Z}$ is a UFD (it is in fact a Euclidean domain) with
+      $\Frac\mathbb{Z}=\mathbb{Q}$, in order to show $f$ is irreducible in
+      $\mathbb{Q}[x]$ it suffices to show it is irreducible in $\mathbb{Z}[x]$,
+      as $f$ has coefficients in $\mathbb{Z}$. To that end, one can check via a
+      straightforward computation that
+      \[
+        f(x+1)=x^4+5x^3+10x^2+15x+10.
+      \]
+      It follows by Eisenstein's with $p=5$ that $f(x+1)$ is irreducible over
+      $\mathbb{Z}$, and thus over $\mathbb{Q}$. Since $f(x)\mapsto f(x+1)$ is a
+      ring automorphism of $\mathbb{Q}[x]$ (with inverse $f(x)\mapsto f(x-1)$),
+      it follows that $f$ is irreducible as well, as desired.
+    \end{proof}
+  \end{enumerate}
+
+  \item (August 2021 Q2)\begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
+    \item Show that $x^6+69x^5-511x+363$ is irreducible over the integers.
+    \begin{proof}
+      This is a hard one. Write $f$ for the polynomial in question. Modulo $3$,
+      it's easy to factor, as $f(x)\equiv x^6-x\bmod 3$. Since both $0$ and
+      $1\equiv -2$ are roots of $f$ in $\mathbb{F}_3$, it follows that
+      $f(x)=x(x+2)g$, where $g$ is a degree $4$ polynomial. Performing
+      polynomial long division yields that $g=x^4+x^3+x^2+x+1$. One can check
+      that $g$ has no roots in $\mathbb{F}_3$, so if $g$ were to factor it
+      would do so as a product of quadratics, say
+      \begin{align*}
+        g
+        &=x^4+x^3+x^2+x+1 \\
+        &=(x^2+ax+b)(x^2+cx+d) \\
+        &=x^4+(a+c)x^3+(ac+b+d)x^2+(ad+bc)x+bd,
+      \end{align*}
+      so that
+      \[
+        a+c=1,\qquad ac+b+d=1,\qquad ad+bc=1,\qquad\text{and}\qquad bd=1.
+      \]
+      Substituting $d=1/b$ and $c=1-a$ in the middle two equations yields
+      \[
+        a(1-a)+b+\frac{1}{b}=1,\qquad\text{and}\qquad \frac{a}{b}+b(1-a)=1.
+      \]
+      Multiplying
+      \begin{equation}\label{eq4}
+        ab-a^2b+b^2+1-b=0 \qquad\text{and}\qquad a+b^2-ab^2-b=0.
+      \end{equation}
+      Thus in order to show $g$ is irreducible, it suffices to show that there
+      does not exist $a,b\in\mathbb{F}_3$ which satisfy \autoref{eq4}. To see
+      this, suppose for the sake of a contradiction that there existed
+      $a,b\in\mathbb{F}_3$ such that \autoref{eq4} holds.
+
+      \textbf{Case 1.} If $a=0$, then the equations become $b^2+1-b=0$ and
+      $b^2-b=0$. The second equation yields $b^2=b$, so the first equation
+      becomes $b+1-b=0$, i.e., $1=0$, a contradiction.
+
+      \textbf{Case 2.} If $a=1$, then the equations becomes
+      $0=b-b+b^2+1-b=b^2+1-b$ and $0=1+b^2-b^2-b=1-b$. The second equation
+      yields $b=1$, so then the first equation becomes $0=b^2+1-b=1+1-1=1$, a
+      contradiction.
+
+      \textbf{Case 3.} If $a=2$, then the equations become
+      $0=2b-4b^2+b^2+1-b\equiv b+1\pmod 3$ and $0=2+b^2-2b^2b-b\equiv
+      2-b^2-b\pmod 3$. The first equation yields that $b=-1$, so the second
+      equation becomes $0=2-b^2-b=2-1+1=2$, and $2\not\equiv 0\pmod 3$, so we
+      reach a contradiction.
+
+      Thus $f$ has an irreducible factorization over $\mathbb{F}_3$ given by
+      \[
+        f(x)\equiv x(x+2)(x^4+x^3+x^2+x+1)\bmod 3.
+      \]
+      Thus, if $f$ factors over $\mathbb{Z}$, it must factor as a product of
+      irreducible polynomials of degree $1,1,4$, or $1,5$, or $2,4$ (since any
+      factorization of $f$ over $\mathbb{Z}$ descends to a factorization over
+      $\mathbb{F}_3$).
+
+      Now, consider $f$ over $\mathbb{F}_5$. Taken mod $5$, $f$ is given by
+      $x^6-x^5-x+3$. One can check directly that $f$ does not have any roots in
+      $\mathbb{F}_5$, so it has no linear factors. Thus $f$ has no linear
+      factors over $\mathbb{Z}$. Now, suppose for the sake of a contradiction
+      that $f$ factors over $\mathbb{Z}$, so by what we've shown it factors as
+      an irreducible quadratic polynomial $p$ times an irreducible quartic
+      polynomial $q$. Moreover, by what we have shown above, we must futher
+      have
+      \[
+        p\equiv x(x+2)=x^2+2x\bmod 3.
+      \]
+      A similar argument to one given above for $\mathbb{F}_3$ yields that $f$
+      factors irreducibly as
+      \[
+        f\equiv x(x+2)(x^4+x^3+9x^2+4x+3)\bmod 11
+      \]
+      over $\mathbb{F}_{11}$. Thus it follows that
+      \[
+        p\equiv x^2+2x\bmod 11
+        \qquad\text{and}\qquad
+        q\equiv x^4+x^3+9x^2+4x+3\bmod 11
+      \]
+      Now, write $a$ for the constant term of $p$ and $b$ for the constant term
+      of $q$, so that $ab=363=3\cdot 11\cdot 11$. By what we've shown above, we
+      know that $3$ and $11$ both divide $a$, and $b\equiv 3\bmod 11$. Thus
+      $a\in\{\pm 33,\pm 363\}$ and $b\in\{\pm 1,\pm 11\}$. Yet none of $1$,
+      $-1$, $11$, or $-11$ are equivalent to $3$ mod $11$.
+    \end{proof}
+    \item Show that $x^4+5x+1$ is irreducible over the rationals.
+    \begin{proof}
+      By the rational root test, any rational root of $f(x):=x^4+5x+1$ must
+      divide $1$, and it is straightforward to check that $1$ and $-1$ are not
+      roots of $f$. Hence, if $f$ factored, it would do so as a product of
+      quadratics, say
+      \begin{align*}
+        f(x)
+        &=x^4+5x+1 \\
+        &=(x^2+ax+b)(x^2+cx+d) \\
+        &=x^4+(a+c)x^3+(ac+b+d)x^2+(ad+bc)x+bd,
+      \end{align*}
+      for some $a,b,c,d\in\mathbb{Q}$, so that
+      \[
+        0=a+c,\qquad 0=ac+b+d,\qquad 5=ad+bc,\qquad\text{and}\qquad 1=bd.
+      \]
+      Substituting $c=-a$ and $d=1/b$ in the middle two equations further
+      yields
+      \[
+        0=-a^2+b+\frac{1}{b}\qquad\text{and}\qquad 5=\frac{a}{b}-ab.
+      \]
+      Multiplying both equations by $b$ yields
+      \begin{equation}\label{eq5}
+        0=-a^2b+b^2+1 \qquad\text{and}\qquad 0=a-ab^2-5b.
+      \end{equation}
+      Hence it suffices to show that there does not exist $a,b\in\mathbb{Z}$
+      which satisfy \autoref{eq5}. Supposing there did exist such a pair, note
+      that the second equation yields
+      \[
+        0=a(1-b^2)-5b\implies a=\frac{5b}{1-b^2},
+      \]
+      so that the first equation becomes
+      \[
+        0=-\left(\frac{5b}{1-b^2}\right)^2b+b^2+1=-\frac{25b^3}{b^4-2b^2+1}+b^2+1.
+      \]
+      Multiplying by $b^4-2b^2+1$ and simplifying yields
+      \[
+        0=b^{6}-b^{4}-25b^{3}-b^{2}+1.
+      \]
+      By the rational root test, any rational solution $b$ to this equation
+      must be an integer dividing $1$, yet one can directly check that neither
+      $1$ nor $-1$ satisfy the above equation. Thus there does not exist any
+      $a,b\in\mathbb{Q}$ satisfying \autoref{eq5}, meaning $f$ is irreducible
+      over $\mathbb{Q}$, as desired.
+    \end{proof}
+    \item Show that $x^4+x^3+x^2+6x+1$ is irreducible over the rationals.
+    \begin{proof}
+      This is \hyperref[May_2022_Q3c]{May 2022, Q3(c)}.
+    \end{proof}
+
+    \item Calculate the number of distinct, irreducible polynomials over
+    $\mathbb{Z}_5$ that have the form
+    \[
+      f(x)=x^2+ax+b,\qquad\text{or}\qquad g(x)=x^3+\alpha x^2+\beta x+\gamma
+      \qquad a,b,\alpha,\beta,\gamma\in\mathbb{Z}_5.
+    \]
+
+    We will prove more generally that in a finite field of order $n$, there
+    are:
+    \begin{itemize}
+      \item $\frac{n^2-n}{2}$ monic, irreducible, quadratic polynomials, and
+      \item $\frac{n^3-n}{3}$ monic, irreducible, cubic polynomials.
+    \end{itemize}
+
+    \begin{proof}
+      Let $F$ be a finite field of order $n$. First of all, note there are
+      $n^2$ monic quadratic polynomials, and $n^3$ monic cubic polynomials.
+
+      Now, we'd like to count the number of reducible, monic, and quadratic
+      polynomials in $F[x]$. Given such a polynomial $f$, in order for it to
+      factor, it must factor as a product of monic linear polynomials, say as
+      $f(x)=(x-a)(x-b)$ for some $a,b\in F$. There are $n\choose 2$ such
+      polynomials with $a$ and $b$ distinct, and $n$ such polynomials with
+      $a=b$, giving a total of
+      \[
+        n^2-\left({n\choose 2}+n\right)=\frac{n^2-n}{2}
+      \]
+      irreducible, monic, and quadratic polynomials in $F[x]$.
+
+      Now, we wish to count the number of reducible, monic, and cubic
+      polynomials in $F[x]$. Given $f\in F[x]$ monic and cubic, for it to
+      factor it must have a linear factor. It follows there are two distinct
+      types
+      \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\alph*)}]
+        \item $f(x)=(x-a)(x-b)(x-c)$ with $a,b,c\in F$, and
+        \item $f(x)=(x-a)g(x)$, where $a\in F$ and $g$ is an irreducible,
+        monic, quadratic polynomial.
+      \end{enumerate}
+      There are three subcases for a polynomial of type (a), based on how many
+      distinct roots it has. There are $n$ ways to choose a type (a) polynomial
+      when $a=b=c$. There are ${n\choose 2}\cdot 2$ ways to choose a type (a)
+      polynomial with two distinct roots (first pick the two roots from $F$,
+      then choose which root to double). Finally, there are $n\choose 3$ ways
+      to choose a type (a) polynomial with $3$ distinct roots. Hence, there are
+      \[
+        n+2\cdot{n\choose 2}+{n\choose 3}
+      \]
+      polynomials of type (a). To count the number of type (b) polynomials,
+      observe that there are $n$ ways to choose a root $a\in F$, and we know
+      there are $\frac{n(n-1)}{2}$ irreducible quadratic and monic polynomials
+      over $F$, so there are
+      \[
+        n\cdot\frac{n(n-1)}{2}=\frac{n^2(n-1)}{2}
+      \]
+      polynomials of type (b). Thus there are
+      \begin{align*}
+        n^3-\left(n+2{n\choose 2}+{n\choose 3}\right)&-\frac{n^2(n-1)}{2} \\
+        &=n^3-n-n(n-1)-\frac{n(n-1)(n-2)}{6}-\frac{n^3-n^2}{2} \\
+        &=\frac{n^3-n}{3}
+      \end{align*}
+      irreducible, monic, and cubic polynomials over $F$, as desired.
+    \end{proof}
+  \end{enumerate}
+
+  \item (August 2021 Q3) Find [all] possible Jordan canonical forms
+  of an $8\times 8$ matrix $M$ over the field $\mathbb{F}_5$ with five elements
+  if it is known that the characteristic polynomial of $M$ is $(x^2+1)^4$ and
+  the minimal polynomial of $M$ is $(x^2+1)^2(x+2)$.
+  \begin{solution}
+    First of all, note that $x^2+1\equiv(x+2)(x+3)\bmod 5$, so that the
+    characteristic polynomial of $M$ is given by $c(x)=(x+2)^4(x+3)^4$ and the
+    minimal polynomial is given by $m(x)=(x+2)^3(x+3)^2$. Now, we'd like to
+    find the invariant factors $f_1,f_2,\ldots,f_k\in \mathbb{F}_5[x]$ of
+    $M$. Recall the following facts about the invariant factors:
+    \begin{itemize}
+      \item $f_j$ is nonconstant and monic for $j=1,\ldots,k$.
+      \item $f_j\mid f_{j+1}$ for $1\leq j<k$.
+      \item $f_k=m$.
+      \item $f_1\cdots f_k=c$.
+    \end{itemize}
+    Putting these facts together, we have that the following is an exhaustive
+    list of possibilities for the invariant factors of $M$:
+    \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+      \item $f_1=(x+2)(x+3)^2$, $f_2=m$.
+      \item $f_1=(x+3)$, $f_2=(x+2)(x+3)$, $f_3=m$.
+    \end{enumerate}
+    Now, in order to find the Jordan canonical form of $M$, we need to find the
+    elementary divisors of $M$. These are the prime powers dividing the
+    invariant factors (counted individually, for each invariant factor). Thus,
+    the list of elementary divisors of $M$ are given by either
+    \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+      \item $(x+2),(x+3)^2,(x+2)^3,(x+3)^2$, or
+      \item $(x+3),(x+2),(x+3),(x+2)^3,(x+3)^2$.
+    \end{enumerate}
+    Thus, the Jordan canonical form of $M$ is an $8\times 8$ diagonal block matrix, where either:
+    \begin{enumerate}[listparindent=\parindent,parsep=5pt,label={(\arabic*)}]
+      \item $M$ has $4$ Jordan blocks: a $2$-Jordan block of size $1$, two
+      $3$-Jordan blocks of size $2$, and a $2$-Jordan block of size $3$.
+      \item $M$ has $5$ Jordan blocks: a $2$-Jordan block of size $1$, two
+      $3$-Jordan blocks of size $1$, a $3$-Jordan block of size $2$, and a
+      $2$-Jordan block of size 3.
+    \end{enumerate}
+    Recall given some $a\in\mathbb{F}_5$, an $a$-Jordan block of size $k$ is a
+    $k\times k$ matrix with $a$'s along the diagonal, $1$'s on the first
+    superdiagonal, and $0$'s elsewhere. For example, if $M$ is of the first
+    time (i.e., if $M$ has four Jordan blocks), then the matrix
+    \[
+      \left(
+        \begin{array}{c|cc|cc|ccc}
+          2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+          0 & 3 & 1 & 0 & 0 & 0 & 0 & 0 \\
+          0 & 0 & 3 & 0 & 0 & 0 & 0 & 0 \\ \hline
+          0 & 0 & 0 & 3 & 1 & 0 & 0 & 0 \\
+          0 & 0 & 0 & 0 & 3 & 0 & 0 & 0 \\ \hline
+          0 & 0 & 0 & 0 & 0 & 2 & 1 & 0 \\
+          0 & 0 & 0 & 0 & 0 & 0 & 2 & 1 \\
+          0 & 0 & 0 & 0 & 0 & 0 & 0 & 2 \\
+        \end{array}
+      \right)
+    \]
+    is a Jordan canonical form for $M$ (the Jordan blocks have been outlined).
+  \end{solution}
 \end{enumerate}
 
 \end{document}
