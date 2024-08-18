@@ -200,6 +200,7 @@
 \DeclareMathOperator{\Spec}{Spec}
 \DeclareMathOperator{\imm}{im}
 \DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\chr}{char}
 \newcommand{\Mod}{\mbf{Mod}}
 \newcommand{\acts}{\curvearrowright}
 \newcommand{\Cell}{\mbf{Cell}}
@@ -2042,7 +2043,7 @@ integer solution $(a,b)\in\mathbb{Z}^2$.
 \begin{example}[The cyclotomic polynomial $\Phi_p$]
   Let $R=\mathbb{Z}$ and $P=(p)$ for some prime $p$. Then if
   $f=a_nx^n+\cdots+a_0$ is a monic polynomial in $\mathbb{Z}[x]$ such that
-  $p\mid a_k$ for $k=0,\ldots,n-1$, and $p\not\mid a_0$, then $f$ is
+  $p\mid a_k$ for $k=0,\ldots,n-1$, and $p\nmid a_0$, then $f$ is
   irreducible.
 
   For instance, consider $\Phi_p(x)=\sum_{k=0}^{p-1}x^k\in\mathbb{Z}[x]$. This is a factor of
@@ -2372,7 +2373,7 @@ integer solution $(a,b)\in\mathbb{Z}^2$.
     \[
       \alpha_{p^k}(M)=\begin{cases}
         1 & \text{if }p^k\mid a, \\
-        0 & \text{if }p^k\not\mid a.
+        0 & \text{if }p^k\nmid a.
       \end{cases}
     \]
     In particular, when $a=0$, this says that $\alpha_{p^k}(R)=1$.
@@ -2394,7 +2395,7 @@ integer solution $(a,b)\in\mathbb{Z}^2$.
   \]
   Then for the above $M$, we have
   \[
-    \beta_{p^k}(M)=\text{number of $j\in\{1,\ldots,m\}$ such that $p^k\mid a_j$ and $p^{k+1}\not\mid a_j$}.
+    \beta_{p^k}(M)=\text{number of $j\in\{1,\ldots,m\}$ such that $p^k\mid a_j$ and $p^{k+1}\nmid a_j$}.
   \]
   By construction, $\alpha_{p^k}$ and thus $\beta_{p^k}$ are isomorphism invariants, and we have shown that, for any elementary divisor decomposition
   \[
@@ -2799,6 +2800,773 @@ invariant factors of the matrix.
   of elements which are algebraic over $F$.
 \end{proposition}
 
+\begin{proposition}
+  Let $K/F$ be an extension with $\chr(F)\neq 2$ and $[K:F]=2$. Then
+  $K=F(\sqrt{d})$ for some $d\in F$ which is not a square in $F$.
+\end{proposition}
+\begin{proof}
+  Pick some $\alpha\in K\setminus F$, then since $[K:F]=2$, we have
+  $K=F(\alpha)$. Let $f$ be the mimimal polynomial of $\alpha$ over $F$, so
+  $f=x^2+bx+c$ for some $b,c,\in F$. Let $d=b^2-4c$. Then
+  \[
+    (2\alpha+b)^2
+    =4\alpha^2+4b\alpha+b^2
+    =4(-b\alpha-c)+4b\alpha+b^2
+    =b^2-4c
+    =d,
+  \]
+  so we can set $\sqrt{d}=2\alpha+b\in K$. Clearly $\sqrt{d}\notin F$, since
+  otherwise we would have $\alpha=(-b+\sqrt{d})/2\in F$. Thus $K=F(\sqrt{d})$.
+\end{proof}
+
+\begin{remark}
+  If $\chr F=2$, then if we try to do this it turns out that $\sqrt{d}=b\in
+  F$, so it does not generate $K$ over $F$.
+\end{remark}
+
+\begin{definition}
+  We say that a finite extension $K/F$ is \emph{2-radical} if there exists a
+  finite tower of subfields of the form
+  \[
+    F=K_0\subseteq K_1\subseteq\cdots \subseteq K_r=K,\qquad [K_j:K_{j-1}]=2.
+  \]
+\end{definition}
+
+\begin{example}
+  In each of
+  \[
+    \mathbb{Q}\subseteq \mathbb{Q}(\sqrt{2})\subseteq \mathbb{Q}(\sqrt[4]{2})\subseteq\mathbb{Q}(\sqrt[8]{2})\subseteq\mathbb{Q}(\\sqrt{[16}]{2})\subseteq\mathbb{Q}(\sqrt[32]{2})\subseteq\cdots
+  \]
+  and
+  \[
+    \mathbb{Q}\subseteq\mathbb{Q}(\sqrt{2})\subseteq\mathbb{Q}\left(\sqrt{1+\sqrt{2}}\right)\subseteq\mathbb{Q}\left(\sqrt{1+\sqrt{1+\sqrt{2}}}\right)\subseteq\mathbb{Q}\left(\sqrt{1+\sqrt{1+\sqrt{1+\sqrt{2}}}}\right)\subseteq\cdots,
+  \]
+  each intermediate extension has degree $2$.
+\end{example}
+
+\begin{remark}
+  If $K/F$ is $2$-radical then $[K:F]=2^r$ for some $r$, but the converse is
+  not true.
+\end{remark}
+
+\begin{proposition}
+  If $K/F$ and $K'/F$ are finite subextensions of $L/F$ which are $2$-radical,
+  then the composite extension $KK'/F$ is $2$-radical.
+\end{proposition}
+\begin{proof}
+  Factor $K/F$ as a sequence of degree $2$ extensions $K_j=K_{j-1}(\alpha_j)$
+  with $K_0=F$ and $K_r=K$. Then we have a chain of extensions
+  \[
+    K'=K'K_0\subseteq K'K_1\subseteq K'K_2\subseteq\cdots\subseteq K'K_n=KK'.
+  \]
+  Each intermediate extension is a simple extension since
+  $K'K_j=K'K_{j-1}(\alpha_j)$, and we know that $[K'K_j:K'K_{j-1}]\leq
+  [K_j:K_{j-1}]=2$.
+\end{proof}
+
+\begin{definition}
+  Given $F\subseteq\mathbb{C}$, let
+  \[
+    F^\mathrm{2rad}:=\bigcup_{\substack{F\subseteq L\subseteq\mathbb{C}\\ L/F\text{ is $2$-radical}}}L.
+  \]
+  Thus $\alpha\in F^{\mathrm{2rad}}$ iff there exists a finite $2$-radical
+  extension $L/F$ with $\alpha\in L$. We see that $F^\mathrm{2rad}$ is a
+  subfield of $\mathbb{C}$, using that if $L,L'$ are $2$-radical extensions
+  over $F$ then so is $LL'$.
+\end{definition}
+
+\begin{definition}
+  A field $K$ is said to be \emph{squareroot closed} if every element of $K$
+  has a square root in $K$.
+\end{definition}
+
+\begin{proposition}
+  For $F\subseteq\mathbb{C}$, the subfield $F^{\mathrm{2rad}}$ is the smallest
+  subfield of $\mathbb{C}$ containing $F$ which is squareroot closed.
+\end{proposition}
+
+\begin{definition}
+  Let $\mathcal{P}$ be a set of points in $\mathbb{C}$, and suppose
+  $\mathcal{P}$ contains at least two points. Then given $\alpha\in\mathbb{C}$,
+  we say $\alpha$ is \emph{construcible from $\mathcal{P}$} if $\alpha$ can be
+  obtained as the intersection of lines and circles drawn as follows:
+  \begin{itemize}
+    \item you can draw a line between any two distinct points of $\mathcal{P}$,
+    and
+    \item you can draw a circle with center at a point $a$ of $\mathcal{P}$ and
+    radius $r=|b-a|$ where $b$ is some other point belonging to $\mathcal{P}$.
+  \end{itemize}
+  We say $\alpha$ is just \emph{constructible} if it is constructable from
+  $\mathcal{P}=\{0,1\}$.
+\end{definition}
+
+\begin{theorem}
+  Let $\mathcal{P}\subseteq\mathbb{C}$, and suppose $\mathcal{P}$ contains $0$
+  and $1$. Then a point $\alpha\in\mathbb{C}$ is construcible from
+  $\mathcal{P}$ iff $\alpha\in F^{\mathrm{2rad}}$, where $F\subseteq\mathbb{C}$
+  is the subfield generated by $\mathcal{P}$.
+\end{theorem}
+
+Here are some impossibility results which follow from this, using only the fact
+that $\alpha\in\mathbb{Q}^{\mathrm{2rad}}$ must have
+$[\mathbb{Q}(\alpha):\mathbb{Q}]=2^r$.
+\begin{itemize}
+  \item \emph{Cannot duplicate the cube}. Given $r$ we want to product
+  $r\sqrt[3]{2}$, i.e., to construct $\alpha=\sqrt[3]{2}$. But
+  $[\mathbb{Q}(\alpha):\mathbb{Q}]=3$.
+  \item Cannot trisect every angle. In particular $\theta=2\pi/3$ cannot be
+  trisected. This amounts to showing that $\zeta:=e^{2\pi i/9}$ is not
+  constructible.
+
+  We know that $\zeta^9=1$, but $\zeta^3\neq 1$. Since
+  $0=\zeta^9-1=(\zeta^3-1)(\zeta^6+\zeta^3+1)$, we see that $\zeta$ is a root
+  of $f=x^6+x^3+1\in\mathbb{Q}[x]$, so $[\mathbb{Q}(\zeta):\mathbb{Q}]\leq
+  3$. Let $\alpha=\zeta+\zeta^{-1}\in\mathbb{Q}(\zeta)$. Using $f(\zeta)=0$,
+  you can show that
+  \[
+    \alpha^3
+    =\zeta^3+3\zeta+3\zeta^{-1}+\zeta^{-3}
+    =3\alpha-1.
+  \]
+  So $\alpha$ is a root of $g=x^3-3x+1\in\mathbb{Q}[x]$. By the rational root
+  test this has no root in $\mathbb{Q}$ so. Thus
+  $[\mathbb{Q}(\alpha):\mathbb{Q}]=3$. Since
+  $[\mathbb{Q}(\zeta):\mathbb{Q}]=[\mathbb{Q}(\zeta):\mathbb{Q}(\alpha)][\mathbb{Q}(\alpha):\mathbb{Q}]$,
+  we see that $3$ divides $[\mathbb{Q}(\zeta):\mathbb{Q}]$.
+  \item \emph{Cannot square the circle.} That is, given a circle with radius
+  $r$, produce a square with side $\sqrt{\pi}r$. But $\sqrt{\pi}$ is not
+  constructible. If it were, than it would be algebraic over $\mathbb{Q}$, and
+  thus $\pi\in\mathbb{Q}(\sqrt{\pi})$ would be algebraic over $\mathbb{Q}$, but
+  by Lindemann's theorem it is not.
+  \item \textit{Cannot construct the regular heptagon.} Show that
+  $\zeta:=e^{2\pi i/7}\in\mathbb{Q}^{\mathrm{2rad}}$. Its minimal polynomial
+  over $\mathbb{Q}$ is $\Phi_7=x^6+\cdots+x+1$, so
+  $[\mathbb{Q}(\zeta):\mathbb{Q}]=6$.
+\end{itemize}
+
+\begin{definition}
+  Let $f\in F[x]$ with $f\neq 0$. A \emph{splitting field} of $f$ is an
+  extension $\Sigma/F$ such that
+  \begin{itemize}
+    \item $f$ \emph{splits} over $\Sigma$, i.e.,
+    $f=c(x-\alpha_1)\cdots(x-\alpha_n)$ for some
+    $c,\alpha_1,\ldots,\alpha_n\in\Sigma$ with $c\neq 0$, and
+    \item $\Sigma$ is generated over $F$ by the roots of $f$, i.e.,
+    $\Sigma=F(\alpha_1,\ldots,\alpha_n)$. (Equivalently: the only subfield of
+    $\Sigma$ over which $f$ splits is $\Sigma$ itself.)
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  If $L/F$ is an extension and $f\in F[x]$ splits over $L$, then the subfield
+  $\Sigma=F(\alpha_1,\ldots,\alpha_n)$ generated by the roots of $f$ in $L$ is
+  a splitting field of $f$.
+\end{proposition}
+\begin{proof}
+  Obvious.
+\end{proof}
+
+\begin{example}
+  If $f=(x^2+1)(x^2-5)\in\mathbb{Q}[x]$, then $\Sigma=\mathbb{Q}(i,\sqrt{5})$
+  is a splitting field.
+\end{example}
+
+\begin{proposition}
+  Let $F$ be a field. Then every nonzero $f\in F[x]$ admits a splitting field.
+\end{proposition}
+
+\begin{corollary}
+  If $\Sigma/F$ is a splitting field of $f\in F[x]$, then $[\Sigma:F]\leq n!$,
+  where $n=\deg f$.
+\end{corollary}
+
+\begin{example}[Cyclotomic extensions]
+  Let $\zeta\in L$ be a primitive $n^\text{th}$ root of unity, i.e., an element
+  of order $n$ in $L^\times$. Then for $F\subseteq L$, the subfield
+  $K=F(\zeta)$ is the splitting field of $f=x^n-1$.
+
+  This is because the elements $1,\zeta,\ldots,\zeta^{n-1}$ are pairwise
+  distinct (since $|\zeta|=n$), and are all clearly roots of $f$ contained in
+  $K$. Thus $f=(x-1)(x-\zeta)\cdots(x-\zeta^{n-1})$ and clearly $K$ is
+  generated over $F$ by the roots.
+
+  The degree of the extension $[F(\zeta):F]$ will be less than $n$ since
+  $f=(x-1)g$ (unless $n=1$).
+
+  Let $\zeta_{n}:=e^{2\pi i/n}\in\mathbb{C}$. The field $\mathbb{Q}(\zeta_n)$
+  is called a \emph{cyclotomic field}. We know that if $n=p$ is prime, then
+  $[\mathbb{Q}(\zeta_p):\mathbb{Q}]=p-1$, since $\Phi_p$ is irreducible over
+  $\mathbb{Q}$.
+\end{example}
+
+\begin{example}
+  Let $f=x^p-2\in\mathbb{Q}[x]$ where $p$ is a prime number. Note that $f$ is
+  irreducible by Eisenstein's criterion.
+
+  If $\alpha$ is a root of this (e.g., $\sqrt[p]{2}\in\mathbb{R}$), so is
+  $\alpha\zeta^k$, where $\zeta$ is some fixed primitive $p^\text{th}$ root of
+  unity. That is, the roots of $f$ in $\mathbb{C}$ are
+  \[
+    \alpha,\ \alpha\zeta,\ \alpha\zeta^2,\ \ldots,\ \alpha\zeta^{p-1}.
+  \]
+  As these are distinct (since $\zeta^k\neq 1$ if $p\nmid k$), thede are
+  distinct roots of $f$, so $\Sigma=\mathbb{Q}(\alpha,\zeta)$ is a splitting
+  field of $f$ (note that $\zeta=(\alpha\zeta)\alpha^{-1}$ can be written in
+  terms of roots of $f$, so it must be in the splitting field). Since
+  $[\Sigma:\mathbb{Q}(\zeta)]\leq[\mathbb{Q}(\alpha):\mathbb{Q}]=p$, we have
+  \[
+    [\Sigma:\mathbb{Q}]\leq (p-1)p,
+  \]
+  but it is necessarily divisible by both $p$ and $p-1$, so (since these are
+  relatively prime) $[\Sigma:\mathbb{Q}]=p(p-1)$.
+\end{example}
+
+\begin{definition}
+  Given a polynomial
+  \[
+    f=a_0+a_1x+\cdots+a_nx^n\in F[x],
+  \]
+  define its \emph{formal derivative} by the formula
+  \[
+    Df:=a_1+2a_2x+3a_3x^2+\cdots+na_nx^{n-1}\in F[x].
+  \]
+  It is straightforward to see that $D(f+g)=Df+Dg$, $D(fg)=(Df)g+f(Dg)$,
+  $Dc=0$, and $D(cf)=cD(f)$ if $f,g\in F[x]$ and $c\in F$.
+\end{definition}
+
+\begin{definition}
+  We say that a nonzero polynomial $f\in F[x]$ is \emph{separable} if $f$ and
+  $Df$ are relatively prime in $F[x]$.
+\end{definition} 
+
+\begin{exercise}
+  Show that if $f=gh\in F[x]$ and $f$ is separable than so are $g$ and $h$.
+\end{exercise}
+\begin{proof}
+  Write $f=\sum_{j=0}^{n}a_jx^j$, then since $f$ and $Df$ are relatively prime,
+  there exists $u,v\in F[x]$ such $uf+v(Df)=1$. Then we have
+  \[
+    (uh+vDh)g+vhDg
+    =ugh+v((Dg)h+gDh)
+    =ugh+vD(gh)
+    =uf+vDf
+    =1,
+  \]
+  so that indeed $g$ and $Dg$ are coprime, so $g$ is separable. Similarly $h$
+  is separable, by symmetry.
+\end{proof}
+
+\begin{remark}
+  If $F\subseteq K$ and $f\in F[x]$, then $f$ is separable over $F$ iff it is
+  separable over $K$.
+
+  To see this: If $f$ is separable over $F$, then $1=uf+vDf$ for some $u,v\in
+  F[x]\subseteq K[x]$, so $f$ is separable over $K$ as well. On the other hand,
+  if $f$ is separable over $K$, then any common divisor $d\in F[x]$ of
+  $\{f,Df\}$ is also a common divisor of these in $K[x]$, so $d\in F^\times$,
+  and thus $f$ is separable over $F$.
+\end{remark}
+
+\begin{exercise}
+  Show that if $\phi:F\to K$ is a homomorphism of fields, then $f\in F[x]$ is a
+  separable polynomial iff $\phi(f)\in K[x]$ is a separable polynomial.
+\end{exercise}
+
+\begin{proposition}
+  Let $L/F$ be any extension over which $f\in F[x]$ splits. Then $f$ is
+  separable iff $f$ has no multiple roots in $L$, iff $f$ and $Df$ have no
+  common roots in $L$.
+\end{proposition}
+
+\begin{example}
+  The polynomial $f=x^4+2x^2+1\in\mathbb{Q}[x]$ has $Df=4x^3+4x$. It is not
+  hard to see (e.g., using the Euclidean algorithm) they have a common factor
+  $x^2+1$. Thus $f$ is not separable. In fact, $f=(x^2+1)^2$ over $\mathbb{Q}$,
+  and $f=(x-i)^2(x+i)^2$ over $\mathbb{C}$, so all roots are multiple.
+\end{example}
+
+\begin{example}
+  The polynomial $f=x^n-1$ is separable over $\mathbb{Q}$ since $Df=x^{n-1}$
+  and $x\nmid f$. Thus $f$ has $n$ distinct roots over $\mathbb{C}$, as we
+  know.
+\end{example}
+
+\begin{proposition}
+  A nonzero polynomial $f\in F[x]$ is separable iff for some irreducible
+  factorization $f=g_1\cdots g_n$ over $F$, we have that (i) each $g_k$ is
+  separable, and (ii) there are no repeated factors, i.e., if $i\neq j$ then
+  $g_i\nmid g_j$.
+\end{proposition}
+
+\begin{proposition}
+  Suppose $f\in F[x]$ is irreducible. Then $f$ is separable iff $Df\neq 0$.
+
+  In particular, if $\chr F=0$, all irreducible polynomials over $F$ are
+  separable.
+\end{proposition}
+
+\begin{example}
+  Consider a field $F$ of prime characteristic $p$ and $f:=x^p-a\in F[x]$,
+  where $a\in F$. Then $Df=px^{p-1}=0$, meaning $f$ is not separable.
+\end{example}
+
+\begin{example}
+  Consider the field $F=\mathbb{F}_p(t)$ of rational functions over
+  $\mathbb{F}_p$ and let $f=x^p-t$. Then $f$ is irreducible over $F$ but not
+  separable.
+\end{example}
+
+\begin{proposition}
+  Let $F(\alpha)/F$ be a finite extension, where $\alpha$ has minimal
+  polynomial $m\in F[x]$. Suppose we are given an embedding of fields
+  $\lambda:F \hookrightarrow F'$, and an extension $L/F'$. Let
+  $m':=\lambda(m)\in F'[x]$. Then for any root $\beta\in L$ of $m'$, there
+  exists a unique embedding $\mu:F(\alpha)\to L$ such that $\mu|_F=\lambda$ and
+  $\mu(\alpha)=\beta$.
+  % https://q.uiver.app/#q=WzAsNCxbMCwwLCJGKFxcYWxwaGEpIl0sWzEsMCwiTCJdLFsxLDEsIkYnIl0sWzAsMSwiRiJdLFswLDEsIlxcYWxwaGFcXG1hcHN0b1xcYmV0YSIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1vbm8ifSwiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzEsMl0sWzAsM10sWzMsMiwiXFxsYW1iZGEiXSxbMCwxLCJcXG11IiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibW9ubyJ9LCJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+  \[\begin{tikzcd}
+    {F(\alpha)} & L \\
+    F & {F'}
+    \arrow["{\alpha\mapsto\beta}", dashed, tail, from=1-1, to=1-2]
+    \arrow["\mu"', dashed, tail, from=1-1, to=1-2]
+    \arrow[from=1-1, to=2-1]
+    \arrow[from=1-2, to=2-2]
+    \arrow["\lambda", from=2-1, to=2-2]
+  \end{tikzcd}\]
+  In fact, there is a bijection
+  % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXGxlZnRcXHtcXGJlZ2lue2FycmF5fXtjfVxcbXU6RihcXGFscGhhKVxcdG8gTFxcXFxcXHRleHR7c3VjaCB0aGF0IH1cXG11fF9GPVxcbGFtYmRhXFxlbmR7YXJyYXl9XFxyaWdodFxcfSJdLFsyLDAsIlxcbGVmdFxce1xcYmVnaW57YXJyYXl9e2N9XFxiZXRhXFxpbiBMXFxcXFxcdGV4dHtzdWNoIHRoYXQgfW0nKFxcYmV0YSk9MFxcZW5ke2FycmF5fVxccmlnaHRcXH0iXSxbMCwxLCJcXG11Il0sWzIsMSwiXFxtdShcXGFscGhhKSJdLFswLDEsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9fX1dLFsyLDMsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XV0=
+  \[\begin{tikzcd}[row sep=tiny]
+    \begin{array}{c} \left\{\begin{array}{c}\mu:F(\alpha)\to L\\\text{such that }\mu|_F=\lambda\end{array}\right\} \end{array} && \begin{array}{c} \left\{\begin{array}{c}\beta\in L\\\text{such that }m'(\beta)=0\end{array}\right\} \end{array} \\
+    \mu && {\mu(\alpha)}
+    \arrow[tail reversed, from=1-1, to=1-3]
+    \arrow[maps to, from=2-1, to=2-3]
+  \end{tikzcd}\]
+\end{proposition}
+\begin{proof}
+  Fix the data given in the setup of the proposition, so $F(\alpha)/F$ is a
+  finite extension, $m\in F[x]$ is the minimal polynomial of $\alpha$,
+  $\lambda:F\to F'$ is an embedding of fields, $L/F'$ is an extension, and
+  $\beta\in L$ is a root of $m':=\lambda(m)$. Then we want to construct an
+  embedding $\mu:F(\alpha)\to L$ which restricts to $\lambda$ on $F$ and
+  satisfies $\mu(\alpha)=\beta$.
+
+  Recall we have an isomorphism $F(\alpha)\cong F[x]/(m)$, so by the universal
+  property of the quotient a map $F(\alpha)\to L$ is the data of a map $F[x]\to
+  L$ whose kernel contains $(m)$. By the universal property of the polynomial
+  ring, a map $F[x]\to L$ is the data of a map $F\to L$ and a chosen element to
+  send $x$ to. Thus, there is a unique map $\widetilde{\mu}:F[x]\to L$ which
+  restricts to the composition $F \xrightarrow{\lambda}F'\hookrightarrow L$ on
+  $F$ and sends $x\mapsto\beta$. Moreover, clearly $m\in\ker\widetilde{\mu}$,
+  as $\widetilde{\mu}(m)=\lambda(m)(\beta)=m'(\beta)=0$. Hence by the universal
+  property of the quotient, $\widetilde{\mu}$ factors through a map
+  $\mu:F(\alpha)\to L$ which restricts to $\lambda$ on $F$ and sends $\alpha$
+  to $\beta$, and $\mu$ is the unique such map $F(\alpha)\to L$ with these
+  properties.
+\end{proof}
+
+It is worth writing out the above proposition in the case $\lambda=\id_F$.
+
+\begin{corollary}
+  Let $F(\alpha)/F$ be a finite extension, where $\alpha$ has minimal
+  polynomial $m\in F[x]$. Suppose we are given an extension $L/F$. Then for any
+  root $\beta\in L$ of $m$, there exists a unique embedding
+  $F(\alpha)\hookrightarrow L$ such that $\mu|_F=\id_F$ and
+  $\mu(\alpha)=\beta$.
+  % https://q.uiver.app/#q=WzAsMyxbMCwwLCJGKFxcYWxwaGEpIl0sWzIsMCwiTCJdLFsxLDEsIkYiXSxbMCwxLCJcXGFscGhhXFxtYXBzdG9cXGJldGEiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtb25vIn0sImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDIsIiIsMix7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMiwxLCIiLDIseyJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzAsMSwiXFxtdSIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1vbm8ifSwiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
+  \[\begin{tikzcd}
+    {F(\alpha)} && L \\
+    & F
+    \arrow["{\alpha\mapsto\beta}", dashed, tail, from=1-1, to=1-3]
+    \arrow["\mu"', dashed, tail, from=1-1, to=1-3]
+    \arrow[no head, from=1-1, to=2-2]
+    \arrow[no head, from=2-2, to=1-3]
+  \end{tikzcd}\]
+  That is, there is a bijection
+  % https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXGxlZnRcXHtcXGJlZ2lue2FycmF5fXtjfVxcbXU6RihcXGFscGhhKVxcdG8gTFxcXFxcXHRleHR7c3VjaCB0aGF0IH1cXG11fF9GPVxcaWRfRlxcZW5ke2FycmF5fVxccmlnaHRcXH0iXSxbMiwwLCJcXGxlZnRcXHtcXGJlZ2lue2FycmF5fXtjfVxcYmV0YVxcaW4gTFxcXFxcXHRleHR7c3VjaCB0aGF0IH1tKFxcYmV0YSk9MFxcZW5ke2FycmF5fVxccmlnaHRcXH0iXSxbMCwxLCJcXG11Il0sWzIsMSwiXFxtdShcXGFscGhhKSJdLFswLDEsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6ImFycm93aGVhZCJ9fX1dLFsyLDMsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XV0=
+  \[\begin{tikzcd}
+    \begin{array}{c} \left\{\begin{array}{c}\mu:F(\alpha)\to L\\\text{such that }\mu|_F=\id_F\end{array}\right\} \end{array} && \begin{array}{c} \left\{\begin{array}{c}\beta\in L\\\text{such that }m(\beta)=0\end{array}\right\} \end{array} \\
+    \mu && {\mu(\alpha)}
+    \arrow[tail reversed, from=1-1, to=1-3]
+    \arrow[maps to, from=2-1, to=2-3]
+  \end{tikzcd}\]
+\end{corollary}
+
+\begin{example}
+  Let $f:=x^3-2\in\mathbb{Q}[x]$, and let $\alpha:=\sqrt[3]{2}$. Then there are
+  \emph{three} distinct embeddings $\mu:\mathbb{Q}(\alpha)\to\mathbb{C}$,
+  corresponding to the roots $\alpha$, $\alpha\omega$, and $\alpha\omega^2$,
+  where $\omega=e^{2\pi i/3}$.
+\end{example}
+
+The above proposition has the following consequence.
+
+\begin{remark}
+  Given a finite extension $K/F$, we have a recipe for constructing
+  homomorphisms of extensions $K\to L$ over $F$: Write $K/F$ as a composite of
+  simple extensions
+  \[
+    F=K_0\subseteq K_1\subseteq K_2\subseteq\cdots \subseteq K_n,
+    \qquad
+    K_j=K_{j-1}(\alpha_j),
+  \]
+  and \emph{inductively} construct homomorphisms
+  $\phi_j:F(\alpha_1,\ldots,\alpha_n)\to L$ extending $\phi_{j-1}$. At each
+  step there is one choice: $\phi(\alpha_j)\in L$ can be any root of
+  $m_{\alpha_j/K_{j-1}}$.
+\end{remark}
+
+\begin{proposition}
+  Consider
+  \begin{itemize}
+    \item an isomorphism of fields $\lambda:F \xrightarrow{\sim}F'$,
+    \item a nonzero polynomial $f\in F[x]$,
+    \item a splitting field $\Sigma/F$ of $f$,
+    \item an extension $L/F'$ over which $f':=\lambda(f)\in F'[x]$ splits.
+  \end{itemize}
+  Then there exists a homomorphism $\phi:\Sigma\to L$ such that
+  $\phi|_F=\lambda$. The image $\phi(\Sigma)$ of $\phi$ is a splitting field of
+  $f'$ over $F'$.
+\end{proposition}
+\begin{proof}
+  We use induction on $\deg f$. If $f$ is constant then $\Sigma=F$ and we take
+  $\phi=\lambda$. So suppose $\deg f\geq 1$, so that $\deg f'=\deg f\geq 1$.
+
+  Let $\alpha_1$ be some root of $f$ in $\Sigma$, and let
+  $m=m_{\alpha_1/F}\in\Irred(F)$ be its minimal polynomial. Then $f=mg$ for
+  some $g\in F[x]$. Under $\lambda:F[x]\to F'[x]$ we get a factorization
+  $f'=m'g'$ with $m'=\lambda(m)$. By the hypothesis $f'$ splits over $L$, so we
+  choose a root $\beta_1\in L$ of $m'$. Then by the previous proposition there
+  exists a unique field embedding $\phi_1:F(\alpha_1)\to F'(\beta_1)$ such that
+  $\phi_1|_F=\lambda$ and $\phi_1(\alpha_1)=\beta_1$. It is straightforward to
+  see that $\phi_1$ is in fact an isomorphism (the same proposition can be used
+  ton construct a map $F'(\beta_1)\to F(\alpha_1)$ which restricts to
+  $\lambda^{-1}$ on $F'$ and sends $\beta_1$ to $\alpha_1$, and it is
+  straightforward to check that this map and $\phi_1$ are inverses).
+
+  We can factor $f=(x-\alpha_1)h$ over $F(\alpha_1)$. Now note that we are in
+  the same situation: We have
+  \begin{itemize}
+    \item an isomorphism of fields $\phi_1:F(\alpha_1)\to F'(\beta_1)$
+    \item a nonezro polynomial $h\in F(\alpha_1)[x]$
+    \item a splitting field $\Sigma/F(\alpha_1)$ of $h$, and
+    \item an extension $L/F'(\alpha_1)$ over which $\phi_1(h)$ splits.
+  \end{itemize}
+  Since $\deg h<\deg f$, induction applies to produce the desired homomorphism
+  $\phi$.
+\end{proof}
+
+\begin{corollary}
+  Let $\Sigma/F$ and $\Sigma'/F$ be two splitting fields for the same nonzero
+  polynomial $f\in F[x]$. Then $\Sigma$ and $\Sigma'$ are isomorphic as
+  extensions of $F$.
+\end{corollary}
+\begin{proof}
+  By the previous proposition there exists a homomorphism $\phi:\Sigma\to
+  \Sigma'$ such that $\phi|_F=\id_F$, and the image $\phi(\Sigma)$ of $\phi$ is
+  a splitting field of $f$ over $F$. Since $\phi(\Sigma)\subseteq \Sigma'$, $f$
+  splits over $\phi(\Sigma)$, and $f$ splits over $\Sigma'$, it follows by the
+  definition of a splitting field that $\phi(\Sigma)=\Sigma'$, so $\phi$ is an
+  isomorphism over $F$, as desired.
+\end{proof}
+
+\begin{definition}
+  Suppose $G\leq\Aut(K)$ is a group of automorphisms of a field $K$. Then the
+  set $K^G:=\{\alpha\in K\mid g(\alpha)=\alpha\ \forall g\in G\}$ is a subfield
+  of $K$, called the \emph{fixed field} of the action of the group $G$.
+\end{definition}
+
+\begin{proposition}
+  Let $f\in F[x]$, and let $R:=\{\alpha\in K\mid f(\alpha)=0\}$ be the set of
+  roots of $f$ in some extension $K/F$. Then any $\phi\in\Aut(K/F)$ restricts
+  to a permutation of the set $R$, and this defines a group homomorphism
+  \[
+    \iota:\Aut(K/F)\to\Sym(R).
+  \]
+  Furthermore, if $K=F(R)$, then $\iota$ is injective, so $\Aut(K/F)$ is
+  isomorphic to a subgroup of $\Sym(R)$.
+\end{proposition}
+\begin{proof}
+  Let $\phi\in\Aut(K/F)$, and let $\alpha\in R$. Then we wish to show that $\phi(\alpha)\in R$. This is clear as
+  \[
+    f(\phi(\alpha))
+    =\phi(f(\alpha))
+    =\phi(0)
+    =0,
+  \]
+  where the first equality follows because $\phi$ fixes $F$, which the
+  coefficients of $f$ belong to.
+
+  Now, suppose $K=F(R)$ and $\phi\in\ker\iota$, so $\phi(\alpha)=\alpha$ for
+  all $\alpha\in R$, i.e., $\phi$ fixes all roots of $f$. Then $R\subseteq K^G$
+  and $F\subseteq K^G$, where $G=\langle\phi\rangle\leq\Aut(K/F)$ is the cyclic
+  subgroup generated by $\phi$. Since $K^G$ is a subsextension of $K=F(R)$
+  containing both $F$ and $R$, we must have that $K^G=K$, so $\phi=\id$.
+\end{proof}
+
+We can use the techniques we have developed to compute the automorphism groups
+of some field extensions.
+
+\begin{example}
+  Consider $g=x^3-2\in\mathbb{Q}[x]$. This factors
+  \[
+    g=(x-\alpha_1)(x-\alpha_2)(x-\alpha_3)=(x-\alpha)(x-\alpha\omega)(x-\alpha\omega^2),
+  \]
+  where $\alpha=\sqrt[3]{2}$ and $\omega=e^{2\pi i/3}$. Thus
+  $\Sigma=\mathbb{Q}(\alpha_1,\alpha_2,\alpha_3)\subseteq\mathbb{C}$ is the
+  splitting field.
+
+  There are \emph{six} distinct embeddings $\Sigma\to\mathbb{C}$. One of them
+  is the ``obvious'' inclusion, but there are others. We can construct them in
+  two steps, and we will show that the image of any such embedding is $\Sigma$
+  itself.
+
+  Suppose we are constructing a map $\phi:\Sigma\to\mathbb{C}$. To start, we
+  will construct its restriction $\phi_1:\mathbb{Q}(\alpha)\to\mathbb{C}$. From
+  an earlier proposition, the data of such a map is a choice of a root of $g$,
+  so there are three such maps $\phi_1:\mathbb{Q}(\alpha)\to\mathbb{C}$ which
+  restrict to the identity on $\mathbb{Q}$, and they are uniquely determined by
+  which of $\alpha$, $\omega\alpha$, and $\omega^2\alpha$ that $\phi_1$ sends
+  $\alpha$ to.
+
+  Over $\mathbb{Q}(\alpha)$ we have
+  \[
+    g=(x-\alpha)g_1,
+    \qquad
+    g_1=x^2+\alpha x+\alpha^2,
+  \]
+  so that the roots of $g_1$ in $\mathbb{C}$ are
+  $\{\omega\alpha,\omega^2\alpha\}$. These are not real numbers, so they are
+  not in $\mathbb{Q}(\alpha)\subseteq\mathbb{R}$. Thus $g_1$ is irreducible
+  over $\mathbb{Q}(\alpha)$. If $\phi_1(\alpha)=\omega^k\alpha$, then
+  $\phi_1(g_1)=x^2+\omega^k\alpha x+\omega^{2k}\alpha^2$, whose roots are
+  $\{\alpha,\omega\alpha,\omega^2\alpha\}\setminus\{\omega^k\alpha\}$. Then the
+  data of a map $\phi_2:\mathbb{Q}(\alpha,\omega\alpha)\to\mathbb{C}$ extending
+  $\phi_1$ is precisely a choice of root belonging to
+  $\{\alpha,\omega\alpha,\omega^2\alpha\}\setminus\{\phi_1(\alpha)\}$ to send
+  $\omega\alpha$ to --- there are two such choices.
+
+  Now, note that $\mathbb{Q}(\alpha,\omega\alpha)=\Sigma$, as clearly
+  $\mathbb{Q}(\alpha,\omega\alpha)\subseteq\Sigma$, and
+  $\omega=\omega\alpha/\alpha\in\mathbb{Q}(\alpha,\omega\alpha)$, so that
+  $\omega^2\alpha=\omega\cdot\omega\alpha\in\mathbb{Q}(\alpha,\omega\alpha)$. 
+  Hence $\phi_2=\phi$, and $\phi(\omega^2\alpha)$ must be the remaining root of
+  $g$ other than $\phi(\alpha)$ and $\phi(\omega\alpha)$. Moreover, we have
+  \[
+    \phi(\Sigma)
+    =\phi(\mathbb{Q}(\alpha_1,\alpha_2,\alpha_3))
+    =\mathbb{Q}(\phi(\alpha_1),\phi(\alpha_2),\phi(\alpha_3))
+    =\mathbb{Q}(\alpha_1,\alpha_2,\alpha_3)
+    =\Sigma,
+  \]
+  so we've shown there are $3\cdot 2=6$ ways to construct an embedding
+  $\Sigma\to\mathbb{C}$ over $\mathbb{Q}$, and the image of each of these
+  embeddings is in fact $\Sigma$ itself. Hence $G:=\Aut(\Sigma/\mathbb{Q})$ has
+  size $6$, and examnining the possible formulas for $\phi\in G$, we see that
+  $G\cong S_3$, as we've shown for every $\sigma\in S_3$ there exists a unique
+  $\phi\in G$ such that $\phi(\alpha_k)=\alpha_{\sigma(k)}$.
+\end{example}
+
+\begin{example}
+  Consider $g=(x^2-2)(x^2-3)\in\mathbb{Q}$, with roots $\pm\sqrt{2}$ and
+  $\pm\sqrt{3}$. The splitting field is
+  $\Sigma=\mathbb{Q}(\sqrt{2},\sqrt{3})$. A similar argument to the previous
+  argument yields that an isomorphism $\phi:\Sigma\to\Sigma$ are uniquely
+  determined by a choice of $\phi(\sqrt{2})\in\{\pm\sqrt{2}\}$ and
+  $\phi(\sqrt{3})\in\{\pm\sqrt{3}\}$ (since $x^3-2$ remains irreducible over
+  $\mathbb{Q}(\sqrt{2})[x]$ as $\sqrt{3}\notin\mathbb{Q}(\sqrt{2})$).
+
+  It can be seen that $G=\Aut(\Sigma/\mathbb{Q})\cong C_2\times C_2$.
+\end{example}
+
+\begin{example}
+  Consider $g=x^3+x^2-2x-1\in\mathbb{Q}[x]$. We see $g\in\Irred(\mathbb{Q})$ by
+  the rational root test, and since $g$ is separable (it is irreducible in
+  characteristic zero) it has three distinct roots
+  $\alpha_1,\alpha_2,\alpha_3\in\mathbb{C}$. Picking a root at random, we get
+  three choices of homomorphisms $\phi:\mathbb{Q}(\alpha_1)\to\mathbb{C}$,
+  determined by $\phi(\alpha_1)\in\{\alpha_1,\alpha_2,\alpha_3\}$.
+
+  What may not be obvious is that $g$ already \emph{splits} over
+  $\mathbb{Q}(\alpha_1)$, in fact, it turns out that the roots of this
+  polynomial are
+  \[
+    \alpha_1=\zeta+\zeta^{-1},
+    \qquad
+    \alpha_2=\zeta^2+\zeta^{-2},
+    \qquad
+    \alpha_3=\zeta^3+\zeta^{-3},
+  \]
+  where $\zeta=e^{2\pi i/7}$ (these are actually all real numbers, all you need
+  to check is that $\zeta^7=1$ and $\zeta\neq 1$). Using this you can check
+  that: $\alpha_2=\alpha_1^2-2$, $\alpha_3=\alpha_2^2-2$. Thus
+  $\Sigma=\mathbb{Q}(\alpha_1)$ is already a splitting field of $g$, and a
+  homomorphism $\Sigma\to\Sigma$ is strictly determined by where it sends
+  $\alpha_1$. Hence $[\Sigma:\mathbb{Q}]=3$ and $G=\Aut(\Sigma/\mathbb{Q})\cong
+  C_3$.
+\end{example}
+
+\begin{example}
+  $x^4-2\in\mathbb{Q}[x]$. Here the roots are $\{\pm\alpha,\pm i\alpha\}$,
+  where $\alpha=\sqrt[4]{2}$. In this case, we can show that
+  $[\Sigma:\mathbb{Q}]=8$ and $G=\Aut(\Sigma/\mathbb{Q})\cong D_8$. This can be seen using the chain of extensions
+  \[
+    \mathbb{Q}\subseteq\mathbb{Q}(\alpha)\subseteq\mathbb{Q}(\alpha,i),
+    \qquad
+    [\mathbb{Q}(\alpha):\mathbb{Q}]=4,
+    \qquad
+    [\mathbb{Q}(\alpha,i):\mathbb{Q}(\alpha)]=2.
+  \]
+  (Note that $\mathbb{Q}(\alpha)\subseteq\mathbb{R}$ so
+  $i\notin\mathbb{Q}(\alpha)$).
+\end{example}
+
+\begin{definition}
+  An algebraic extension $L/F$ is \emph{normal} if every $f\in\Irred(F)$ which
+  has a root in $L$ splits in $L$.
+\end{definition}
+
+\begin{example}
+  $\mathbb{Q}^\alg/F$ for any subfield $F\subseteq\mathbb{Q}^\alg$ is a normal
+  extension, since it is an algebraic extension and all polynomials over
+  $\mathbb{Q}^\alg$ (and hence over $F$) split in $\mathbb{Q}^\alg$.
+\end{example}
+
+\begin{example}
+  Every degree $2$ extension is normal.
+\end{example}
+\begin{proof}
+  Let $L/F$ be normal with $[L:F]=2$, and choose $f\in\Irred(F)$ and suppose
+  $f$ has a root $\alpha\in L$. If $\alpha\in F$ then since $f$ is irreducible
+  and monic over $F$ we must have $f=x-\alpha$, so $f$ splits over $F$ (and
+  therefore $L$) as desired. If $\alpha\in L\setminus F$, then by a degree
+  argument we must have that $L=F(\alpha)$.%
+  \footnote{
+    We have $[F(\alpha):F]>1$ since $F(\alpha)\neq F$, so by the tower rule it
+    follows $2=[L:F(\alpha)][F(\alpha):F]>[L:F(\alpha)]$, meaning
+    $[L:F(\alpha)]=1$, so $L=F(\alpha)$.
+  }
+  Then since $f$ is the minimal polynomial of $\alpha$, we have
+  $L=F(\alpha)\cong F[x]/(f)$ has degree $2$ over $F$, so $\deg f=2$. Then by
+  the division algorithm, since $\alpha\in L$ is a root of $f$, $f$ factors as
+  $f=(x-\alpha)g$ for some $g\in L[x]$. But since $\deg f=2$, we must have
+  $\deg g=1$, so $f$ splits as desired.
+\end{proof}
+
+\begin{example}
+  $\mathbb{Q}(\sqrt[3]{2}/\mathbb{Q}$ is not normal, since $f=x^3-2$ does not
+  split over $\mathbb{Q}$.
+\end{example}
+
+\begin{theorem}
+  A finite extension $L/F$ is normal iff it is a splitting field for some
+  polynomial $f\in F[x]$.
+\end{theorem}
+
+\begin{proof}[Proof part 1: Finite normal extensions are splitting fields:]
+  If $L/F$ is a finite normal extension then
+  \[
+    L=F(\alpha_1,\ldots,\alpha_n)
+  \]
+  for some finite list of elements $\alpha_1,\ldots,\alpha_n$ with minimal
+  polynomials $m_1,\ldots,m_n\in F[x]$. Let $f=\prod_{k=1}^{n}m_k\in F[x]$ be
+  their product. Normality of $L/F$ says that each $m_k$ splits over $L$, and
+  thus $f$ does as well. Since $L/F$ is generated by the $\alpha_k$'s, it is
+  clear that $L$ is a splitting field of $f$.
+\end{proof}
+
+We get the second part as a special case of a more general claim.
+
+\begin{lemma}
+  Suppose $F\subseteq L\subseteq M$, where $L$ is a slitting field of some
+  $f\in F[x]$. If $\alpha,\beta\in M$ are roots of the same irreducible
+  polynomial $g\in\Irred(F)$, then $[L(\alpha):L]=[L(\beta):L]$.
+\end{lemma}
+\begin{proof}
+  By the tower rule,
+  \[
+    [L(\alpha):L]
+    =\frac{[L(\alpha):F]}{[L:F]}
+    =\frac{[L(\alpha):F(\alpha)][F(\alpha):F]}{[L:F]}
+  \]
+  Thus it suffices to show that $[L(\alpha):F(\alpha)]=[L(\beta):F(\beta)]$ and
+  $[F(\alpha):F]=[F(\beta):F]$.
+
+  To see the latter, note that by an above proposition, since $g$ is the
+  minimal polynomial of $\alpha$ and $\beta$, there is an isomorphism of
+  $F$-extensions $\phi:F(\alpha)\to F(\beta)$ sending $\alpha\mapsto\beta$ (both are
+  isomorphic to $F[x]/(g)$), so it is true that $[F(\alpha):F]=[F(\beta):F]$.
+  
+  To see the former, note that $\phi(f)=f$, since $f\in F[x]$. Moreover, both
+  $L(\alpha)/F(\alpha)$ and $L(\beta)/F(\beta)$, being generated over the
+  ground fields by roots of $f$, are splitting fields of $f$. Thus by previous
+  theory $\phi$ extends to an isomorphism $L(\alpha)\to L(\beta)$, so that
+  $[L(\alpha):F(\alpha)]=[L(\beta):F(\beta)]$, as desired.
+\end{proof}
+
+\begin{proof}[Proof of part 2: splitting fields are normal extensions]
+  Suppose $L/F$ is a splitting field of $f\in F[x]$, and $g\in\Irred(F)$ is
+  some irreducible polynomial with root $\alpha\in L$. Form a splitting field
+  $\Sigma/L$ of the polynomial $g\in F[x]\subseteq L[x]$. If $\beta$ is any root of $g$ in $\Sigma$, the previous lemma says
+  \[
+    [L(\alpha):L]=[L(\beta):L].
+  \]
+  But $\alpha\in L$ so these are $1$, so $\beta\in L$. Thus all roots of $g$
+  are in $L$, so $g$ splits over $L$ as desired.
+\end{proof}
+
+\begin{corollary}
+  A splitting field $\Sigma/F$ is a splitting field for \emph{any}
+  $f\in\Irred(F)$ which has a root in $\Sigma$.
+\end{corollary}
+
+We can generalize this to infinite extensions.
+
+\begin{theorem}
+  An algebraic extension $L/F$ is normal iff it is a splitting field for a set
+  $S\subseteq F[x]\setminus\{0\}$ of polynomials.
+\end{theorem}
+\begin{proof}
+  $\implies$ Let $S$ be the set of minimal polynomials of all elements in
+  $L/F$, then $L=F(S)$ and every $m\in S$ splits over $L$ since the extension
+  is normal.
+
+  $\impliedby$ Suppose $L/F$ is a splitting field of a set of polynomials
+  $S\subseteq F[x]\setminus\{0\}$, so $L$ is generated over $F$ by the roots of
+  all $f\in L$. Given $\alpha\in L$ and $g\in\Irred(F)$ with $g(\alpha)=0$, we
+  see that $\alpha$ must be contained in a subfield generated by a finite set
+  of roots, so $\alpha\in F(R_f)\subseteq L$, where $f=f_1\cdots f_k$ for some
+  finite list $f_1,\ldots,f_k\in S$. Since $F(R_f)/F$ is a splitting field of
+  $f$, it is normal so $g$ splits over $F(R_f)$, and hence over $L$.
+\end{proof}
+
+\begin{proposition}
+  Consider fields $F\subseteq K\subseteq L$. If $L/F$ is normal then $L/K$ is
+  normal.
+\end{proposition}
+\begin{proof}
+  First note that if $L/F$ is algebraic then so is $L/K$. Now suppose
+  $f\in\Irred F$ with a root $\alpha\in L$. Then since $K/F$ is algebraic there
+  is a minimal polynomial $g=m_{\alpha/F}\in F[x]$ of $\alpha$ over $F$. Since
+  $g$ has $\alpha$ as a root, over $K$ we must have $f\mid g$. Since $L/F$ is
+  normal we have that $g$ splits over $\Sigma$, and therefore its factor $f$
+  splits over $\Sigma$.
+\end{proof}
+
+\begin{remark}
+  It is \emph{not} true that $L/F$ being normal implies $K/F$ is normal. For
+  instance, $F=\mathbb{Q}$, $K=\mathbb{Q}(\alpha)$,
+  $L=\mathbb{Q}(\alpha,\omega)$ with $\alpha=\sqrt[3]{2}$ and $\omega=e^{2\pi
+  i/3}$.
+\end{remark}
+
+\begin{remark}
+  It is not true that $L/K$ and $K/F$ normal imply $L/F$ is normal For
+  instance, $F=\mathbb{Q}$, $K=\mathbb{Q}(\sqrt{2})$, and
+  $L=\mathbb{Q}(\sqrt[4]{2})$. Both $L/K$ and $K/F$ are degree $2$ and hence
+  normal, but $L/F$ is not normal since the minimal polynomial $x^4-2$ of
+  $\sqrt[4]{2}$ does not split over $L\subseteq\mathbb{R}$.
+\end{remark}
+
 \section{Exercises}
 
 \begin{lemma}\label{p-group_has_nontrivial_center}
@@ -2848,7 +3616,7 @@ invariant factors of the matrix.
 
 \begin{lemma}\label{orb_same_size_iff_stab_same_size}
   Let $G$ be a finite group acting on a finite set $X$, and suppose $x,y\in
-  X$. Then $\Orb(x)=\Orb(y)\iff |\Stab(x)|=|\Stab(y)|$.
+  X$. Then $|\Orb(x)|=|\Orb(y)|\iff |\Stab(x)|=|\Stab(y)|$.
 \end{lemma}
 \begin{proof}
   If $|\Orb(x)|=|\Orb(y)|$, then by the Orbit/Stabilizer Theorem we have
@@ -4207,7 +4975,7 @@ invariant factors of the matrix.
     This is not an ideal.
     \begin{proof}
       Consider $f=3x^2+x$, which clearly belongs to the collection $S$ of
-      polynomials in question. Then $xf(x)=3x^3+x^2\notin S$, since $3\not\mid
+      polynomials in question. Then $xf(x)=3x^3+x^2\notin S$, since $3\nmid
       1$. Hence $\mathbb{Z}[x]S\not\subseteq S$, so $S$ is not an ideal.
     \end{proof}
     \item $\mathbb{Z}[x^2]$, the set of all polynomials in which only even
@@ -4309,13 +5077,13 @@ invariant factors of the matrix.
 
     The polynomial is irreducible
     \begin{proof}
-      By Gauss' Lemma it suffices to show that the polynomial is irreducible
-      over $\mathbb{Q}$. By the rational root theorem, any rational root of the
-      polynomial is an integer dividing $-1$, i.e., if $f(x):=x^3-5x-1$ has a
-      root in $\mathbb{Q}$ it is $1$ or $-1$. Yet one can check that
-      $f(1),f(-1)\neq 0$, so $f$ has no roots. Thus $f$ is a cubic over the
-      field $\mathbb{Q}$ with no roots, so $f$ is irreducible over
-      $\mathbb{Q}$, as desired.
+      Since the polynomial $f=x^3-5x-1$ is monic, by Gauss' Lemma it suffices
+      to show that the polynomial is irreducible over $\mathbb{Q}$. By the
+      rational root theorem, any rational root of the polynomial is an integer
+      dividing $-1$, i.e., if $f(x):=x^3-5x-1$ has a root in $\mathbb{Q}$ it is
+      $1$ or $-1$. Yet one can check that $f(1),f(-1)\neq 0$, so $f$ has no
+      roots. Thus $f$ is a cubic over the field $\mathbb{Q}$ with no roots, so
+      $f$ is irreducible over $\mathbb{Q}$, as desired.
     \end{proof}
     \item $x^4+10x^2+5$.
 
